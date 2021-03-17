@@ -1,32 +1,33 @@
 {
-  "name": "harke-parser",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/algorithmwatch/harke-parser",
-  "author": "AlgorithmWatch",
-  "license": "MIT",
-  "scripts": {
-    "dev:main": "nodemon",
-    "build": "rimraf ./build && tsc",
-    "test": "jest",
-    "test:dev": "jest --watchAll"
-  },
-  "dependencies": {
-    "cheerio": "^1.0.0-rc.5",
-    "eslint-plugin-jest": "^24.2.1",
-    "jest": "^26.6.3",
-    "ts-jest": "^26.5.3",
-    "ts-node": "^9.1.1"
-  },
-  "devDependencies": {
-    "@types/jest": "^26.0.20",
-    "@types/node": "^14.14.33",
-    "@typescript-eslint/eslint-plugin": "^4.17.0",
-    "@typescript-eslint/parser": "^4.17.0",
-    "eslint": "^7.21.0",
-    "eslint-config-prettier": "^8.1.0",
-    "eslint-plugin-prettier": "^3.3.1",
-    "nodemon": "^2.0.7",
-    "typescript": "^4.2.3"
-  }
+    "name": "harke-parser",
+    "version": "1.0.0",
+    "main": "index.js",
+    "repository": "https://github.com/algorithmwatch/harke-parser",
+    "author": "AlgorithmWatch",
+    "license": "MIT",
+    "scripts": {
+        "dev": "nodemon",
+        "build": "rimraf ./build && tsc",
+        "test": "jest",
+        "test:dev": "jest --watchAll"
+    },
+    "dependencies": {
+        "@types/cheerio": "^0.22.27",
+        "cheerio": "^1.0.0-rc.5",
+        "eslint-plugin-jest": "^24.2.1",
+        "jest": "^26.6.3",
+        "ts-jest": "^26.5.3",
+        "ts-node": "^9.1.1"
+    },
+    "devDependencies": {
+        "@types/jest": "^26.0.20",
+        "@types/node": "^14.14.33",
+        "@typescript-eslint/eslint-plugin": "^4.17.0",
+        "@typescript-eslint/parser": "^4.17.0",
+        "eslint": "^7.21.0",
+        "eslint-config-prettier": "^8.1.0",
+        "eslint-plugin-prettier": "^3.3.1",
+        "nodemon": "^2.0.7",
+        "typescript": "^4.2.3"
+    }
 }

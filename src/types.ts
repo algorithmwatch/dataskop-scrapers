@@ -1,6 +1,7 @@
+
 export interface Channel {
-  id?: string
-  title: string
+  id: string
+  name: string
   url: string
   description?: string
   thumbnail?: string
@@ -36,12 +37,12 @@ export interface CommentSection {
 
 export interface Video {
   id: string
-  // title: string
-  // description: string
-  // duration: number
-  // channel: Channel
-  // uploadDate: Date
-  // viewCount: number
+  title: string
+  description: string
+  duration: number
+  channel: Channel
+  uploadDate: Date
+  viewCount: number
   // upvotes: number
   // downvotes: number
   // isLiveContent: boolean
