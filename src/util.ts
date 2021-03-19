@@ -1,5 +1,5 @@
 
-export function getVideoIdFromUrl (url: string): string | null {
+export const getVideoIdFromUrl = (url: string): string | null => {
   const pattern = /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/
   const match = url.match(pattern)
 
@@ -7,7 +7,7 @@ export function getVideoIdFromUrl (url: string): string | null {
 }
 
 // from: https://gist.github.com/Fauntleroy/5167736#gistcomment-3649319
-export function convertISO8601ToMs(duration: string): number  {
+export const convertISO8601ToMs = (duration: string): number  => {
   const time_extractor = /^P([0-9]*D)?T([0-9]*H)?([0-9]*M)?([0-9]*S)?$/i;
   const extracted = time_extractor.exec(duration);
   if (extracted) {
@@ -19,3 +19,9 @@ export function convertISO8601ToMs(duration: string): number  {
   }
   return 0;
 }
+
+export const parseNumberFromString = (str: string): number | null => {
+  const numbers = str.match(/\d/g);
+  if (numbers == null) return null;
+  return parseInt(numbers.join(''), 10);
+};

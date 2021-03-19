@@ -1,45 +1,52 @@
-import * as cheerio from 'cheerio'
-import { Channel, Video } from "../types";
-import { getVideoIdFromUrl, convertISO8601ToMs } from '../util'
+import { Channel, ParserResult, Video } from "../types";
+import Parser, { HarkeParsingError } from '../Parser'
+import { getVideoIdFromUrl, convertISO8601ToMs, parseNumberFromString } from '../util'
 
 
 export default function parseVideoPage (
   html: string,
   includeComments: boolean = false
-): Video {
+): ParserResult {
 
-  const $ = cheerio.load(html)
+  const schema = {
 
-  const parser = {
-
-    id: (): string => {
+    id ($: cheerio.Root): string {
       const urlValue = $('link[rel=canonical]').attr('href')
-      if (!urlValue) return ''
+      if (!urlValue) throw new HarkeParsingError()
+      const videoId = getVideoIdFromUrl(urlValue)
+      if (!videoId) throw new HarkeParsingError()
 
-      return getVideoIdFromUrl(urlValue) || ''
+      return videoId
     },
 
-    title: (): string => {
-      return $('meta[name=title]').attr('content') || ''
+    title ($: cheerio.Root): string {
+      const title = $('meta[name=title]').attr('content')
+      if (!title) throw new HarkeParsingError()
+
+      return title
     },
 
-    description: (): string => {
+    description ($: cheerio.Root): string {
       return $('#description').html() || ''
     },
 
-    duration: (): number => {
+    duration ($: cheerio.Root): number {
       const durationValue = $('meta[itemprop=duration]').attr('content') || ''
-      return durationValue ? convertISO8601ToMs(durationValue) : 0
+      if (!durationValue) throw new HarkeParsingError()
+      const durationNumber = convertISO8601ToMs(durationValue)
+      if (durationNumber <= 0) throw new HarkeParsingError()
+
+      return durationNumber
     },
 
-    channel: (): Channel => {
+    channel ($: cheerio.Root): Channel {
       const channelLinkEl = $('#upload-info a[href^="/channel/"]')
 
       return {
 
         id: (() => {
           const channelUrl = channelLinkEl.attr('href')
-          if (!channelUrl) return ''
+          if (!channelUrl) throw new HarkeParsingError()
           const channelUrlChunks = channelUrl.split('/')
 
           return channelUrlChunks[channelUrlChunks.length - 1]
@@ -56,39 +63,50 @@ export default function parseVideoPage (
       }
     },
 
-    uploadDate: (): Date => {
+    uploadDate ($: cheerio.Root): Date {
       const uploadDateValue = $('meta[itemprop=uploadDate]').attr('content')
 
-      if (!uploadDateValue) {
-        throw new Error('uploadDate selector is broken')
-      }
+      if (!uploadDateValue) throw new HarkeParsingError()
 
       const dateParts = uploadDateValue.split('-').map(s => Number(s))
       return new Date(dateParts[0], dateParts[1] - 1, dateParts[2])
 
     },
 
-    viewCount: (): number => {
+    viewCount ($: cheerio.Root): number {
       const viewCountValue = $('.ytd-video-view-count-renderer').first().text()
-      if (!viewCountValue) return 0
+      if (!viewCountValue) throw new HarkeParsingError()
 
-      return Number(viewCountValue)
+      const number = parseNumberFromString(viewCountValue)
+      if (!number) throw new HarkeParsingError()
+
+      return number
     },
+
   }
 
-  return {
-    id: parser.id(),
-    title: parser.title(),
-    description: parser.description(),
-    duration: parser.duration(),
-    channel: parser.channel(),
-    uploadDate: parser.uploadDate(),
-    viewCount: parser.viewCount(),
-    // upvotes
-    // downvotes
-    // isLiveContent
-    // hashtags
-    // recommendedVideos
-    // commentSection
-  }
+  const parser = new Parser(
+    'video-page',
+    html,
+    schema
+  )
+
+
+  // return {
+  //   id: parser.id(),
+  //   title: parser.title(),
+  //   description: parser.description(),
+  //   duration: parser.duration(),
+  //   channel: parser.channel(),
+  //   uploadDate: parser.uploadDate(),
+  //   viewCount: parser.viewCount(),
+  //   // upvotes
+  //   // downvotes
+  //   // isLiveContent
+  //   // hashtags
+  //   // recommendedVideos
+  //   // commentSection
+  // }
+
+  return parser.result
 }

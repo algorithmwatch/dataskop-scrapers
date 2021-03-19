@@ -1,4 +1,14 @@
 
+export interface ParserFieldsSchema {
+  [key: string]: Function
+}
+
+export interface ParserResult {
+  slug: string,
+  fields: { [key: string]: any }
+  errors: string[]
+}
+
 export interface Channel {
   id: string
   name: string
