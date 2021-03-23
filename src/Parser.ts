@@ -1,5 +1,6 @@
 import * as cheerio from 'cheerio'
-import { ParserFieldsSchema, ParserResult } from './types'
+import { JsonLinkedData, ParserFieldParams, ParserFieldsSchema, ParserResult } from './types'
+import { extractJsonLinkedData } from './util'
 
 
 export class HarkeParsingError extends Error {
@@ -15,6 +16,7 @@ export class HarkeParsingError extends Error {
 export default class Parser {
   slug: string
   $html: cheerio.Root
+  linkedData: JsonLinkedData
   parsedFields: { [key: string]: any }
   fieldsWithoutResult: string[]
 
@@ -25,6 +27,7 @@ export default class Parser {
   ) {
     this.slug = slug
     this.$html = cheerio.load(html)
+    this.linkedData = extractJsonLinkedData(this.$html)
     this.parsedFields = {}
     this.fieldsWithoutResult = []
 
@@ -38,7 +41,8 @@ export default class Parser {
       const fieldKey = fieldKeys[i]
 
       try {
-        const parseResult = schema[fieldKey](this.$html)
+        const params: ParserFieldParams = { $: this.$html, linkedData: this.linkedData }
+        const parseResult = schema[fieldKey](params)
 
         // add parsing result
         this.parsedFields[fieldKey] = parseResult

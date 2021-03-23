@@ -1,6 +1,13 @@
-import { Channel, ParserResult, Video } from "../types";
+import { Channel, JsonLinkedData, ParserFieldParams, ParserResult, Video } from "../types";
 import Parser, { HarkeParsingError } from '../Parser'
-import { getVideoIdFromUrl, convertISO8601ToMs, parseNumberFromString } from '../util'
+import {
+  getVideoIdFromUrl,
+  convertISO8601ToMs,
+  extractNumberFromString
+} from '../util'
+
+
+type $ = cheerio.Root
 
 
 export default function parseVideoPage (
@@ -10,37 +17,48 @@ export default function parseVideoPage (
 
   const schema = {
 
-    id ($: cheerio.Root): string {
+
+    id ({ $ }: ParserFieldParams): string {
       const urlValue = $('link[rel=canonical]').attr('href')
       if (!urlValue) throw new HarkeParsingError()
+
       const videoId = getVideoIdFromUrl(urlValue)
       if (!videoId) throw new HarkeParsingError()
 
       return videoId
     },
 
-    title ($: cheerio.Root): string {
-      const title = $('meta[name=title]').attr('content')
-      if (!title) throw new HarkeParsingError()
 
-      return title
+    title ({ linkedData }: ParserFieldParams): string {
+      if (!linkedData) throw new HarkeParsingError()
+
+      try {
+        return linkedData.name
+      } catch {
+        throw new HarkeParsingError()
+      }
     },
 
-    description ($: cheerio.Root): string {
-      return $('#description').html() || ''
+
+    description ({ linkedData }: ParserFieldParams): string {
+      if (!linkedData) throw new HarkeParsingError()
+
+      return linkedData.description || ''
     },
 
-    duration ($: cheerio.Root): number {
-      const durationValue = $('meta[itemprop=duration]').attr('content') || ''
-      if (!durationValue) throw new HarkeParsingError()
-      const durationNumber = convertISO8601ToMs(durationValue)
-      if (durationNumber <= 0) throw new HarkeParsingError()
 
-      return durationNumber
+    duration ({ linkedData }: ParserFieldParams): number {
+      if (!linkedData) throw new HarkeParsingError()
+
+      const value = convertISO8601ToMs(linkedData.duration)
+      if (value === 0) throw new HarkeParsingError()
+
+      return value
     },
 
-    channel ($: cheerio.Root): Channel {
-      const channelLinkEl = $('#upload-info a[href^="/channel/"]')
+
+    channel ({ $ }: ParserFieldParams): Channel {
+      const channelLinkEl = $('#upload-info a[href^="/channel/"]').first()
 
       return {
 
@@ -63,25 +81,97 @@ export default function parseVideoPage (
       }
     },
 
-    uploadDate ($: cheerio.Root): Date {
-      const uploadDateValue = $('meta[itemprop=uploadDate]').attr('content')
 
-      if (!uploadDateValue) throw new HarkeParsingError()
+    uploadDate ({ linkedData }: ParserFieldParams): Date {
+      if (!linkedData) throw new HarkeParsingError()
 
-      const dateParts = uploadDateValue.split('-').map(s => Number(s))
-      return new Date(dateParts[0], dateParts[1] - 1, dateParts[2])
-
+      try {
+        const uploadDateValue = linkedData.uploadDate
+        const dateParts = uploadDateValue.split('-').map((s: string) => Number(s))
+        return new Date(dateParts[0], dateParts[1] - 1, dateParts[2])
+      } catch {
+        throw new HarkeParsingError()
+      }
     },
 
-    viewCount ($: cheerio.Root): number {
-      const viewCountValue = $('.ytd-video-view-count-renderer').first().text()
-      if (!viewCountValue) throw new HarkeParsingError()
 
-      const number = parseNumberFromString(viewCountValue)
+    viewCount ({ linkedData }: ParserFieldParams): number {
+      if (!linkedData) throw new HarkeParsingError()
+
+      const number = Number(linkedData.interactionCount)
       if (!number) throw new HarkeParsingError()
 
       return number
     },
+
+
+    upVotes ({ $ }: ParserFieldParams): number {
+      const ariaLabelText = $('#top-level-buttons > ytd-toggle-button-renderer').first().find('yt-formatted-string#text').attr('aria-label')
+      if (!ariaLabelText) throw new HarkeParsingError()
+
+      const number = extractNumberFromString(ariaLabelText)
+      if (!number) throw new HarkeParsingError()
+
+      return number
+    },
+
+
+    downVotes ({ $ }: ParserFieldParams): number {
+      const ariaLabelText = $('#top-level-buttons > ytd-toggle-button-renderer:nth-child(2)').find('yt-formatted-string#text').attr('aria-label')
+      if (!ariaLabelText) throw new HarkeParsingError()
+
+      const number = extractNumberFromString(ariaLabelText)
+      if (!number) throw new HarkeParsingError()
+
+      return number
+    },
+
+
+    category ({ linkedData }: ParserFieldParams): string {
+      if (!linkedData) throw new HarkeParsingError()
+
+      try {
+        return linkedData.genre
+      } catch {
+        throw new HarkeParsingError()
+      }
+    },
+
+
+    isLiveContent ({ linkedData }: ParserFieldParams): boolean {
+      if (!linkedData) throw new HarkeParsingError()
+
+      try {
+        return linkedData.publication.isLiveBroadcast === true
+      } catch {
+        return false
+      }
+    },
+
+
+    hashtags ({ $ }: ParserFieldParams): string[] {
+      const result: string[] = []
+
+      $('a[href^="/hashtag/"]').each((idx, el: cheerio.Element) => {
+        const parentEl = el as cheerio.TagElement
+        const childNode = parentEl.firstChild
+
+        if (
+          !childNode ||
+          childNode.type !== 'text' ||
+          !childNode.data ||
+          result.includes(childNode.data)
+        ) return
+
+        result.push(childNode.data)
+      })
+
+      return result
+    },
+
+    // recommendedVideos ({ $ }: ParserFieldParams): RecommendedVideo[] {
+
+    // }
 
   }
 
@@ -90,23 +180,6 @@ export default function parseVideoPage (
     html,
     schema
   )
-
-
-  // return {
-  //   id: parser.id(),
-  //   title: parser.title(),
-  //   description: parser.description(),
-  //   duration: parser.duration(),
-  //   channel: parser.channel(),
-  //   uploadDate: parser.uploadDate(),
-  //   viewCount: parser.viewCount(),
-  //   // upvotes
-  //   // downvotes
-  //   // isLiveContent
-  //   // hashtags
-  //   // recommendedVideos
-  //   // commentSection
-  // }
 
   return parser.result
 }

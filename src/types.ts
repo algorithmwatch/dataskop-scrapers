@@ -1,14 +1,3 @@
-
-export interface ParserFieldsSchema {
-  [key: string]: Function
-}
-
-export interface ParserResult {
-  slug: string,
-  fields: { [key: string]: any }
-  errors: string[]
-}
-
 export interface Channel {
   id: string
   name: string
@@ -53,11 +42,32 @@ export interface Video {
   channel: Channel
   uploadDate: Date
   viewCount: number
-  // upvotes: number
-  // downvotes: number
-  // isLiveContent: boolean
-  // hashtags: string[]
+  upvotes: number
+  category: string
+  downvotes: number
+  isLiveContent: boolean
+  hashtags: string[]
   // recommendedVideos: RecommendedVideo[]
   // commentSection: CommentSection
 }
 
+export interface ParserFieldsSchema {
+  [key: string]: Function
+}
+
+export interface ParserResult {
+  slug: string,
+  fields: {
+    [key: string]: any
+  }
+  errors: string[]
+}
+
+export type JsonLinkedData = {
+  [key: string]: any
+} | undefined
+
+export interface ParserFieldParams {
+  $: cheerio.Root
+  linkedData: JsonLinkedData
+}

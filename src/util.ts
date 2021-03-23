@@ -1,3 +1,4 @@
+import { JsonLinkedData } from "./types"
 
 export const getVideoIdFromUrl = (url: string): string | null => {
   const pattern = /(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/
@@ -20,8 +21,21 @@ export const convertISO8601ToMs = (duration: string): number  => {
   return 0;
 }
 
-export const parseNumberFromString = (str: string): number | null => {
+export const extractNumberFromString = (str: string): number | null => {
   const numbers = str.match(/\d/g);
   if (numbers == null) return null;
   return parseInt(numbers.join(''), 10);
-};
+}
+
+// https://developers.google.com/search/docs/guides/intro-structured-data
+export const extractJsonLinkedData = ($: cheerio.Root): JsonLinkedData => {
+  const schemaText = $('script[type=application\\/ld\\+json]#scriptTag').first().html()
+
+  if (!schemaText) return
+
+  try {
+    return JSON.parse(schemaText)
+  } catch {
+    return
+  }
+}

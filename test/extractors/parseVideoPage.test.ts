@@ -10,7 +10,11 @@ describe('parseVideoPage result', () => {
   let parsedResult: ParserResult
 
   beforeAll(() => {
-    videoPageHtml = fs.readFileSync('test/html/video_page_no_auth.html').toString()
+    // testing
+    const filePath = 'test/html/video_page_no_auth.html'
+    videoPageHtml = fs.readFileSync(filePath).toString()
+    parsedResult = parseVideoPage(videoPageHtml)
+    console.log('result', parsedResult)
   })
 
   // test('throws error when providing invalid input', () => {
@@ -18,31 +22,23 @@ describe('parseVideoPage result', () => {
   // })
 
   test('has video id', () => {
-    parsedResult = parseVideoPage(videoPageHtml)
     expect(parsedResult.fields.id).toMatch(/^[A-Za-z0-9_-]{11}$/)
   })
 
   test('has video title', () => {
-    parsedResult = parseVideoPage(videoPageHtml)
     expect(parsedResult.fields.title.length).toBeGreaterThan(1)
   })
 
   test('has empty or filled video description string', () => {
-    parsedResult = parseVideoPage(videoPageHtml)
     const descriptionLength = parsedResult.fields.description.length
     expect(descriptionLength >= 0).toBeTruthy()
   })
 
   test('has video duration greater than zero', () => {
-    parsedResult = parseVideoPage(videoPageHtml)
     expect(parsedResult.fields.duration).toBeGreaterThan(0)
   })
 
   describe('Channel', () => {
-
-    beforeAll(() => {
-      parsedResult = parseVideoPage(videoPageHtml)
-    })
 
     test('has id', () => {
       expect(parsedResult.fields.channel.id).toMatch(/^[A-Za-z0-9_-]{10,}$/)
@@ -58,7 +54,6 @@ describe('parseVideoPage result', () => {
   })
 
   test('has upload date after Youtube launch date and before now', () => {
-    parsedResult = parseVideoPage(videoPageHtml)
     const youtubeLaunchDate = new Date(2005, 11, 15)
     const tomorrow = new Date()
     tomorrow.setDate(tomorrow.getDate() + 1)
@@ -66,5 +61,27 @@ describe('parseVideoPage result', () => {
     expect(parsedResult.fields.uploadDate < tomorrow).toBe(true)
   })
 
+  test('has upvotes equal or greater than zero', () => {
+    expect(parsedResult.fields.upVotes).toBeGreaterThanOrEqual(0)
+  })
+
+  test('has downvotes equal or greater than zero', () => {
+    expect(parsedResult.fields.downVotes).toBeGreaterThanOrEqual(0)
+  })
+
+  test('has category', () => {
+    expect(parsedResult.fields.category.length).toBeGreaterThan(1)
+  })
+
+  test('has isLiveContent boolean', () => {
+    expect(parsedResult.fields.isLiveContent).toBe(false)
+  })
+
+  test('has hashtags', () => {
+    const hashtagsArray = parsedResult.fields.hashtags
+    expect(hashtagsArray).toContain('#TheOffice')
+    expect(hashtagsArray).toContain('#USA')
+    expect(hashtagsArray).toContain('#PeacockTV')
+  })
 
 })
