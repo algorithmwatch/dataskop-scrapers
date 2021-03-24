@@ -1,13 +1,11 @@
-import { Channel, JsonLinkedData, ParserFieldParams, ParserResult, Video } from "../types";
-import Parser, { HarkeParsingError } from '../Parser'
+import { Channel, ParserFieldParams, ParserResult, RecommendedVideo, Video } from "../types";
+import Parser, { HarkeParsingError } from '../parser'
 import {
   getVideoIdFromUrl,
   convertISO8601ToMs,
-  extractNumberFromString
-} from '../util'
-
-
-type $ = cheerio.Root
+  extractNumberFromString,
+  convertHHMMSSDurationToMs
+} from '../parser/utils'
 
 
 export default function parseVideoPage (
@@ -16,7 +14,6 @@ export default function parseVideoPage (
 ): ParserResult {
 
   const schema = {
-
 
     id ({ $ }: ParserFieldParams): string {
       const urlValue = $('link[rel=canonical]').attr('href')
@@ -169,9 +166,39 @@ export default function parseVideoPage (
       return result
     },
 
-    // recommendedVideos ({ $ }: ParserFieldParams): RecommendedVideo[] {
+    recommendedVideos ({ $ }: ParserFieldParams): RecommendedVideo[] {
+      const result: RecommendedVideo[] = []
 
-    // }
+      $('#related ytd-compact-video-renderer').each((idx, el: cheerio.Element) => {
+        const $el = $(el)
+        const videoUrl = $el.find('.metadata > a').attr('href')
+        const id = videoUrl ? getVideoIdFromUrl(videoUrl) : null
+        const title = $el.find('.metadata #video-title').text().trim()
+        // const duration = convertHHMMSSDurationToMs(
+        //   $el.find('.ytd-thumbnail-overlay-time-status-renderer').text()
+        // )
+        const channelName = $el.find('.metadata .ytd-channel-name #text').text()
+        const percWatchedValue = $el.find('.ytd-thumbnail .ytd-thumbnail-overlay-resume-playback-renderer').css('width')
+        const percWatched = percWatchedValue ? Number(percWatchedValue) : 0
+
+        if (
+          !id ||
+          !title ||
+          !channelName
+        ) return
+
+        result.push({
+          id,
+          title,
+          channelName,
+          percWatched
+        })
+      })
+
+      if (!result.length) throw new HarkeParsingError()
+
+      return result
+    }
 
   }
 

@@ -3,8 +3,6 @@ import parseVideoPage from '../../src/extractors/parseVideoPage'
 import { ParserResult, Video } from '../../src/types'
 
 
-
-
 describe('parseVideoPage result', () => {
   let videoPageHtml: string
   let parsedResult: ParserResult
@@ -14,7 +12,6 @@ describe('parseVideoPage result', () => {
     const filePath = 'test/html/video_page_no_auth.html'
     videoPageHtml = fs.readFileSync(filePath).toString()
     parsedResult = parseVideoPage(videoPageHtml)
-    console.log('result', parsedResult)
   })
 
   // test('throws error when providing invalid input', () => {
@@ -82,6 +79,10 @@ describe('parseVideoPage result', () => {
     expect(hashtagsArray).toContain('#TheOffice')
     expect(hashtagsArray).toContain('#USA')
     expect(hashtagsArray).toContain('#PeacockTV')
+  })
+  test('has recommended videos', () => {
+    const videosArray = parsedResult.fields.recommendedVideos
+    expect(videosArray.every((x: Object) => Object.keys(x).length === 4)).toBe(true)
   })
 
 })

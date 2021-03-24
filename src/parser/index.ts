@@ -1,6 +1,6 @@
 import * as cheerio from 'cheerio'
-import { JsonLinkedData, ParserFieldParams, ParserFieldsSchema, ParserResult } from './types'
-import { extractJsonLinkedData } from './util'
+import { JsonLinkedData, ParserFieldParams, ParserFieldsSchema, ParserResult } from '../types'
+import { extractJsonLinkedData } from './utils'
 
 
 export class HarkeParsingError extends Error {
@@ -50,7 +50,7 @@ export default class Parser {
         if (error instanceof HarkeParsingError) {
           // silently record parsing errors
           this.fieldsWithoutResult.push(fieldKey)
-        }else {
+        } else {
           // unknown error, rethrow it
           throw error;
         }
@@ -67,16 +67,3 @@ export default class Parser {
   }
 
 }
-
-
-// const parser = new Parser(
-//   'test-slug',
-//   '<p>hallo</p>',
-//   {
-//     id ($html: cheerio.Cheerio) {
-//       throw new HarkeParsingError('hallo')
-//     }
-//   }
-// )
-
-// parser.result

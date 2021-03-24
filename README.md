@@ -8,4 +8,4 @@
 Based on https://khalilstemmler.com/blogs/typescript/node-starter-project/
 
 ## Test files
-- https://www.youtube.com/watch?v=SACB-u41x0M > video_page_no_auth_hashtags.html
+- https://www.youtube.com/watch?v=SACB-u41x0M > video_page_no_auth.html

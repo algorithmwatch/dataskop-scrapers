@@ -10,9 +10,7 @@ export interface Channel {
 export interface RecommendedVideo {
   id: string
   title: string
-  description: string
-  duration: number
-  channel: Channel
+  channelName: string
   percWatched: number
 }
 
