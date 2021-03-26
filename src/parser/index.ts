@@ -1,5 +1,12 @@
 import * as cheerio from 'cheerio'
-import { JsonLinkedData, ParserFieldParams, ParserFieldsSchema, ParserResult } from '../types'
+import {
+  JsonLinkedData,
+  ParserFieldParams,
+  ParserFieldsSchema,
+  ParserFieldsSchemaVideoPage,
+  ParserFieldsSchemaPaylist,
+  ParserResult
+} from '../types'
 import { extractJsonLinkedData } from './utils'
 
 
@@ -21,7 +28,7 @@ export default class Parser {
   fieldsWithoutResult: string[]
 
   constructor(
-    slug: string,
+    slug: 'video-page' | 'playlist',
     html: string,
     schema: ParserFieldsSchema
   ) {
@@ -37,15 +44,17 @@ export default class Parser {
   parse (schema: ParserFieldsSchema) {
     const fieldKeys = Object.keys(schema)
 
+    if (!fieldKeys.length) return
+
     for (let i = 0, l = fieldKeys.length; i < l; i++) {
-      const fieldKey = fieldKeys[i]
+      const fieldKey = fieldKeys[i] as keyof ParserFieldsSchema
 
       try {
-        const params: ParserFieldParams = { $: this.$html, linkedData: this.linkedData }
-        const parseResult = schema[fieldKey](params)
-
-        // add parsing result
-        this.parsedFields[fieldKey] = parseResult
+        const params: ParserFieldParams = {
+          $: this.$html,
+          linkedData: this.linkedData
+        }
+        this.parsedFields[fieldKey] = schema[fieldKey](params)
       } catch (error) {
         if (error instanceof HarkeParsingError) {
           // silently record parsing errors

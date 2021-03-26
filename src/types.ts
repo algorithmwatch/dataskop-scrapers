@@ -14,45 +14,6 @@ export interface RecommendedVideo {
   percWatched: number
 }
 
-export interface Comment {
-  id: string
-  url: string
-  text: string
-  publishedAt: Date
-  upvotes: number
-  repliesCount: number
-  authorName: string
-  authorUrl: string
-  isPinned: boolean
-}
-
-export interface CommentSection {
-  isClosed: boolean
-  totalCommentsCount?: number
-  comments?: Comment[]
-}
-
-export interface Video {
-  id: string
-  title: string
-  description: string
-  duration: number
-  channel: Channel
-  uploadDate: Date
-  viewCount: number
-  upvotes: number
-  category: string
-  downvotes: number
-  isLiveContent: boolean
-  hashtags: string[]
-  // recommendedVideos: RecommendedVideo[]
-  // commentSection: CommentSection
-}
-
-export interface ParserFieldsSchema {
-  [key: string]: Function
-}
-
 export interface ParserResult {
   slug: string,
   fields: {
@@ -65,7 +26,30 @@ export type JsonLinkedData = {
   [key: string]: any
 } | undefined
 
-export interface ParserFieldParams {
+export type ParserFieldParams = {
   $: cheerio.Root
   linkedData: JsonLinkedData
+}
+
+export type ParserFieldsSchema = ParserFieldsSchemaVideoPage | ParserFieldsSchemaPaylist
+
+export interface ParserFieldsSchemaVideoPage {
+  id: (params: ParserFieldParams) => string
+  title: (params: ParserFieldParams) => string
+  description: (params: ParserFieldParams) => string
+  duration: (params: ParserFieldParams) => number
+  channel: (params: ParserFieldParams) => Channel
+  uploadDate: (params: ParserFieldParams) => Date
+  viewCount: (params: ParserFieldParams) => number
+  upvotes: (params: ParserFieldParams) => number
+  category: (params: ParserFieldParams) => string
+  downvotes: (params: ParserFieldParams) => number
+  isLiveContent: (params: ParserFieldParams) => boolean
+  hashtags: (params: ParserFieldParams) => string[]
+  recommendedVideos: (params: ParserFieldParams) => RecommendedVideo[]
+}
+
+export interface ParserFieldsSchemaPaylist {
+  id: (params: ParserFieldParams) => string
+
 }

@@ -1,6 +1,6 @@
 import fs from 'fs'
 import parseVideoPage from '../../src/extractors/parseVideoPage'
-import { ParserResult, Video } from '../../src/types'
+import { ParserResult } from '../../src/types'
 
 
 describe('parseVideoPage result', () => {
@@ -59,11 +59,11 @@ describe('parseVideoPage result', () => {
   })
 
   test('has upvotes equal or greater than zero', () => {
-    expect(parsedResult.fields.upVotes).toBeGreaterThanOrEqual(0)
+    expect(parsedResult.fields.upvotes).toBeGreaterThanOrEqual(0)
   })
 
   test('has downvotes equal or greater than zero', () => {
-    expect(parsedResult.fields.downVotes).toBeGreaterThanOrEqual(0)
+    expect(parsedResult.fields.downvotes).toBeGreaterThanOrEqual(0)
   })
 
   test('has category', () => {

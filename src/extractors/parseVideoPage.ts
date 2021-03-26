@@ -1,19 +1,21 @@
-import { Channel, ParserFieldParams, ParserResult, RecommendedVideo, Video } from "../types";
+import {
+  Channel,
+  ParserFieldParams,
+  ParserFieldsSchemaVideoPage,
+  ParserResult,
+  RecommendedVideo
+} from "../types"
 import Parser, { HarkeParsingError } from '../parser'
 import {
   getVideoIdFromUrl,
   convertISO8601ToMs,
   extractNumberFromString,
-  convertHHMMSSDurationToMs
 } from '../parser/utils'
 
 
-export default function parseVideoPage (
-  html: string,
-  includeComments: boolean = false
-): ParserResult {
+export default function parseVideoPage (html: string): ParserResult {
 
-  const schema = {
+  const schema: ParserFieldsSchemaVideoPage = {
 
     id ({ $ }: ParserFieldParams): string {
       const urlValue = $('link[rel=canonical]').attr('href')
@@ -102,7 +104,7 @@ export default function parseVideoPage (
     },
 
 
-    upVotes ({ $ }: ParserFieldParams): number {
+    upvotes ({ $ }: ParserFieldParams): number {
       const ariaLabelText = $('#top-level-buttons > ytd-toggle-button-renderer').first().find('yt-formatted-string#text').attr('aria-label')
       if (!ariaLabelText) throw new HarkeParsingError()
 
@@ -113,7 +115,7 @@ export default function parseVideoPage (
     },
 
 
-    downVotes ({ $ }: ParserFieldParams): number {
+    downvotes ({ $ }: ParserFieldParams): number {
       const ariaLabelText = $('#top-level-buttons > ytd-toggle-button-renderer:nth-child(2)').find('yt-formatted-string#text').attr('aria-label')
       if (!ariaLabelText) throw new HarkeParsingError()
 
