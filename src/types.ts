@@ -14,6 +14,15 @@ export interface RecommendedVideo {
   percWatched: number
 }
 
+export interface PlaylistVideo {
+  id: string
+  title: string
+  description: string
+  duration: number
+  channelName: string
+  channelUrl: string
+}
+
 export interface ParserResult {
   slug: string,
   fields: {
@@ -34,22 +43,27 @@ export type ParserFieldParams = {
 export type ParserFieldsSchema = ParserFieldsSchemaVideoPage | ParserFieldsSchemaPaylist
 
 export interface ParserFieldsSchemaVideoPage {
-  id: (params: ParserFieldParams) => string
-  title: (params: ParserFieldParams) => string
-  description: (params: ParserFieldParams) => string
-  duration: (params: ParserFieldParams) => number
-  channel: (params: ParserFieldParams) => Channel
-  uploadDate: (params: ParserFieldParams) => Date
-  viewCount: (params: ParserFieldParams) => number
-  upvotes: (params: ParserFieldParams) => number
-  category: (params: ParserFieldParams) => string
-  downvotes: (params: ParserFieldParams) => number
-  isLiveContent: (params: ParserFieldParams) => boolean
-  hashtags: (params: ParserFieldParams) => string[]
-  recommendedVideos: (params: ParserFieldParams) => RecommendedVideo[]
+  id (params: ParserFieldParams): string
+  title (params: ParserFieldParams): string
+  description (params: ParserFieldParams): string
+  duration (params: ParserFieldParams): number
+  channel (params: ParserFieldParams): Channel
+  uploadDate (params: ParserFieldParams): Date
+  viewCount (params: ParserFieldParams): number
+  upvotes (params: ParserFieldParams): number
+  category (params: ParserFieldParams): string
+  downvotes (params: ParserFieldParams): number
+  isLiveContent (params: ParserFieldParams): boolean
+  hashtags (params: ParserFieldParams): string[]
+  recommendedVideos (params: ParserFieldParams): RecommendedVideo[]
 }
 
 export interface ParserFieldsSchemaPaylist {
-  id: (params: ParserFieldParams) => string
-
+  id (params: ParserFieldParams): string
+  title (params: ParserFieldParams): string
+  description (params: ParserFieldParams): string
+  viewCount (params: ParserFieldParams): number
+  videoCount (params: ParserFieldParams): number
+  updatedAt (params: ParserFieldParams): Date
+  videos (params: ParserFieldParams): PlaylistVideo[]
 }
