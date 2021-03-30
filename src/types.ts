@@ -1,5 +1,5 @@
 export interface Channel {
-  id: string
+  id?: string
   name: string
   url: string
   description?: string
@@ -17,10 +17,14 @@ export interface RecommendedVideo {
 export interface PlaylistVideo {
   id: string
   title: string
-  description: string
   duration: number
   channelName: string
   channelUrl: string
+}
+
+export interface PlaylistVideoUnavailable {
+  id: string
+  unavailable: boolean
 }
 
 export interface ParserResult {
@@ -64,6 +68,6 @@ export interface ParserFieldsSchemaPaylist {
   description (params: ParserFieldParams): string
   viewCount (params: ParserFieldParams): number
   videoCount (params: ParserFieldParams): number
-  updatedAt (params: ParserFieldParams): Date
-  videos (params: ParserFieldParams): PlaylistVideo[]
+  updatedAtString (params: ParserFieldParams): string
+  videos (params: ParserFieldParams): (PlaylistVideo|PlaylistVideoUnavailable)[]
 }

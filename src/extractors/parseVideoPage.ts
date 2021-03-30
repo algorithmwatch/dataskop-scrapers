@@ -4,7 +4,7 @@ import {
   ParserFieldsSchemaVideoPage,
   ParserResult,
   RecommendedVideo
-} from "../types"
+} from '../types'
 import Parser, { HarkeParsingError } from '../parser'
 import {
   getVideoIdFromUrl,

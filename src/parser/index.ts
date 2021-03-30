@@ -28,7 +28,7 @@ export default class Parser {
   fieldsWithoutResult: string[]
 
   constructor(
-    slug: 'video-page' | 'playlist',
+    slug: 'video-page' | 'playlist-page',
     html: string,
     schema: ParserFieldsSchema
   ) {

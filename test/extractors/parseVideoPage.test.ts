@@ -12,6 +12,7 @@ describe('parseVideoPage result', () => {
     const filePath = 'test/html/video_page_no_auth.html'
     videoPageHtml = fs.readFileSync(filePath).toString()
     parsedResult = parseVideoPage(videoPageHtml)
+    // console.warn('test', parsedResult.fields.recommendedVideos)
   })
 
   // test('throws error when providing invalid input', () => {
@@ -19,7 +20,7 @@ describe('parseVideoPage result', () => {
   // })
 
   test('has video id', () => {
-    expect(parsedResult.fields.id).toMatch(/^[A-Za-z0-9_-]{11}$/)
+    expect(parsedResult.fields.id).toMatch(/^[a-z0-9_-]{11}$/i)
   })
 
   test('has video title', () => {
@@ -80,6 +81,7 @@ describe('parseVideoPage result', () => {
     expect(hashtagsArray).toContain('#USA')
     expect(hashtagsArray).toContain('#PeacockTV')
   })
+
   test('has recommended videos', () => {
     const videosArray = parsedResult.fields.recommendedVideos
     expect(videosArray.every((x: Object) => Object.keys(x).length === 4)).toBe(true)
