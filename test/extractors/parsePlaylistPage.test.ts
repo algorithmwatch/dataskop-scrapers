@@ -1,6 +1,6 @@
 import fs from 'fs'
 import parsePlaylistPage from '../../src/extractors/parsePlaylistPage'
-import { ParserResult, PlaylistVideo, PlaylistVideoUnavailable } from '../../src/types'
+import { ParserResult } from '../../src/types'
 
 
 describe('parsePlaylistPage result', () => {

@@ -1,17 +1,13 @@
 import {
-  Channel,
   ParserFieldParams,
   ParserFieldsSchemaPaylist,
   ParserResult,
   PlaylistVideo,
   PlaylistVideoUnavailable,
-  RecommendedVideo
 } from '../types'
 import { URLSearchParams } from 'url'
 import Parser, { HarkeParsingError } from '../parser'
 import {
-  getVideoIdFromUrl,
-  convertISO8601ToMs,
   extractNumberFromString,
   convertHHMMSSDurationToMs,
 } from '../parser/utils'
