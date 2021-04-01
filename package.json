@@ -1,5 +1,5 @@
 {
-    "name": "harke-parser",
+    "name": "@algorithmwatch/harke-parser",
     "version": "0.1.0-2",
     "main": "src/index.ts",
     "repository": {
