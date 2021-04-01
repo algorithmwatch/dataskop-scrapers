@@ -17,7 +17,7 @@ Choose a new version according to <https://semver.org/>.
 yarn version --major
 yarn version --minor
 yarn version --patch
-yarn version --prelease
+yarn version --prerelease
 ```
 
 Push tags to GitHub.
