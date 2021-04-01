@@ -1,6 +1,6 @@
 {
     "name": "@algorithmwatch/harke-parser",
-    "version": "0.1.0-2",
+    "version": "0.1.0-3",
     "main": "src/index.ts",
     "repository": {
         "type": "git",
