@@ -5,7 +5,8 @@ import {
   ParserFieldsSchema,
   ParserFieldsSchemaVideoPage,
   ParserFieldsSchemaPaylist,
-  ParserResult
+  ParserResult,
+  ParserResultSlug
 } from '../types'
 import { extractJsonLinkedData } from './utils'
 
@@ -21,14 +22,14 @@ export class HarkeParsingError extends Error {
 }
 
 export default class Parser {
-  slug: string
+  slug: ParserResultSlug
   $html: cheerio.Root
   linkedData: JsonLinkedData
   parsedFields: { [key: string]: any }
   fieldsWithoutResult: string[]
 
   constructor(
-    slug: 'video-page' | 'playlist-page',
+    slug: ParserResultSlug,
     html: string,
     schema: ParserFieldsSchema
   ) {

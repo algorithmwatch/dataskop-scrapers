@@ -27,8 +27,19 @@ export interface PlaylistVideoUnavailable {
   unavailable: boolean
 }
 
+export interface SubscribedChannel {
+  channelName: string
+  channelUrl: string
+  description: string
+  videoCount: number
+  subscriberCount: number
+  notificationsEnabled: boolean
+}
+
+export type ParserResultSlug = 'video-page' | 'playlist-page' | 'user-subscribed-channels'
+
 export interface ParserResult {
-  slug: string,
+  slug: ParserResultSlug,
   fields: {
     [key: string]: any
   }
@@ -43,8 +54,6 @@ export type ParserFieldParams = {
   $: cheerio.Root
   linkedData: JsonLinkedData
 }
-
-export type ParserFieldsSchema = ParserFieldsSchemaVideoPage | ParserFieldsSchemaPaylist
 
 export interface ParserFieldsSchemaVideoPage {
   id (params: ParserFieldParams): string
@@ -71,3 +80,9 @@ export interface ParserFieldsSchemaPaylist {
   updatedAtString (params: ParserFieldParams): string
   videos (params: ParserFieldParams): (PlaylistVideo|PlaylistVideoUnavailable)[]
 }
+
+export interface ParserFieldsSchemaSubscribedChannels {
+  channels (params: ParserFieldParams): SubscribedChannel[]
+}
+
+export type ParserFieldsSchema = ParserFieldsSchemaVideoPage | ParserFieldsSchemaPaylist | ParserFieldsSchemaSubscribedChannels

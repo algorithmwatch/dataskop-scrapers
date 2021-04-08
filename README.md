@@ -25,8 +25,9 @@ GitHub then publishes the package as a GitHub Package.
 
 ## Test files
 
-- https://www.youtube.com/watch?v=SACB-u41x0M > video_page_no_auth.html
-- https://www.youtube.com/playlist?list=PLdVY0007sCPWPKA3WBkqJZEcIAiMAvx58 > playlist.html
+- Video page: https://www.youtube.com/watch?v=SACB-u41x0M > video_page_no_auth.html
+- Playlist page: https://www.youtube.com/playlist?list=PLdVY0007sCPWPKA3WBkqJZEcIAiMAvx58 > playlist.html
+- Subscribed channels: https://www.youtube.com/feed/channels > subscriptions_auth.html
 
 ## License
 

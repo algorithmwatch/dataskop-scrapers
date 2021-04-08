@@ -12,7 +12,7 @@ describe('parseVideoPage result', () => {
     const filePath = 'test/html/video_page_no_auth.html'
     videoPageHtml = fs.readFileSync(filePath).toString()
     parsedResult = parseVideoPage(videoPageHtml)
-    // console.warn('test', parsedResult.fields.recommendedVideos)
+    // console.warn('test', parsedResult)
   })
 
   // test('throws error when providing invalid input', () => {
