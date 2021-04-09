@@ -43,6 +43,11 @@ export interface WatchlistVideoUnavailable {
   unavailable: boolean
 }
 
+export interface SearchHistoryEntry {
+  query: string
+  searchedAt: Date
+}
+
 export interface SubscribedChannel {
   channelName: string
   channelUrl: string
@@ -105,4 +110,8 @@ export interface ParserFieldsSchemaWatchHistory {
   videos (params: ParserFieldParams): (WatchlistVideo|WatchlistVideoUnavailable)[]
 }
 
-export type ParserFieldsSchema = ParserFieldsSchemaVideoPage | ParserFieldsSchemaPaylist | ParserFieldsSchemaSubscribedChannels | ParserFieldsSchemaWatchHistory
+export interface ParserFieldsSchemaSearchHistory {
+  queries (params: ParserFieldParams): SearchHistoryEntry[]
+}
+
+export type ParserFieldsSchema = ParserFieldsSchemaVideoPage | ParserFieldsSchemaPaylist | ParserFieldsSchemaSubscribedChannels | ParserFieldsSchemaWatchHistory | ParserFieldsSchemaSearchHistory

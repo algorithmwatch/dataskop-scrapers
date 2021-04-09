@@ -1,9 +1,8 @@
 import {
   ParserFieldParams,
-  ParserFieldsSchemaWatchHistory,
+  ParserFieldsSchemaSearchHistory,
   ParserResult,
-  WatchlistVideo,
-  WatchlistVideoUnavailable,
+  SearchHistoryEntry
 } from '../types'
 import { URLSearchParams } from 'url'
 import Parser, { HarkeParsingError } from '../parser'
@@ -13,12 +12,12 @@ import {
 } from '../parser/utils'
 
 
-export default function parseWatchHistoryPage (html: string): ParserResult {
+export default function parseSearchHistoryPage (html: string): ParserResult {
 
-  const schema: ParserFieldsSchemaWatchHistory = {
+  const schema: ParserFieldsSchemaSearchHistory = {
 
-    videos ({ $ }: ParserFieldParams): (WatchlistVideo|WatchlistVideoUnavailable)[] {
-      const result: (WatchlistVideo|WatchlistVideoUnavailable)[] = []
+    queries ({ $ }: ParserFieldParams): SearchHistoryEntry[] {
+      const result: SearchHistoryEntry[] = []
 
       // parsing date-video chunks
       $('#contents .ytd-section-list-renderer').each((idx, chunkEl: cheerio.Element) => {
