@@ -10,6 +10,7 @@ import {
   getVideoIdFromUrl,
   convertISO8601ToMs,
   extractNumberFromString,
+  convertPercentageStringToNumber,
 } from '../parser/utils'
 
 
@@ -181,7 +182,7 @@ export default function parseVideoPage (html: string): ParserResult {
         // )
         const channelName = $el.find('.metadata .ytd-channel-name #text').text()
         const percWatchedValue = $el.find('.ytd-thumbnail .ytd-thumbnail-overlay-resume-playback-renderer').css('width')
-        const percWatched = percWatchedValue ? Number(percWatchedValue) : 0
+        const percWatched = percWatchedValue ? convertPercentageStringToNumber(percWatchedValue) : 0
 
         if (
           !id ||
