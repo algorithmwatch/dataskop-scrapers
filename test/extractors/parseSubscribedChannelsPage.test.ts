@@ -32,4 +32,15 @@ describe('parseSubscribedChannelsPage result', () => {
   })
 
 
+  test('has channels with correct number of properties', () => {
+    const channelArray = parsedResult.fields.channels
+    expect(
+      channelArray.every((x: any) => {
+        if (Object.keys(x).length !== 6) return false
+
+        return true
+      })
+      ).toBe(true)
+  })
+
 })

@@ -84,5 +84,12 @@ export const convertHHMMSSDurationToMs = (durationString: string): number => {
   return milliseconds
 }
 
-// const test = convertDurationStringToMs('1:48')
-// test
+export const convertPercentageStringToNumber = (percentString: string): number => {
+  percentString = percentString.trim()
+
+  if (percentString.endsWith('%')) {
+    return Number(percentString.slice(0, -1) || null)
+  }
+
+  return Number(percentString)
+}

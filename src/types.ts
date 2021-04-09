@@ -27,6 +27,22 @@ export interface PlaylistVideoUnavailable {
   unavailable: boolean
 }
 
+export interface WatchlistVideo {
+  id: string
+  title: string
+  description: string
+  duration: number
+  channelName: string
+  channelUrl: string
+  watchedAt: string
+  percWatched: number
+}
+
+export interface WatchlistVideoUnavailable {
+  id: string
+  unavailable: boolean
+}
+
 export interface SubscribedChannel {
   channelName: string
   channelUrl: string
@@ -36,7 +52,7 @@ export interface SubscribedChannel {
   notificationsEnabled: boolean
 }
 
-export type ParserResultSlug = 'video-page' | 'playlist-page' | 'user-subscribed-channels'
+export type ParserResultSlug = 'video-page' | 'playlist-page' | 'user-subscribed-channels' | 'user-watch-history'
 
 export interface ParserResult {
   slug: ParserResultSlug,
@@ -85,4 +101,8 @@ export interface ParserFieldsSchemaSubscribedChannels {
   channels (params: ParserFieldParams): SubscribedChannel[]
 }
 
-export type ParserFieldsSchema = ParserFieldsSchemaVideoPage | ParserFieldsSchemaPaylist | ParserFieldsSchemaSubscribedChannels
+export interface ParserFieldsSchemaWatchHistory {
+  videos (params: ParserFieldParams): (WatchlistVideo|WatchlistVideoUnavailable)[]
+}
+
+export type ParserFieldsSchema = ParserFieldsSchemaVideoPage | ParserFieldsSchemaPaylist | ParserFieldsSchemaSubscribedChannels | ParserFieldsSchemaWatchHistory
