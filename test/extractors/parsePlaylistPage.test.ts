@@ -11,7 +11,7 @@ describe('parsePlaylistPage result', () => {
     const filePath = 'test/html/playlist.html'
     playlistPageHtml = fs.readFileSync(filePath).toString()
     parsedResult = parsePlaylistPage(playlistPageHtml)
-    console.warn('test', parsedResult)
+    // console.warn('test', parsedResult)
   })
 
   test('has id', () => {

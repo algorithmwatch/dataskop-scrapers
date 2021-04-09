@@ -32,7 +32,7 @@ export interface SubscribedChannel {
   channelUrl: string
   description: string
   videoCount: number
-  subscriberCount: number
+  subscriberCount: string
   notificationsEnabled: boolean
 }
 

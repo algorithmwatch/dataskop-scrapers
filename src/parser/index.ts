@@ -3,8 +3,6 @@ import {
   JsonLinkedData,
   ParserFieldParams,
   ParserFieldsSchema,
-  ParserFieldsSchemaVideoPage,
-  ParserFieldsSchemaPaylist,
   ParserResult,
   ParserResultSlug
 } from '../types'
@@ -42,13 +40,13 @@ export default class Parser {
     this.parse(schema)
   }
 
-  parse (schema: ParserFieldsSchema) {
+  parse (schema: any) {
     const fieldKeys = Object.keys(schema)
 
     if (!fieldKeys.length) return
 
     for (let i = 0, l = fieldKeys.length; i < l; i++) {
-      const fieldKey = fieldKeys[i] as keyof ParserFieldsSchema
+      const fieldKey = fieldKeys[i]
 
       try {
         const params: ParserFieldParams = {
