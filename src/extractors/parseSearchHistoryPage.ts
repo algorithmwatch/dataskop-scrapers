@@ -36,8 +36,11 @@ export default function parseSearchHistoryPage (html: string): ParserResult {
 
         if (isDateHeader($el)) {
           const date = getDateHeader($el)
-          if (date) currentDate = date
-          return
+          if (date) {
+            currentDate = date
+            return
+          }
+          throw new HarkeParsingError()
         }
 
         if (isSearchQuery($el)) {
@@ -48,6 +51,8 @@ export default function parseSearchHistoryPage (html: string): ParserResult {
               query: queryText,
               searchedAt: currentDate
             })
+          } else {
+            throw new HarkeParsingError()
           }
         }
       })
