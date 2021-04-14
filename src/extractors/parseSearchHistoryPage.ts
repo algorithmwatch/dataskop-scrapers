@@ -14,74 +14,42 @@ import {
 
 export default function parseSearchHistoryPage (html: string): ParserResult {
 
+  const isDateHeader = ($el: cheerio.Cheerio) => $el.hasClass('KpksOc')
+  const getDateHeader = ($el: cheerio.Cheerio): false | Date =>
+    $el.data('timestamp') ? new Date(Number($el.data('timestamp'))) : false
+  const isSearchQuery = ($el: cheerio.Cheerio) =>
+    $el.hasClass('xDtZAf') && $el.find('.l8sGWb').attr('href')?.includes('?search_query=') || false
+  const getSearchQuery = ($el: cheerio.Cheerio): false | string =>
+    $el.find('.l8sGWb').text()
+
   const schema: ParserFieldsSchemaSearchHistory = {
 
+    // date header selector: .KpksOc
+    // history entry selector: .xDtZAf
+    // history entry link selector: .l8sGWb --> href attribute must contain ?search_query=
     queries ({ $ }: ParserFieldParams): SearchHistoryEntry[] {
+      // parse flat history list
       const result: SearchHistoryEntry[] = []
+      let currentDate: Date
+      $('.KpksOc, .xDtZAf').each((idx, el: cheerio.Element) => {
+        const $el = $(el)
 
-      // parsing date-video chunks
-      $('#contents .ytd-section-list-renderer').each((idx, chunkEl: cheerio.Element) => {
-        const $chunkEl = $(chunkEl)
-        const watchedAt = $chunkEl.find('#title').text()
+        if (isDateHeader($el)) {
+          const date = getDateHeader($el)
+          if (date) currentDate = date
+          return
+        }
 
+        if (isSearchQuery($el)) {
+          const queryText = getSearchQuery($el)
 
-        $chunkEl.find('ytd-video-renderer').each((idx, el: cheerio.Element) => {
-          const $el = $(el)
-          const href = $el.find('a#thumbnail').attr('href')
-          if (href == null) return
-
-          const params = new URLSearchParams(href.replace('/watch?', ''))
-          const id = params.get('v');
-          let title = $el.find('#video-title').text()
-          const description = $el.find('#description-text').text() || ''
-          const duration = convertHHMMSSDurationToMs(
-            $el.find('.ytd-thumbnail-overlay-time-status-renderer:not([hidden])').text()
-          )
-          let channelName = $el.find('.ytd-channel-name a').text()
-          const channelUrl = $el.find('.ytd-channel-name a').attr('href')
-          const thumbnailUrl = $el.find('a#thumbnail img').attr('src')
-          const percWatched = convertPercentageStringToNumber(
-            $el.find('.ytd-thumbnail .ytd-thumbnail-overlay-resume-playback-renderer').css('width')
-          )
-
-          // trim strings
-          title = title && title.trim()
-          channelName = channelName && channelName.trim()
-
-          // push video
-          // check if video is deletec and has default thumbnail
-          if (
-            id &&
-            !duration &&
-            !channelName &&
-            !channelUrl &&
-            title.startsWith('[') &&
-            thumbnailUrl === 'https://i.ytimg.com/img/no_thumbnail.jpg'
-          ) {
-            result.push({ id, unavailable: true })
-          } if (
-            !id ||
-            !title ||
-            !duration ||
-            !channelName ||
-            !channelUrl ||
-            !percWatched
-          ) {
-            return
-          } else {
+          if (queryText) {
             result.push({
-              id,
-              title,
-              description,
-              duration,
-              channelName,
-              channelUrl,
-              watchedAt,
-              percWatched
+              query: queryText,
+              searchedAt: currentDate
             })
           }
-
-        })
+        }
       })
 
       if (!result.length) throw new HarkeParsingError()
@@ -92,7 +60,7 @@ export default function parseSearchHistoryPage (html: string): ParserResult {
   }
 
   const parser = new Parser(
-    'user-watch-history',
+    'user-search-history',
     html,
     schema
   )

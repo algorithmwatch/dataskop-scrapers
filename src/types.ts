@@ -57,7 +57,7 @@ export interface SubscribedChannel {
   notificationsEnabled: boolean
 }
 
-export type ParserResultSlug = 'video-page' | 'playlist-page' | 'user-subscribed-channels' | 'user-watch-history'
+export type ParserResultSlug = 'video-page' | 'playlist-page' | 'user-subscribed-channels' | 'user-watch-history' | 'user-search-history'
 
 export interface ParserResult {
   slug: ParserResultSlug,
