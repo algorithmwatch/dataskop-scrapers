@@ -1,7 +1,5 @@
-import parseVideoPage from './extractors/parseVideoPage'
-import parsePlaylistPage from './extractors/parsePlaylistPage'
-
-export {
-  parseVideoPage,
-  parsePlaylistPage
-}
+export * from './extractors/parseVideoPage';
+export * from './extractors/parsePlaylistPage'
+export * from './extractors/parseSearchHistoryPage'
+export * from './extractors/parseSubscribedChannelsPage'
+export * from './extractors/parseWatchHistoryPage'
