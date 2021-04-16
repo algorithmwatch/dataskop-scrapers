@@ -1,5 +1,5 @@
-import getHtmlFromUrl from './methods/getHtmlFromUrl'
+import getHtmlFromUrl from './methods/getHtmlFromUrl';
 
 export default {
-  getHtmlFromUrl
-}
+  getHtmlFromUrl,
+};
