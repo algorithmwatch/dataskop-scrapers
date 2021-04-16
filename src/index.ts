@@ -1,5 +1,1 @@
-import getHtmlFromUrl from './methods/getHtmlFromUrl';
-
-export default {
-  getHtmlFromUrl,
-};
+export * from './get-html';
