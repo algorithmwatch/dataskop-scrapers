@@ -4,6 +4,9 @@ Parser for harke, a headless YouTube-Scraper
 
 ## Dev setup
 
+We are storing HTML test files with [git lfs](https://git-lfs.github.com/).
+Please set it up.
+
 1. Run `yarn` to install dependencies
 2. Run `yarn dev` for development mode
 
