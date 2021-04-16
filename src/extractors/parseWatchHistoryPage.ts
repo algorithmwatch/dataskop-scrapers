@@ -41,9 +41,8 @@ export default function parseWatchHistoryPage (html: string): ParserResult {
           let channelName = $el.find('.ytd-channel-name a').text()
           const channelUrl = $el.find('.ytd-channel-name a').attr('href')
           const thumbnailUrl = $el.find('a#thumbnail img').attr('src')
-          const percWatched = convertPercentageStringToNumber(
-            $el.find('.ytd-thumbnail .ytd-thumbnail-overlay-resume-playback-renderer').css('width')
-          )
+          const percWatchedValue = $el.find('.ytd-thumbnail .ytd-thumbnail-overlay-resume-playback-renderer').css('width')
+          const percWatched = percWatchedValue ? convertPercentageStringToNumber(percWatchedValue) : 0
 
           // trim strings
           title = title && title.trim()

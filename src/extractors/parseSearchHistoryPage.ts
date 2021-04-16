@@ -4,12 +4,7 @@ import {
   ParserResult,
   SearchHistoryEntry
 } from '../types'
-import { URLSearchParams } from 'url'
 import Parser, { HarkeParsingError } from '../parser'
-import {
-  convertHHMMSSDurationToMs,
-  convertPercentageStringToNumber,
-} from '../parser/utils'
 
 
 export default function parseSearchHistoryPage (html: string): ParserResult {
