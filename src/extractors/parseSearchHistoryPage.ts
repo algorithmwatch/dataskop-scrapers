@@ -2,68 +2,62 @@ import {
   ParserFieldParams,
   ParserFieldsSchemaSearchHistory,
   ParserResult,
-  SearchHistoryEntry
-} from '../types'
-import Parser, { HarkeParsingError } from '../parser'
+  SearchHistoryEntry,
+} from '../types';
+import Parser, { HarkeParsingError } from '../parser';
 
-
-export default function parseSearchHistoryPage (html: string): ParserResult {
-
-  const isDateHeader = ($el: cheerio.Cheerio) => $el.hasClass('KpksOc')
+export default function parseSearchHistoryPage(html: string): ParserResult {
+  const isDateHeader = ($el: cheerio.Cheerio) => $el.hasClass('KpksOc');
   const getDateHeader = ($el: cheerio.Cheerio): false | Date =>
-    $el.data('timestamp') ? new Date(Number($el.data('timestamp'))) : false
+    $el.data('timestamp') ? new Date(Number($el.data('timestamp'))) : false;
   const isSearchQuery = ($el: cheerio.Cheerio) =>
-    $el.hasClass('xDtZAf') && $el.find('.l8sGWb').attr('href')?.includes('?search_query=') || false
+    ($el.hasClass('xDtZAf') &&
+      $el.find('.l8sGWb').attr('href')?.includes('?search_query=')) ||
+    false;
   const getSearchQuery = ($el: cheerio.Cheerio): false | string =>
-    $el.find('.l8sGWb').text()
+    $el.find('.l8sGWb').text();
 
   const schema: ParserFieldsSchemaSearchHistory = {
-
     // date header selector: .KpksOc
     // history entry selector: .xDtZAf
     // history entry link selector: .l8sGWb --> href attribute must contain ?search_query=
-    queries ({ $ }: ParserFieldParams): SearchHistoryEntry[] {
+    queries({ $ }: ParserFieldParams): SearchHistoryEntry[] {
       // parse flat history list
-      const result: SearchHistoryEntry[] = []
-      let currentDate: Date
+      const result: SearchHistoryEntry[] = [];
+      let currentDate: Date;
       $('.KpksOc, .xDtZAf').each((idx, el: cheerio.Element) => {
-        const $el = $(el)
+        const $el = $(el);
 
         if (isDateHeader($el)) {
-          const date = getDateHeader($el)
+          const date = getDateHeader($el);
           if (date) {
-            currentDate = date
-            return
+            currentDate = date;
+            return;
           }
-          throw new HarkeParsingError()
+          throw new HarkeParsingError();
         }
 
         if (isSearchQuery($el)) {
-          const queryText = getSearchQuery($el)
+          const queryText = getSearchQuery($el);
 
           if (queryText) {
             result.push({
               query: queryText,
-              searchedAt: currentDate
-            })
+              searchedAt: currentDate,
+            });
           } else {
-            throw new HarkeParsingError()
+            throw new HarkeParsingError();
           }
         }
-      })
+      });
 
-      if (!result.length) throw new HarkeParsingError()
+      if (!result.length) throw new HarkeParsingError();
 
-      return result
+      return result;
     },
+  };
 
-  }
+  const parser = new Parser('user-search-history', html, schema);
 
-  const parser = new Parser(
-    'user-search-history',
-    html,
-    schema
-  )
-
-  return parser.result
+  return parser.result;
 }
