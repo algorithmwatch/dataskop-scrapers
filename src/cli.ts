@@ -1,25 +1,67 @@
 #!/usr/bin/env node
 import meow from 'meow';
-import { getHtml } from './get-html';
+import {
+  validateWatchHistory,
+  loginYoutube,
+  validateSearchHistory,
+  validateSubscribedChannels,
+} from './get-html';
 
 const cliHelpText = `
   Usage
-    $ harke <YouTube-URL> -o outputdir
+    $ harke -l
+    $ harke -a
 `;
 
 const cli = meow(cliHelpText, {
   flags: {
+    login: { type: 'boolean', alias: 'l' },
     playlist: { type: 'boolean', alias: 'p' },
     video: {
       type: 'boolean',
-      alias: 'vi',
+      alias: 'v',
+    },
+    watchHistory: {
+      type: 'boolean',
+      alias: 'w',
+    },
+    searchHistory: {
+      type: 'boolean',
+      alias: 's',
+    },
+    subscribedChannels: {
+      type: 'boolean',
+      alias: 'c',
+    },
+    all: {
+      type: 'boolean',
+      alias: 'a',
     },
   },
 });
 
-const get = () => {
-  const html = await getHtml(cli.input[1]);
-};
+(async function () {
+  if (cli.flags.login) {
+    loginYoutube();
+  }
+
+  if (cli.flags.all || cli.flags.watchHistory) {
+    await validateWatchHistory();
+  }
+
+  // FIXME: currently broken and not working
+  // if (cli.flags.all || cli.flags.searchHistory) {
+  //   await validateSearchHistory();
+  // }
+
+  if (cli.flags.all || cli.flags.subscribedChannels) {
+    await validateSubscribedChannels();
+  }
+})();
+
+// const get = () => {
+//   const html = await getHtml(cli.input[1]);
+// };
 
 // import fs from 'fs';
 // import meow from 'meow';
