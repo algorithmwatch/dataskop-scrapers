@@ -1,5 +1,5 @@
 import fs from 'fs';
-import parsePlaylistPage from '../../src/extractors/parsePlaylistPage';
+import { parsePlaylistPage } from '../../src';
 import { ParserResult } from '../../src/types';
 
 describe('parsePlaylistPage result', () => {

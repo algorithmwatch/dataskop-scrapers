@@ -6,7 +6,7 @@ import {
 } from '../types';
 import Parser, { HarkeParsingError } from '../parser';
 
-export default function parseSearchHistoryPage(html: string): ParserResult {
+function parseSearchHistoryPage(html: string): ParserResult {
   const isDateHeader = ($el: cheerio.Cheerio) => $el.hasClass('KpksOc');
   const getDateHeader = ($el: cheerio.Cheerio): false | Date =>
     $el.data('timestamp') ? new Date(Number($el.data('timestamp'))) : false;
@@ -61,3 +61,8 @@ export default function parseSearchHistoryPage(html: string): ParserResult {
 
   return parser.result;
 }
+
+const searchHistoryUrl =
+  'https://myactivity.google.com/activitycontrols/youtube';
+
+export { searchHistoryUrl, parseSearchHistoryPage };

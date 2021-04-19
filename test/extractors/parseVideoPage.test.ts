@@ -1,5 +1,5 @@
 import fs from 'fs';
-import parseVideoPage from '../../src/extractors/parseVideoPage';
+import { parseVideoPage } from '../../src';
 import { ParserResult } from '../../src/types';
 
 describe('parseVideoPage result', () => {

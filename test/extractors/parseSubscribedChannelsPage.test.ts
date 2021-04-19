@@ -1,5 +1,5 @@
 import fs from 'fs';
-import parseSubscribedChannelsPage from '../../src/extractors/parseSubscribedChannelsPage';
+import { parseSubscribedChannelsPage } from '../../src';
 import { ParserResult, SubscribedChannel } from '../../src/types';
 
 describe('parseSubscribedChannelsPage result', () => {

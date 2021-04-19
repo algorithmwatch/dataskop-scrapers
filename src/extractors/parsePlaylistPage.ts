@@ -12,7 +12,7 @@ import {
   convertHHMMSSDurationToMs,
 } from '../parser/utils';
 
-export default function parsePlaylistPage(html: string): ParserResult {
+function parsePlaylistPage(html: string): ParserResult {
   const schema: ParserFieldsSchemaPaylist = {
     id({ $ }: ParserFieldParams): string {
       const params = new URLSearchParams($('h1#title a').attr('href'));
@@ -126,3 +126,5 @@ export default function parsePlaylistPage(html: string): ParserResult {
 
   return parser.result;
 }
+
+export { parsePlaylistPage };

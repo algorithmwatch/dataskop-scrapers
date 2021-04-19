@@ -12,7 +12,7 @@ import {
   convertPercentageStringToNumber,
 } from '../parser/utils';
 
-export default function parseWatchHistoryPage(html: string): ParserResult {
+function parseWatchHistoryPage(html: string): ParserResult {
   const schema: ParserFieldsSchemaWatchHistory = {
     videos({
       $,
@@ -106,3 +106,7 @@ export default function parseWatchHistoryPage(html: string): ParserResult {
 
   return parser.result;
 }
+
+const watchHistoryUrl = 'https://www.youtube.com/feed/history';
+
+export { watchHistoryUrl, parseWatchHistoryPage };

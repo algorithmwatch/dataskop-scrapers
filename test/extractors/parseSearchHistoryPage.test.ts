@@ -1,5 +1,5 @@
 import fs from 'fs';
-import parseSearchHistoryPage from '../../src/extractors/parseSearchHistoryPage';
+import { parseSearchHistoryPage } from '../../src';
 import { ParserResult } from '../../src/types';
 
 describe('parseSearchHistoryPage result', () => {

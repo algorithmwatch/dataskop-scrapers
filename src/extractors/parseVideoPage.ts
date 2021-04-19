@@ -13,7 +13,7 @@ import {
   convertPercentageStringToNumber,
 } from '../parser/utils';
 
-export default function parseVideoPage(html: string): ParserResult {
+function parseVideoPage(html: string): ParserResult {
   const schema: ParserFieldsSchemaVideoPage = {
     id({ $ }: ParserFieldParams): string {
       const urlValue = $('link[rel=canonical]').attr('href');
@@ -208,3 +208,5 @@ export default function parseVideoPage(html: string): ParserResult {
 
   return parser.result;
 }
+
+export { parseVideoPage };
