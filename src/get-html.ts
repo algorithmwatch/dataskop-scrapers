@@ -1,6 +1,9 @@
-import puppeteer from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
 import { HarkeInvalidUrl } from './errors';
 import { isValidUrl } from './util';
+
+// add stealth plugin and use defaults (all evasion techniques)
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 import {
   parseWatchHistoryPage,
@@ -10,21 +13,19 @@ import {
   subscribedChannelsUrls,
   parseSubscribedChannelsPage,
 } from '@algorithmwatch/harke-parser/build';
+import { LaunchOptions } from 'puppeteer';
+
+puppeteer.use(StealthPlugin());
 
 let browser = null;
 
 const setupBrowser = async () => {
   if (browser !== null) return browser;
-  // `userDataDir` to keep login via sessions
 
   browser = await puppeteer.launch({
-    executablePath: '/Applications/Firefox.app/Contents/MacOS/firefox-bin',
-    // executablePath:
-    // '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-    product: 'firefox',
     headless: false,
-    userDataDir: './user_data',
-  });
+    userDataDir: './user_data', // `userDataDir` to keep login via sessions
+  } as LaunchOptions);
 
   return browser;
 };
@@ -62,8 +63,7 @@ async function loginYoutube() {
 
 async function goToUrlandParse(url: string, parse) {
   const page = await newPage();
-  // await page.goto(url, { waitUntil: 'networkidle2', timeout: 0 });
-  await page.goto(url, { timeout: 0 });
+  await page.goto(url, { waitUntil: 'networkidle2' });
   await page.waitForTimeout(3000);
   const html = await page.content();
   console.log('wait');

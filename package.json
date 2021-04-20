@@ -17,6 +17,8 @@
     "@algorithmwatch/harke-parser": "../harke-parser",
     "meow": "^9.0.0",
     "puppeteer": "^8.0.0",
+    "puppeteer-extra": "^3.1.18",
+    "puppeteer-extra-plugin-stealth": "^2.7.6",
     "ts-node": "^9.1.1"
   },
   "devDependencies": {

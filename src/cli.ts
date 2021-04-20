@@ -50,9 +50,9 @@ const cli = meow(cliHelpText, {
   }
 
   // FIXME: currently broken and not working
-  // if (cli.flags.all || cli.flags.searchHistory) {
-  //   await validateSearchHistory();
-  // }
+  if (cli.flags.all || cli.flags.searchHistory) {
+    await validateSearchHistory();
+  }
 
   if (cli.flags.all || cli.flags.subscribedChannels) {
     await validateSubscribedChannels();

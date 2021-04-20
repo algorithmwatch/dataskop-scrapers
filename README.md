@@ -30,23 +30,25 @@ yarn add ../harke-parser
 
 ## Log in to Google (complicated)
 
-The default Chromium version was not working.
-(Even with setting custom user agents).
+We have to use some obfuscation to make the Google login work.
+We are using: <https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth>
 
-Also using my local Chrome instance was not working.
+### Firefox
 
-```js
-  executablePath:
-    '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome',
-  userDataDir:
-    '/Users/user/Library/Application Support/Google/Chrome/Default',
-  ignoreDefaultArgs: true,
+Alternativly, we could use puppeteer with Firefox.
+To setup, specify this in `.launch`:
+
 ```
-
-Using puppeteer with Firefox.
-To setup:
+  product: 'firefox',
+```
 
 ```bash
 yarn remove puppeteer
 PUPPETEER_PRODUCT=firefox yarn add puppeteer
 ```
+
+Unfortunatly, using it with Firefox was buggy. (But Google was not blocking the login)
+
+## License
+
+MIT
