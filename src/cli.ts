@@ -5,6 +5,7 @@ import {
   loginYoutube,
   validateSearchHistory,
   validateSubscribedChannels,
+  closeBrowser,
 } from './get-html';
 
 const cliHelpText = `
@@ -37,26 +38,39 @@ const cli = meow(cliHelpText, {
       type: 'boolean',
       alias: 'a',
     },
+    outputLocation: {
+      type: 'string',
+      alias: 'o',
+      default: 'html',
+    },
   },
 });
 
 (async function () {
+  let close = true;
+
   if (cli.flags.login) {
     loginYoutube();
+    close = false;
+  }
+
+  if (cli.flags.outputLocation !== null) {
+    console.log('storing htmls files in: ' + cli.flags.outputLocation);
   }
 
   if (cli.flags.all || cli.flags.watchHistory) {
-    await validateWatchHistory();
+    await validateWatchHistory(cli.flags.outputLocation);
   }
 
-  // FIXME: currently broken and not working
   if (cli.flags.all || cli.flags.searchHistory) {
-    await validateSearchHistory();
+    await validateSearchHistory(cli.flags.outputLocation);
   }
 
   if (cli.flags.all || cli.flags.subscribedChannels) {
-    await validateSubscribedChannels();
+    await validateSubscribedChannels(cli.flags.outputLocation);
   }
+
+  if (close) await closeBrowser();
 })();
 
 // const get = () => {

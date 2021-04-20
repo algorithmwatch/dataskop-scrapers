@@ -1,9 +1,12 @@
+/* eslint-disable @typescript-eslint/explicit-module-boundary-types */
+/* eslint-disable no-console */
+import fs from 'fs';
+import { LaunchOptions } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+
 import { HarkeInvalidUrl } from './errors';
 import { isValidUrl } from './util';
-
-// add stealth plugin and use defaults (all evasion techniques)
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
 
 import {
   parseWatchHistoryPage,
@@ -13,8 +16,8 @@ import {
   subscribedChannelsUrls,
   parseSubscribedChannelsPage,
 } from '@algorithmwatch/harke-parser/build';
-import { LaunchOptions } from 'puppeteer';
 
+// add stealth plugin and use defaults (all evasion techniques)
 puppeteer.use(StealthPlugin());
 
 let browser = null;
@@ -30,6 +33,11 @@ const setupBrowser = async () => {
   return browser;
 };
 
+const closeBrowser = async () => {
+  await browser.close();
+  browser = null;
+};
+
 const newPage = async () => {
   const b = await setupBrowser();
   const page = await b.newPage();
@@ -41,17 +49,19 @@ const newPage = async () => {
   return page;
 };
 
-async function getHtml(url: string) {
+async function getHtml(url: string, closePage = false) {
   if (!isValidUrl(url)) throw HarkeInvalidUrl;
 
   const page = await newPage();
 
   await page.goto(url, {
-    waitUntil: 'networkidle0',
+    waitUntil: 'networkidle2',
   });
 
-  await page.waitForTimeout(2000);
+  await page.waitForTimeout(3000);
   const html = await page.content();
+
+  if (closePage) await page.close();
 
   return html;
 }
@@ -61,34 +71,49 @@ async function loginYoutube() {
   await page.goto('https://www.youtube.com/account');
 }
 
-async function goToUrlandParse(url: string, parse) {
-  const page = await newPage();
-  await page.goto(url, { waitUntil: 'networkidle2' });
-  await page.waitForTimeout(3000);
-  const html = await page.content();
+async function goToUrlandParse(url: string, parse, outputLocation = null) {
+  const html = await getHtml(url, true);
+
   console.log('wait');
   try {
     const result = parse(html);
     console.log(result);
-    await page.close();
+
+    if (outputLocation !== null) {
+      const now = new Date().toISOString().substring(0, 10);
+      fs.mkdirSync(outputLocation, { recursive: true });
+      fs.writeFileSync(`${outputLocation}/${result.slug}-${now}.html`, html);
+    }
   } catch (error) {
     console.log(error);
   }
 }
 
-function validateWatchHistory() {
+function validateWatchHistory(outputLocation = null) {
   console.log('watch history');
-  return goToUrlandParse(watchHistoryUrl, parseWatchHistoryPage);
+  return goToUrlandParse(
+    watchHistoryUrl,
+    parseWatchHistoryPage,
+    outputLocation,
+  );
 }
 
-function validateSearchHistory() {
+function validateSearchHistory(outputLocation = null) {
   console.log('search history');
-  return goToUrlandParse(searchHistoryUrl, parseSearchHistoryPage);
+  return goToUrlandParse(
+    searchHistoryUrl,
+    parseSearchHistoryPage,
+    outputLocation,
+  );
 }
 
-function validateSubscribedChannels() {
+function validateSubscribedChannels(outputLocation = null) {
   console.log('subscribed channels');
-  return goToUrlandParse(subscribedChannelsUrls, parseSubscribedChannelsPage);
+  return goToUrlandParse(
+    subscribedChannelsUrls,
+    parseSubscribedChannelsPage,
+    outputLocation,
+  );
 }
 
 export {
@@ -97,4 +122,5 @@ export {
   validateWatchHistory,
   validateSearchHistory,
   validateSubscribedChannels,
+  closeBrowser,
 };

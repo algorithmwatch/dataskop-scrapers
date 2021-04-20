@@ -13,6 +13,12 @@
 yarn run cli -l
 ```
 
+### all
+
+```
+yarn run cli -a
+```
+
 ### Watch History
 
 ```
