@@ -34,7 +34,7 @@ function parseSearchHistoryPage(html: string): ParserResult {
             currentDate = date;
             return;
           }
-          throw new HarkeParsingError();
+          throw new HarkeParsingError(`invalid date ${date}`);
         }
 
         if (isSearchQuery($el)) {
@@ -46,12 +46,12 @@ function parseSearchHistoryPage(html: string): ParserResult {
               searchedAt: currentDate,
             });
           } else {
-            throw new HarkeParsingError();
+            throw new HarkeParsingError(`invalid query text ${queryText}`);
           }
         }
       });
 
-      if (!result.length) throw new HarkeParsingError(JSON.stringify(result));
+      // the result may have a length of 0 if the user didn't search for anything
 
       return result;
     },
