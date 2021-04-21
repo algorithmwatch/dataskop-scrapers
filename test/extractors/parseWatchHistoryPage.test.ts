@@ -7,7 +7,7 @@ describe('parseWatchHistoryPage result', () => {
   let parsedResult: ParserResult;
 
   beforeAll(() => {
-    const filePath = 'test/html/watch_history_auth.html';
+    const filePath = 'test/html/user-watch-history-2021-04-15.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
     parsedResult = parseWatchHistoryPage(playlistPageHtml);
     // console.warn('test', parsedResult.fields.videos)

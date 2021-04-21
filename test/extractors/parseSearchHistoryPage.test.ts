@@ -2,12 +2,12 @@ import fs from 'fs';
 import { parseSearchHistoryPage } from '../../src';
 import { ParserResult } from '../../src/types';
 
-describe('parseSearchHistoryPage result', () => {
+describe('parseSearchHistoryPage result 2021-04-15', () => {
   let playlistPageHtml: string;
   let parsedResult: ParserResult;
 
   beforeAll(() => {
-    const filePath = 'test/html/search_history_auth.html';
+    const filePath = 'test/html/user-search-history-2021-04-15.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
     parsedResult = parseSearchHistoryPage(playlistPageHtml);
     // console.warn('test', parsedResult.fields.queries)
@@ -34,5 +34,22 @@ describe('parseSearchHistoryPage result', () => {
     expect(parsedResult.fields.queries[16].query).toBe(
       'nazis morden weiter und der staat feine sahne',
     );
+  });
+});
+
+describe('parseSearchHistoryPage result 2021-04-20', () => {
+  let playlistPageHtml: string;
+  let parsedResult: ParserResult;
+
+  beforeAll(() => {
+    const filePath = 'test/html/user-search-history-2021-04-20.html';
+    playlistPageHtml = fs.readFileSync(filePath).toString();
+    parsedResult = parseSearchHistoryPage(playlistPageHtml);
+    console.warn('test', parsedResult);
+  });
+
+  test('has 0 entries', () => {
+    expect(Array.isArray(parsedResult.fields.queries)).toBe(true);
+    expect(parsedResult.fields.queries.length).toBe(0);
   });
 });

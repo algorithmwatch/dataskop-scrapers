@@ -2,12 +2,12 @@ import fs from 'fs';
 import { parseSubscribedChannelsPage } from '../../src';
 import { ParserResult, SubscribedChannel } from '../../src/types';
 
-describe('parseSubscribedChannelsPage result', () => {
+describe('parseSubscribedChannelsPage result 2021-04-15', () => {
   let playlistPageHtml: string;
   let parsedResult: ParserResult;
 
   beforeAll(() => {
-    const filePath = 'test/html/subscribed_channels_auth.html';
+    const filePath = 'test/html/user-subscribed-channels-2021-04-15.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
     parsedResult = parseSubscribedChannelsPage(playlistPageHtml);
     // console.warn('test', parsedResult.fields.channels)
@@ -34,6 +34,34 @@ describe('parseSubscribedChannelsPage result', () => {
         (c: SubscribedChannel) => c.notificationsEnabled === false,
       ),
     ).toBe(true);
+  });
+
+  test('has channels with correct number of properties', () => {
+    const channelArray = parsedResult.fields.channels;
+    expect(
+      channelArray.every((x: any) => {
+        if (Object.keys(x).length !== 6) return false;
+
+        return true;
+      }),
+    ).toBe(true);
+  });
+});
+
+describe('parseSubscribedChannelsPage result 2021-04-20', () => {
+  let playlistPageHtml: string;
+  let parsedResult: ParserResult;
+
+  beforeAll(() => {
+    const filePath = 'test/html/user-subscribed-channels-2021-04-20.html';
+    playlistPageHtml = fs.readFileSync(filePath).toString();
+    parsedResult = parseSubscribedChannelsPage(playlistPageHtml);
+    console.warn('test', parsedResult);
+  });
+
+  test('has 2 channels subscribed', () => {
+    expect(Array.isArray(parsedResult.fields.channels)).toBe(true);
+    expect(parsedResult.fields.channels.length).toBe(2);
   });
 
   test('has channels with correct number of properties', () => {
