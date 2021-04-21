@@ -15,8 +15,11 @@ import {
 function parsePlaylistPage(html: string): ParserResult {
   const schema: ParserFieldsSchemaPaylist = {
     id({ $ }: ParserFieldParams): string {
-      const params = new URLSearchParams($('h1#title a').attr('href'));
+      // extract GET param via meta tag
+      const url = $('meta[property="og:url"]').attr('content');
+      const params = new URLSearchParams(url?.split('?')[1]);
       const id = params.get('list');
+
       if (!id) throw new HarkeParsingError();
 
       return id;
@@ -51,9 +54,7 @@ function parsePlaylistPage(html: string): ParserResult {
         'div#stats > .style-scope.ytd-playlist-sidebar-primary-info-renderer:nth-child(1)',
       ).text();
       const videoCountNumber = extractNumberFromString(videoCount);
-      if (!videoCountNumber) throw new HarkeParsingError();
-
-      return videoCountNumber;
+      return videoCountNumber || 0;
     },
 
     updatedAtString({ $ }: ParserFieldParams): string {
@@ -118,7 +119,7 @@ function parsePlaylistPage(html: string): ParserResult {
         },
       );
 
-      if (!result.length) throw new HarkeParsingError();
+      // a playlist can be empty
 
       return result;
     },

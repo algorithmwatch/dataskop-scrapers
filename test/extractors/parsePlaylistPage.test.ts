@@ -70,3 +70,20 @@ describe('parsePlaylistPage result liked video 2021-04-21', () => {
     expect(parsedResult.errors.length).toBe(0);
   });
 });
+
+describe('parsePlaylistPage result liked video empty 2021-04-21', () => {
+  let playlistPageHtml: string;
+  let parsedResult: ParserResult;
+
+  beforeAll(() => {
+    const filePath =
+      'test/html/playlist-page-liked-videos-empty-2021-04-21.html';
+    playlistPageHtml = fs.readFileSync(filePath).toString();
+    parsedResult = parsePlaylistPage(playlistPageHtml);
+    console.warn('test', parsedResult);
+  });
+
+  test('no errors', () => {
+    expect(parsedResult.errors.length).toBe(0);
+  });
+});
