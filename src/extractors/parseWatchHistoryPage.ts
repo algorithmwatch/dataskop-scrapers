@@ -96,7 +96,7 @@ function parseWatchHistoryPage(html: string): ParserResult {
         },
       );
 
-      if (!result.length) throw new HarkeParsingError(JSON.stringify(result));
+      // watch history can be empty
 
       return result;
     },
