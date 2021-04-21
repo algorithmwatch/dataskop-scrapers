@@ -23,7 +23,7 @@ export default class Parser {
   $html: cheerio.Root;
   linkedData: JsonLinkedData;
   parsedFields: { [key: string]: any };
-  fieldsWithoutResult: string[];
+  fieldsWithoutResult: Array<{ field: string; message: string }>;
 
   constructor(
     slug: ParserResultSlug,
@@ -56,7 +56,10 @@ export default class Parser {
       } catch (error) {
         if (error instanceof HarkeParsingError) {
           // silently record parsing errors
-          this.fieldsWithoutResult.push(fieldKey);
+          this.fieldsWithoutResult.push({
+            field: fieldKey,
+            message: error.message,
+          });
         } else {
           // unknown error, rethrow it
           throw error;

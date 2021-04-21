@@ -51,7 +51,7 @@ function parseSearchHistoryPage(html: string): ParserResult {
         }
       });
 
-      if (!result.length) throw new HarkeParsingError();
+      if (!result.length) throw new HarkeParsingError(JSON.stringify(result));
 
       return result;
     },

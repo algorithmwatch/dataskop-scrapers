@@ -20,32 +20,32 @@ function parseVideoPage(html: string): ParserResult {
       if (!urlValue) throw new HarkeParsingError();
 
       const videoId = getVideoIdFromUrl(urlValue);
-      if (!videoId) throw new HarkeParsingError();
+      if (!videoId) throw new HarkeParsingError('invalid video id');
 
       return videoId;
     },
 
     title({ linkedData }: ParserFieldParams): string {
-      if (!linkedData) throw new HarkeParsingError();
+      if (!linkedData) throw new HarkeParsingError('invalid title');
 
       try {
         return linkedData.name;
       } catch {
-        throw new HarkeParsingError();
+        throw new HarkeParsingError('invalid title');
       }
     },
 
     description({ linkedData }: ParserFieldParams): string {
-      if (!linkedData) throw new HarkeParsingError();
+      if (!linkedData) throw new HarkeParsingError('invalid description');
 
       return linkedData.description || '';
     },
 
     duration({ linkedData }: ParserFieldParams): number {
-      if (!linkedData) throw new HarkeParsingError();
+      if (!linkedData) throw new HarkeParsingError('invalid duration');
 
       const value = convertISO8601ToMs(linkedData.duration);
-      if (value === 0) throw new HarkeParsingError();
+      if (value === 0) throw new HarkeParsingError('invalid duration');
 
       return value;
     },
@@ -56,7 +56,7 @@ function parseVideoPage(html: string): ParserResult {
       return {
         id: (() => {
           const channelUrl = channelLinkEl.attr('href');
-          if (!channelUrl) throw new HarkeParsingError();
+          if (!channelUrl) throw new HarkeParsingError('invalid channel');
           const channelUrlChunks = channelUrl.split('/');
 
           return channelUrlChunks[channelUrlChunks.length - 1];
@@ -73,7 +73,7 @@ function parseVideoPage(html: string): ParserResult {
     },
 
     uploadDate({ linkedData }: ParserFieldParams): Date {
-      if (!linkedData) throw new HarkeParsingError();
+      if (!linkedData) throw new HarkeParsingError('invalid upload date');
 
       try {
         const uploadDateValue = linkedData.uploadDate;
@@ -82,7 +82,7 @@ function parseVideoPage(html: string): ParserResult {
           .map((s: string) => Number(s));
         return new Date(dateParts[0], dateParts[1] - 1, dateParts[2]);
       } catch {
-        throw new HarkeParsingError();
+        throw new HarkeParsingError(JSON.stringify(linkedData));
       }
     },
 
@@ -198,7 +198,7 @@ function parseVideoPage(html: string): ParserResult {
         },
       );
 
-      if (!result.length) throw new HarkeParsingError();
+      if (!result.length) throw new HarkeParsingError(JSON.stringify(result));
 
       return result;
     },

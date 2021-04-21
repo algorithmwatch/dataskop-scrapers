@@ -69,7 +69,7 @@ export interface ParserResult {
   fields: {
     [key: string]: any;
   };
-  errors: string[];
+  errors: Array<{ field: string; message: string }>;
 }
 
 export type JsonLinkedData =
