@@ -15,6 +15,7 @@ import {
   parseSearchHistoryPage,
   subscribedChannelsUrls,
   parseSubscribedChannelsPage,
+  parsePlaylistPage,
 } from '@algorithmwatch/harke-parser/build';
 
 // add stealth plugin and use defaults (all evasion techniques)
@@ -116,11 +117,20 @@ function validateSubscribedChannels(outputLocation = null) {
   );
 }
 
+function validateLikedVideo(outputLocation = null) {
+  const LIST_ID_LIKED_VIDEOS = 'LL';
+  const url = `https://www.youtube.com/playlist?list=${LIST_ID_LIKED_VIDEOS}`;
+
+  console.log('liked videos');
+  return goToUrlandParse(url, parsePlaylistPage, outputLocation);
+}
+
 export {
   getHtml,
   loginYoutube,
   validateWatchHistory,
   validateSearchHistory,
   validateSubscribedChannels,
+  validateLikedVideo,
   closeBrowser,
 };
