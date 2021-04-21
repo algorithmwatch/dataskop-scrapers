@@ -2,12 +2,12 @@ import fs from 'fs';
 import { parsePlaylistPage } from '../../src';
 import { ParserResult } from '../../src/types';
 
-describe('parsePlaylistPage result', () => {
+describe('parsePlaylistPage result 2021-04-16', () => {
   let playlistPageHtml: string;
   let parsedResult: ParserResult;
 
   beforeAll(() => {
-    const filePath = 'test/html/playlist.html';
+    const filePath = 'test/html/playlist-page-2021-04-16.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
     parsedResult = parsePlaylistPage(playlistPageHtml);
     // console.warn('test', parsedResult)
@@ -52,5 +52,21 @@ describe('parsePlaylistPage result', () => {
         return true;
       }),
     ).toBe(true);
+  });
+});
+
+describe('parsePlaylistPage result liked video 2021-04-21', () => {
+  let playlistPageHtml: string;
+  let parsedResult: ParserResult;
+
+  beforeAll(() => {
+    const filePath = 'test/html/playlist-page-liked-videos-2021-04-21.html';
+    playlistPageHtml = fs.readFileSync(filePath).toString();
+    parsedResult = parsePlaylistPage(playlistPageHtml);
+    console.warn('test', parsedResult);
+  });
+
+  test('no errors', () => {
+    expect(parsedResult.errors.length).toBe(0);
   });
 });

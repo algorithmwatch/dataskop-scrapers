@@ -29,7 +29,7 @@ GitHub then publishes the package as a GitHub Package.
 ## Test files
 
 - Video page: https://www.youtube.com/watch?v=SACB-u41x0M > video_page_no_auth.html
-- Playlist page: https://www.youtube.com/playlist?list=PLdVY0007sCPWPKA3WBkqJZEcIAiMAvx58 > playlist.html
+- Playlist page: https://www.youtube.com/playlist?list=PLdVY0007sCPWPKA3WBkqJZEcIAiMAvx58 > `playlist-page-2021-04-16.html`
 
 ## License
 

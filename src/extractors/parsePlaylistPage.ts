@@ -39,9 +39,11 @@ function parsePlaylistPage(html: string): ParserResult {
         'div#stats > .style-scope.ytd-playlist-sidebar-primary-info-renderer:nth-child(2)',
       ).text();
       const viewCountNumber = extractNumberFromString(viewCount);
-      if (!viewCountNumber) throw new HarkeParsingError();
 
-      return viewCountNumber;
+      // View count may not be a number if the playlist has no views.
+      // For EN, it is `no views` and `viewCountNumber` is null.
+
+      return viewCountNumber || 0;
     },
 
     videoCount({ $ }: ParserFieldParams): number {
