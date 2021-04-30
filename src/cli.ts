@@ -7,6 +7,7 @@ import {
   validateSubscribedChannels,
   closeBrowser,
   validateLikedVideo,
+  validateVideoPage,
 } from './get-html';
 
 const cliHelpText = `
@@ -21,7 +22,7 @@ const cli = meow(cliHelpText, {
     playlist: { type: 'boolean', alias: 'p' },
     likedVideos: { type: 'boolean', alias: 'i' },
     video: {
-      type: 'boolean',
+      type: 'string',
       alias: 'v',
     },
     watchHistory: {
@@ -74,6 +75,10 @@ const cli = meow(cliHelpText, {
 
   if (cli.flags.all || cli.flags.likedVideos) {
     await validateLikedVideo(cli.flags.outputLocation);
+  }
+
+  if (cli.flags.all || cli.flags.video != null) {
+    await validateVideoPage(cli.flags.video, cli.flags.outputLocation);
   }
 
   if (close) await closeBrowser();

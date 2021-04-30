@@ -15,6 +15,7 @@ import {
   parseSearchHistoryPage,
   subscribedChannelsUrls,
   parseSubscribedChannelsPage,
+  parseVideoPage,
   parsePlaylistPage,
 } from '@algorithmwatch/harke-parser/build';
 
@@ -125,6 +126,11 @@ function validateLikedVideo(outputLocation = null) {
   return goToUrlandParse(url, parsePlaylistPage, outputLocation);
 }
 
+function validateVideoPage(url, outputLocation = null) {
+  console.log('fetch video');
+  return goToUrlandParse(url, parseVideoPage, outputLocation);
+}
+
 export {
   getHtml,
   loginYoutube,
@@ -132,5 +138,6 @@ export {
   validateSearchHistory,
   validateSubscribedChannels,
   validateLikedVideo,
+  validateVideoPage,
   closeBrowser,
 };

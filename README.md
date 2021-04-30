@@ -25,6 +25,12 @@ yarn run cli -a
 yarn run cli -w
 ```
 
+### Get HTML from Video
+
+```
+yarn run cli -v https://www.youtube.com/watch?v=IWlGDbMEtxM
+```
+
 ## Using harke-parser
 
 ```bash
