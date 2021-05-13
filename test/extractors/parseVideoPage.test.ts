@@ -18,6 +18,10 @@ describe('parseVideoPage result', () => {
   //   expect(() => parseVideoPage('asdasd')).toThrow(HarkeParsingError)
   // })
 
+  test('has no errors', () => {
+    expect(parsedResult.errors.length).toBe(0);
+  });
+
   test('has video id', () => {
     expect(parsedResult.fields.id).toMatch(/^[a-z0-9_-]{11}$/i);
   });
@@ -85,5 +89,26 @@ describe('parseVideoPage result', () => {
     expect(videosArray.every((x: Object) => Object.keys(x).length === 4)).toBe(
       true,
     );
+  });
+});
+
+describe('parseVideoPage live 2021-04-20', () => {
+  let videoPageHtml: string;
+  let parsedResult: ParserResult;
+
+  beforeAll(() => {
+    // testing
+    const filePath = 'test/html/video-page-live-2021-05-13.html';
+    videoPageHtml = fs.readFileSync(filePath).toString();
+    parsedResult = parseVideoPage(videoPageHtml);
+    console.warn('test', parsedResult);
+  });
+
+  test('isLiveContent', () => {
+    expect(parsedResult.fields.isLiveContent).toBe(true);
+  });
+
+  test('has no errors', () => {
+    expect(parsedResult.errors.length).toBe(0);
   });
 });

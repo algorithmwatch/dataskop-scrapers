@@ -135,11 +135,13 @@ function parseVideoPage(html: string): ParserResult {
     isLiveContent({ linkedData }: ParserFieldParams): boolean {
       if (!linkedData) throw new HarkeParsingError();
 
-      try {
-        return linkedData.publication.isLiveBroadcast === true;
-      } catch {
-        return false;
+      if (!('publication' in linkedData)) return false;
+
+      // not sure in what situations the array may contain multiple objects
+      for (const p of linkedData.publication) {
+        if ('isLiveBroadcast' in p) return p.isLiveBroadcast;
       }
+      throw new HarkeParsingError();
     },
 
     hashtags({ $ }: ParserFieldParams): string[] {
@@ -206,7 +208,16 @@ function parseVideoPage(html: string): ParserResult {
 
   const parser = new Parser('video-page', html, schema);
 
-  return parser.result;
+  const result = parser.result;
+
+  // some fields do not apply to live videos
+  if (result.fields.isLiveContent) {
+    const filtered = result.errors.filter(
+      (x) => !['duration', 'upvotes', 'downvotes'].includes(x.field),
+    );
+    result.errors = filtered;
+  }
+  return result;
 }
 
 export { parseVideoPage };
