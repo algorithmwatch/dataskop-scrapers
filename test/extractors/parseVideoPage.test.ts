@@ -90,6 +90,10 @@ describe('parseVideoPage result', () => {
       true,
     );
   });
+
+  test('interactionCount', () => {
+    expect(parsedResult.fields.interactionCount).toBeGreaterThan(100);
+  });
 });
 
 describe('parseVideoPage live 2021-04-20', () => {
@@ -110,5 +114,9 @@ describe('parseVideoPage live 2021-04-20', () => {
 
   test('has no errors', () => {
     expect(parsedResult.errors.length).toBe(0);
+  });
+
+  test('interactionCount', () => {
+    expect(parsedResult.fields.interactionCount).toBeGreaterThan(100);
   });
 });

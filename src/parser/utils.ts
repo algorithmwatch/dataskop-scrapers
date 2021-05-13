@@ -1,5 +1,6 @@
 import { JsonLinkedData } from '../types';
 
+// FIXME: should be done with https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
 export const getVideoIdFromUrl = (url: string): string | null => {
   const pattern = /^(?:(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be))?(?:\/watch\?v=|\/)([^\s&]+)$/;
   const match = url.match(pattern);

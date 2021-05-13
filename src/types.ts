@@ -95,6 +95,7 @@ export interface ParserFieldsSchemaVideoPage {
   category(params: ParserFieldParams): string;
   downvotes(params: ParserFieldParams): number;
   isLiveContent(params: ParserFieldParams): boolean;
+  interactionCount(params: ParserFieldParams): number;
   hashtags(params: ParserFieldParams): string[];
   recommendedVideos(params: ParserFieldParams): RecommendedVideo[];
 }
