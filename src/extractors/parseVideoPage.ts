@@ -131,14 +131,27 @@ function parseVideoPage(html: string): ParserResult {
       }
     },
 
-    isLiveContent({ linkedData }: ParserFieldParams): boolean {
+    isLive({ linkedData }: ParserFieldParams): boolean {
       if (!linkedData) throw new HarkeParsingError();
 
       if (!('publication' in linkedData)) return false;
 
       // not sure in what situations the array may contain multiple objects
       for (const p of linkedData.publication) {
-        if ('isLiveBroadcast' in p) return p.isLiveBroadcast;
+        if ('isLiveBroadcast' in p)
+          return p.isLiveBroadcast && !('endDate' in p);
+      }
+      throw new HarkeParsingError();
+    },
+
+    wasLive({ linkedData }: ParserFieldParams): boolean {
+      if (!linkedData) throw new HarkeParsingError();
+
+      if (!('publication' in linkedData)) return false;
+
+      // not sure in what situations the array may contain multiple objects
+      for (const p of linkedData.publication) {
+        if ('isLiveBroadcast' in p) return p.isLiveBroadcast && 'endDate' in p;
       }
       throw new HarkeParsingError();
     },
@@ -210,7 +223,7 @@ function parseVideoPage(html: string): ParserResult {
   const result = parser.result;
 
   // some fields do not apply to live videos
-  if (result.fields.isLiveContent) {
+  if (result.fields.isLive) {
     const filtered = result.errors.filter(
       (x) => !['duration'].includes(x.field),
     );

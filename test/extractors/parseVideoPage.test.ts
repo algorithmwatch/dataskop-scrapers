@@ -74,7 +74,7 @@ describe('parseVideoPage result', () => {
   });
 
   test('has isLiveContent boolean', () => {
-    expect(parsedResult.fields.isLiveContent).toBe(false);
+    expect(parsedResult.fields.isLive).toBe(false);
   });
 
   test('has hashtags', () => {
@@ -96,7 +96,7 @@ describe('parseVideoPage result', () => {
   });
 });
 
-describe('parseVideoPage live 2021-04-20', () => {
+describe('parseVideoPage live 2021-05-14', () => {
   let videoPageHtml: string;
   let parsedResult: ParserResult;
 
@@ -105,11 +105,12 @@ describe('parseVideoPage live 2021-04-20', () => {
     const filePath = 'test/html/video-page-live-2021-05-13.html';
     videoPageHtml = fs.readFileSync(filePath).toString();
     parsedResult = parseVideoPage(videoPageHtml);
-    console.warn('test', parsedResult);
+    // console.warn('test', parsedResult);
   });
 
   test('isLiveContent', () => {
-    expect(parsedResult.fields.isLiveContent).toBe(true);
+    expect(parsedResult.fields.isLive).toBe(true);
+    expect(parsedResult.fields.wasLive).toBe(false);
   });
 
   test('has no errors', () => {
@@ -118,5 +119,27 @@ describe('parseVideoPage live 2021-04-20', () => {
 
   test('viewcount', () => {
     expect(parsedResult.fields.viewCount).toBeGreaterThan(100);
+  });
+});
+
+describe('parseVideoPage was live 2021-05-14', () => {
+  let videoPageHtml: string;
+  let parsedResult: ParserResult;
+
+  beforeAll(() => {
+    // testing
+    const filePath = 'test/html/video-page-was-live-2021-05-14.html';
+    videoPageHtml = fs.readFileSync(filePath).toString();
+    parsedResult = parseVideoPage(videoPageHtml);
+    // console.warn('test', parsedResult);
+  });
+
+  test('was live', () => {
+    expect(parsedResult.fields.isLive).toBe(false);
+    expect(parsedResult.fields.wasLive).toBe(true);
+  });
+
+  test('has no errors', () => {
+    expect(parsedResult.errors.length).toBe(0);
   });
 });
