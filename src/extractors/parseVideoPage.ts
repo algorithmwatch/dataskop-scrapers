@@ -177,6 +177,10 @@ function parseVideoPage(html: string): ParserResult {
       return result;
     },
 
+    clarifyBox({ $ }: ParserFieldParams): string {
+      return $('#clarify-box').text().trim();
+    },
+
     recommendedVideos({ $ }: ParserFieldParams): RecommendedVideo[] {
       const result: RecommendedVideo[] = [];
 

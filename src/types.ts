@@ -97,6 +97,7 @@ export interface ParserFieldsSchemaVideoPage {
   isLive(params: ParserFieldParams): boolean;
   wasLive(params: ParserFieldParams): boolean;
   hashtags(params: ParserFieldParams): string[];
+  clarifyBox(params: ParserFieldParams): string;
   recommendedVideos(params: ParserFieldParams): RecommendedVideo[];
 }
 

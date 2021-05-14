@@ -142,4 +142,26 @@ describe('parseVideoPage was live 2021-05-14', () => {
   test('has no errors', () => {
     expect(parsedResult.errors.length).toBe(0);
   });
+
+  test('clarify box absent', () => {
+    expect(parsedResult.fields.clarifyBox).toBe('');
+  });
+});
+
+describe('parseVideoPage was live 2021-05-14', () => {
+  let videoPageHtml: string;
+  let parsedResult: ParserResult;
+
+  beforeAll(() => {
+    // testing
+    const filePath = 'test/html/video-page-corona-2021-05-14.html';
+    videoPageHtml = fs.readFileSync(filePath).toString();
+    parsedResult = parseVideoPage(videoPageHtml);
+    // console.warn('test', parsedResult);
+  });
+
+  test('clarify box present', () => {
+    expect(parsedResult.fields.clarifyBox.length).toBeGreaterThan(10);
+    expect(parsedResult.fields.clarifyBox.includes('COVID')).toBe(true);
+  });
 });
