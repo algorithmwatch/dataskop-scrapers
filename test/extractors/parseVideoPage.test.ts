@@ -91,8 +91,8 @@ describe('parseVideoPage result', () => {
     );
   });
 
-  test('interactionCount', () => {
-    expect(parsedResult.fields.interactionCount).toBeGreaterThan(100);
+  test('viewcount', () => {
+    expect(parsedResult.fields.viewCount).toBeGreaterThan(100);
   });
 });
 
@@ -116,7 +116,7 @@ describe('parseVideoPage live 2021-04-20', () => {
     expect(parsedResult.errors.length).toBe(0);
   });
 
-  test('interactionCount', () => {
-    expect(parsedResult.fields.interactionCount).toBeGreaterThan(100);
+  test('viewcount', () => {
+    expect(parsedResult.fields.viewCount).toBeGreaterThan(100);
   });
 });

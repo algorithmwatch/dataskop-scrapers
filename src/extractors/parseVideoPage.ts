@@ -144,11 +144,6 @@ function parseVideoPage(html: string): ParserResult {
       throw new HarkeParsingError();
     },
 
-    interactionCount({ linkedData }: ParserFieldParams): number {
-      if (!linkedData) throw new HarkeParsingError();
-      return parseInt(linkedData.interactionCount, 10);
-    },
-
     hashtags({ $ }: ParserFieldParams): string[] {
       const result: string[] = [];
 
