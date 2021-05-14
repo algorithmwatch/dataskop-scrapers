@@ -90,34 +90,33 @@ function parseVideoPage(html: string): ParserResult {
       if (!linkedData) throw new HarkeParsingError();
 
       const number = Number(linkedData.interactionCount);
-      if (!number) throw new HarkeParsingError();
-
       return number;
     },
 
     upvotes({ $ }: ParserFieldParams): number {
-      const ariaLabelText = $('#top-level-buttons > ytd-toggle-button-renderer')
+      const ariaLabelText = $('#sentiment #tooltip')
         .first()
-        .find('yt-formatted-string#text')
-        .attr('aria-label');
-      if (!ariaLabelText) throw new HarkeParsingError();
+        .text()
+        .split(' / ')[0];
+
+      if (ariaLabelText === null) throw new HarkeParsingError();
 
       const number = extractNumberFromString(ariaLabelText);
-      if (!number) throw new HarkeParsingError();
+      if (number === null) throw new HarkeParsingError();
 
       return number;
     },
 
     downvotes({ $ }: ParserFieldParams): number {
-      const ariaLabelText = $(
-        '#top-level-buttons > ytd-toggle-button-renderer:nth-child(2)',
-      )
-        .find('yt-formatted-string#text')
-        .attr('aria-label');
-      if (!ariaLabelText) throw new HarkeParsingError();
+      const ariaLabelText = $('#sentiment #tooltip')
+        .first()
+        .text()
+        .split(' / ')[1];
+
+      if (ariaLabelText === null) throw new HarkeParsingError();
 
       const number = extractNumberFromString(ariaLabelText);
-      if (!number) throw new HarkeParsingError();
+      if (number === null) throw new HarkeParsingError();
 
       return number;
     },
@@ -213,7 +212,7 @@ function parseVideoPage(html: string): ParserResult {
   // some fields do not apply to live videos
   if (result.fields.isLiveContent) {
     const filtered = result.errors.filter(
-      (x) => !['duration', 'upvotes', 'downvotes'].includes(x.field),
+      (x) => !['duration'].includes(x.field),
     );
     result.errors = filtered;
   }
