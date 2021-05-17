@@ -1,11 +1,11 @@
+import { URLSearchParams } from 'url';
+import { parse } from '../parse';
 import {
   ParsedWatchHistory,
   ParserFieldParams,
   WatchlistVideo,
   WatchlistVideoUnavailable,
 } from '../types';
-import { URLSearchParams } from 'url';
-import { parse } from '../parse';
 import {
   convertHHMMSSDurationToMs,
   convertPercentageStringToNumber,

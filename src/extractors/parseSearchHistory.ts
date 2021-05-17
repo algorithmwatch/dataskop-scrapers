@@ -1,9 +1,9 @@
+import { HarkeParsingError, parse } from '../parse';
 import {
   ParsedSearchHistory,
   ParserFieldParams,
   SearchHistoryEntry,
 } from '../types';
-import { parse, HarkeParsingError } from '../parse';
 
 function parseSearchHistory(html: string): ParsedSearchHistory {
   const isDateHeader = ($el: cheerio.Cheerio) => $el.hasClass('KpksOc');

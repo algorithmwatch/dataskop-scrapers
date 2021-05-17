@@ -1,12 +1,12 @@
+import { URLSearchParams } from 'url';
+import { HarkeParsingError, parse } from '../parse';
 import {
-  ParserFieldParams,
   ParsedPlaylistPage,
+  ParserFieldParams,
   PlaylistVideo,
   PlaylistVideoUnavailable,
 } from '../types';
-import { URLSearchParams } from 'url';
-import { parse, HarkeParsingError } from '../parse';
-import { extractNumberFromString, convertHHMMSSDurationToMs } from '../utils';
+import { convertHHMMSSDurationToMs, extractNumberFromString } from '../utils';
 
 function parsePlaylistPage(html: string): ParsedPlaylistPage {
   const schema = {

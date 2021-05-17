@@ -1,9 +1,9 @@
+import { parse } from '../parse';
 import {
   ParsedSubscribedChannels,
   ParserFieldParams,
   SubscribedChannel,
 } from '../types';
-import { parse } from '../parse';
 import { extractNumberFromString } from '../utils';
 
 function parseSubscribedChannels(html: string): ParsedSubscribedChannels {

@@ -1,15 +1,15 @@
+import { HarkeParsingError, parse } from '../parse';
 import {
   Channel,
   ParsedVideoPage,
   ParserFieldParams,
   RecommendedVideo,
 } from '../types';
-import { parse, HarkeParsingError } from '../parse';
 import {
-  getVideoIdFromUrl,
   convertISO8601ToMs,
-  extractNumberFromString,
   convertPercentageStringToNumber,
+  extractNumberFromString,
+  getVideoIdFromUrl,
 } from '../utils';
 
 function parseVideoPage(html: string): ParsedVideoPage {
