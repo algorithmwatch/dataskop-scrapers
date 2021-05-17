@@ -1,8 +1,7 @@
 import {
   Channel,
+  ParsedVideoPage,
   ParserFieldParams,
-  ParserFieldsSchemaVideoPage,
-  ParserResult,
   RecommendedVideo,
 } from '../types';
 import { parse, HarkeParsingError } from '../parse';
@@ -13,8 +12,8 @@ import {
   convertPercentageStringToNumber,
 } from '../utils';
 
-function parseVideoPage(html: string): ParserResult {
-  const schema: ParserFieldsSchemaVideoPage = {
+function parseVideoPage(html: string): ParsedVideoPage {
+  const schema = {
     id({ $ }: ParserFieldParams): string {
       const urlValue = $('link[rel=canonical]').attr('href');
       if (!urlValue) throw new HarkeParsingError();
@@ -185,7 +184,7 @@ function parseVideoPage(html: string): ParserResult {
       const result: RecommendedVideo[] = [];
 
       $('#related ytd-compact-video-renderer').each(
-        (idx, el: cheerio.Element) => {
+        (_idx: number, el: cheerio.Element) => {
           const $el = $(el);
           const videoUrl = $el.find('.metadata > a').attr('href');
           const id = videoUrl ? getVideoIdFromUrl(videoUrl) : null;

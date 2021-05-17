@@ -1,10 +1,5 @@
 import cheerio from 'cheerio';
-import {
-  JsonLinkedData,
-  ParserFieldParams,
-  ParserResult,
-  ParserResultSlug,
-} from './types';
+import { ParserFieldParams, ParserResult, ParserResultSlug } from './types';
 import { extractJsonLinkedData } from './utils';
 
 class HarkeParsingError extends Error {
@@ -20,22 +15,21 @@ class HarkeParsingError extends Error {
 function parse(
   slug: ParserResultSlug,
   html: string,
-  schema: any,
+  schema: { [key: string]: (arg0: ParserFieldParams) => unknown },
 ): ParserResult {
   const $html: cheerio.Root = cheerio.load(html);
-  const linkedData: JsonLinkedData = extractJsonLinkedData($html);
-  const parsedFields: { [key: string]: any } = {};
+  const linkedData = extractJsonLinkedData($html);
+  const parsedFields: { [key: string]: unknown } = {};
   const errors = [];
 
   const fieldKeys = Object.keys(schema);
 
   for (const fieldKey of fieldKeys) {
     try {
-      const params: ParserFieldParams = {
+      parsedFields[fieldKey] = schema[fieldKey]({
         $: $html,
-        linkedData: linkedData,
-      };
-      parsedFields[fieldKey] = schema[fieldKey](params);
+        linkedData,
+      });
     } catch (error) {
       if (error instanceof HarkeParsingError) {
         // silently record parsing errors

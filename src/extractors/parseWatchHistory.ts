@@ -1,7 +1,6 @@
 import {
+  ParsedWatchHistory,
   ParserFieldParams,
-  ParserFieldsSchemaWatchHistory,
-  ParserResult,
   WatchlistVideo,
   WatchlistVideoUnavailable,
 } from '../types';
@@ -12,8 +11,8 @@ import {
   convertPercentageStringToNumber,
 } from '../utils';
 
-function parseWatchHistory(html: string): ParserResult {
-  const schema: ParserFieldsSchemaWatchHistory = {
+function parseWatchHistory(html: string): ParsedWatchHistory {
+  const schema = {
     videos({
       $,
     }: ParserFieldParams): (WatchlistVideo | WatchlistVideoUnavailable)[] {

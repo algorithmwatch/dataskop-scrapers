@@ -1,7 +1,6 @@
 import {
   ParserFieldParams,
-  ParserFieldsSchemaPaylistPage,
-  ParserResult,
+  ParsedPlaylistPage,
   PlaylistVideo,
   PlaylistVideoUnavailable,
 } from '../types';
@@ -9,8 +8,8 @@ import { URLSearchParams } from 'url';
 import { parse, HarkeParsingError } from '../parse';
 import { extractNumberFromString, convertHHMMSSDurationToMs } from '../utils';
 
-function parsePlaylistPage(html: string): ParserResult {
-  const schema: ParserFieldsSchemaPaylistPage = {
+function parsePlaylistPage(html: string): ParsedPlaylistPage {
+  const schema = {
     id({ $ }: ParserFieldParams): string {
       // extract GET param via meta tag
       const url = $('meta[property="og:url"]').attr('content');

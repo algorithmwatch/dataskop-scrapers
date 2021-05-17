@@ -1,12 +1,11 @@
 import {
+  ParsedSearchHistory,
   ParserFieldParams,
-  ParserFieldsSchemaSearchHistory,
-  ParserResult,
   SearchHistoryEntry,
 } from '../types';
 import { parse, HarkeParsingError } from '../parse';
 
-function parseSearchHistory(html: string): ParserResult {
+function parseSearchHistory(html: string): ParsedSearchHistory {
   const isDateHeader = ($el: cheerio.Cheerio) => $el.hasClass('KpksOc');
   const getDateHeader = ($el: cheerio.Cheerio): false | Date =>
     $el.data('timestamp') ? new Date(Number($el.data('timestamp'))) : false;
@@ -17,7 +16,7 @@ function parseSearchHistory(html: string): ParserResult {
   const getSearchQuery = ($el: cheerio.Cheerio): false | string =>
     $el.find('.l8sGWb').text();
 
-  const schema: ParserFieldsSchemaSearchHistory = {
+  const schema = {
     // date header selector: .KpksOc
     // history entry selector: .xDtZAf
     // history entry link selector: .l8sGWb --> href attribute must contain ?search_query=

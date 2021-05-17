@@ -82,54 +82,59 @@ export type ParserFieldParams = {
   $: cheerio.Root;
   linkedData: JsonLinkedData;
 };
-
-export interface ParserFieldsSchemaVideoPage {
-  id(params: ParserFieldParams): string;
-  title(params: ParserFieldParams): string;
-  description(params: ParserFieldParams): string;
-  duration(params: ParserFieldParams): number;
-  channel(params: ParserFieldParams): Channel;
-  uploadDate(params: ParserFieldParams): Date;
-  viewCount(params: ParserFieldParams): number;
-  upvotes(params: ParserFieldParams): number;
-  category(params: ParserFieldParams): string;
-  downvotes(params: ParserFieldParams): number;
-  isLive(params: ParserFieldParams): boolean;
-  wasLive(params: ParserFieldParams): boolean;
-  hashtags(params: ParserFieldParams): string[];
-  clarifyBox(params: ParserFieldParams): string;
-  recommendedVideos(params: ParserFieldParams): RecommendedVideo[];
+interface VideoPage {
+  id: string;
+  title: string;
+  description: string;
+  duration: number;
+  channel: Channel;
+  uploadDate: Date;
+  viewCount: number;
+  upvotes: number;
+  category: string;
+  downvotes: number;
+  isLive: boolean;
+  wasLive: boolean;
+  hashtags: string[];
+  clarifyBox: string;
+  recommendedVideos: RecommendedVideo[];
 }
 
-export interface ParserFieldsSchemaPaylistPage {
-  id(params: ParserFieldParams): string;
-  title(params: ParserFieldParams): string;
-  description(params: ParserFieldParams): string;
-  viewCount(params: ParserFieldParams): number;
-  videoCount(params: ParserFieldParams): number;
-  updatedAtString(params: ParserFieldParams): string;
-  videos(
-    params: ParserFieldParams,
-  ): (PlaylistVideo | PlaylistVideoUnavailable)[];
+interface PlaylistPage {
+  id: string;
+  title: string;
+  description: string;
+  viewCount: number;
+  videoCount: number;
+  updatedAtString: string;
+  videos: (PlaylistVideo | PlaylistVideoUnavailable)[];
 }
 
-export interface ParserFieldsSchemaSubscribedChannels {
-  channels(params: ParserFieldParams): SubscribedChannel[];
+interface WatchHistory {
+  videos: (WatchlistVideo | WatchlistVideoUnavailable)[];
+}
+interface SubscribedChannels {
+  channels: SubscribedChannel[];
 }
 
-export interface ParserFieldsSchemaWatchHistory {
-  videos(
-    params: ParserFieldParams,
-  ): (WatchlistVideo | WatchlistVideoUnavailable)[];
+export interface SearchHistory {
+  queries: SearchHistoryEntry[];
 }
 
-export interface ParserFieldsSchemaSearchHistory {
-  queries(params: ParserFieldParams): SearchHistoryEntry[];
+export interface ParsedVideoPage extends ParserResult {
+  fields: Partial<VideoPage>;
 }
 
-export type ParserFieldsSchema =
-  | ParserFieldsSchemaVideoPage
-  | ParserFieldsSchemaPaylistPage
-  | ParserFieldsSchemaSubscribedChannels
-  | ParserFieldsSchemaWatchHistory
-  | ParserFieldsSchemaSearchHistory;
+export interface ParsedPlaylistPage extends ParserResult {
+  fields: Partial<PlaylistPage>;
+}
+export interface ParsedSubscribedChannels extends ParserResult {
+  fields: Partial<SubscribedChannels>;
+}
+export interface ParsedWatchHistory extends ParserResult {
+  fields: Partial<WatchHistory>;
+}
+
+export interface ParsedSearchHistory extends ParserResult {
+  fields: Partial<SearchHistory>;
+}

@@ -1,14 +1,13 @@
 import {
+  ParsedSubscribedChannels,
   ParserFieldParams,
-  ParserFieldsSchemaSubscribedChannels,
-  ParserResult,
   SubscribedChannel,
 } from '../types';
 import { parse } from '../parse';
 import { extractNumberFromString } from '../utils';
 
-function parseSubscribedChannels(html: string): ParserResult {
-  const schema: ParserFieldsSchemaSubscribedChannels = {
+function parseSubscribedChannels(html: string): ParsedSubscribedChannels {
+  const schema = {
     channels({ $ }: ParserFieldParams): SubscribedChannel[] {
       const result: SubscribedChannel[] = [];
 
