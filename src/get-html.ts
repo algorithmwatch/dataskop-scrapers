@@ -1,23 +1,23 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable no-console */
+import {
+  baseSearchUrl,
+  parsePlaylistPage,
+  parseSearchHistory,
+  parseSearchPage,
+  parseSubscribedChannels,
+  parseVideoPage,
+  parseWatchHistory,
+  searchHistoryUrl,
+  subscribedChannelsUrls,
+  watchHistoryUrl,
+} from '@algorithmwatch/harke-parser/build';
 import fs from 'fs';
 import { LaunchOptions } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-
 import { HarkeInvalidUrl } from './errors';
 import { isValidUrl } from './util';
-
-import {
-  parseWatchHistoryPage,
-  watchHistoryUrl,
-  searchHistoryUrl,
-  parseSearchHistoryPage,
-  subscribedChannelsUrls,
-  parseSubscribedChannelsPage,
-  parseVideoPage,
-  parsePlaylistPage,
-} from '@algorithmwatch/harke-parser/build';
 
 // add stealth plugin and use defaults (all evasion techniques)
 puppeteer.use(StealthPlugin());
@@ -93,27 +93,19 @@ async function goToUrlandParse(url: string, parse, outputLocation = null) {
 
 function getWatchHistory(outputLocation = null) {
   console.log('watch history');
-  return goToUrlandParse(
-    watchHistoryUrl,
-    parseWatchHistoryPage,
-    outputLocation,
-  );
+  return goToUrlandParse(watchHistoryUrl, parseWatchHistory, outputLocation);
 }
 
 function getSearchHistory(outputLocation = null) {
   console.log('search history');
-  return goToUrlandParse(
-    searchHistoryUrl,
-    parseSearchHistoryPage,
-    outputLocation,
-  );
+  return goToUrlandParse(searchHistoryUrl, parseSearchHistory, outputLocation);
 }
 
 function getSubscribedChannels(outputLocation = null) {
   console.log('subscribed channels');
   return goToUrlandParse(
     subscribedChannelsUrls,
-    parseSubscribedChannelsPage,
+    parseSubscribedChannels,
     outputLocation,
   );
 }
@@ -126,9 +118,16 @@ function getLikedVideo(outputLocation = null) {
   return goToUrlandParse(url, parsePlaylistPage, outputLocation);
 }
 
-function validateVideoPage(url, outputLocation = null) {
+function getVideoPage(url, outputLocation = null) {
   console.log('fetch video');
   return goToUrlandParse(url, parseVideoPage, outputLocation);
+}
+
+function getSearchPage(query, outputLocation = null) {
+  console.log('search ' + query);
+  const url = baseSearchUrl + query;
+  console.log(url);
+  return goToUrlandParse(url, parseSearchPage, outputLocation);
 }
 
 export {
@@ -138,6 +137,7 @@ export {
   getSearchHistory,
   getSubscribedChannels,
   getLikedVideo,
-  validateVideoPage,
+  getSearchPage,
+  getVideoPage,
   closeBrowser,
 };

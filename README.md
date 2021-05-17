@@ -31,6 +31,12 @@ yarn run cli -w
 yarn run cli -v https://www.youtube.com/watch?v=IWlGDbMEtxM
 ```
 
+### Search results
+
+```
+yarn run cli -s antifa
+```
+
 ## Using harke-parser
 
 ```bash

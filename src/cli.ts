@@ -1,13 +1,14 @@
 #!/usr/bin/env node
 import meow from 'meow';
 import {
-  getWatchHistory,
-  loginYoutube,
-  getSearchHistory,
-  getSubscribedChannels,
   closeBrowser,
   getLikedVideo,
-  validateVideoPage,
+  getSearchHistory,
+  getSearchPage,
+  getSubscribedChannels,
+  getVideoPage,
+  getWatchHistory,
+  loginYoutube,
 } from './get-html';
 
 const cliHelpText = `
@@ -25,13 +26,17 @@ const cli = meow(cliHelpText, {
       type: 'string',
       alias: 'v',
     },
+    search: {
+      type: 'string',
+      alias: 's',
+    },
     watchHistory: {
       type: 'boolean',
       alias: 'w',
     },
     searchHistory: {
       type: 'boolean',
-      alias: 's',
+      alias: 'h',
     },
     subscribedChannels: {
       type: 'boolean',
@@ -78,7 +83,14 @@ const cli = meow(cliHelpText, {
   }
 
   if (cli.flags.all || cli.flags.video != null) {
-    await validateVideoPage(cli.flags.video, cli.flags.outputLocation);
+    await getVideoPage(
+      cli.flags.video ?? 'https://www.youtube.com/watch?v=dQw4w9WgXcQ',
+      cli.flags.outputLocation,
+    );
+  }
+
+  if (cli.flags.all || cli.flags.search != null) {
+    await getSearchPage(cli.flags.search ?? 'antifa', cli.flags.outputLocation);
   }
 
   if (close) await closeBrowser();
