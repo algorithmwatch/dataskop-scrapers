@@ -41,15 +41,6 @@ function parseSubscribedChannelsPage(html: string): ParserResult {
           notificationsEnabled,
         } as SubscribedChannel;
 
-        if (
-          !channelName ||
-          !channelUrl ||
-          videoCount === null ||
-          !subscriberCount ||
-          description == null
-        )
-          throw new HarkeParsingError(JSON.stringify(resultItem));
-
         result.push(resultItem);
       });
 
