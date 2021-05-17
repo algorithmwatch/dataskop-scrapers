@@ -6,11 +6,8 @@ import {
   PlaylistVideoUnavailable,
 } from '../types';
 import { URLSearchParams } from 'url';
-import Parser, { HarkeParsingError } from '../parser';
-import {
-  extractNumberFromString,
-  convertHHMMSSDurationToMs,
-} from '../parser/utils';
+import { parse, HarkeParsingError } from '../parse';
+import { extractNumberFromString, convertHHMMSSDurationToMs } from '../utils';
 
 function parsePlaylistPage(html: string): ParserResult {
   const schema: ParserFieldsSchemaPaylistPage = {
@@ -125,9 +122,7 @@ function parsePlaylistPage(html: string): ParserResult {
     },
   };
 
-  const parser = new Parser('playlist-page', html, schema);
-
-  return parser.result;
+  return parse('playlist-page', html, schema);
 }
 
 export { parsePlaylistPage };

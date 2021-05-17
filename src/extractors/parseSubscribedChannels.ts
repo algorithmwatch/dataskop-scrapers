@@ -4,8 +4,8 @@ import {
   ParserResult,
   SubscribedChannel,
 } from '../types';
-import Parser from '../parser';
-import { extractNumberFromString } from '../parser/utils';
+import { parse } from '../parse';
+import { extractNumberFromString } from '../utils';
 
 function parseSubscribedChannels(html: string): ParserResult {
   const schema: ParserFieldsSchemaSubscribedChannels = {
@@ -48,9 +48,7 @@ function parseSubscribedChannels(html: string): ParserResult {
     },
   };
 
-  const parser = new Parser('user-subscribed-channels', html, schema);
-
-  return parser.result;
+  return parse('user-subscribed-channels', html, schema);
 }
 
 const subscribedChannelsUrls = 'https://www.youtube.com/feed/channels';

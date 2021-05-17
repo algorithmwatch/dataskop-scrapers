@@ -5,13 +5,13 @@ import {
   ParserResult,
   RecommendedVideo,
 } from '../types';
-import Parser, { HarkeParsingError } from '../parser';
+import { parse, HarkeParsingError } from '../parse';
 import {
   getVideoIdFromUrl,
   convertISO8601ToMs,
   extractNumberFromString,
   convertPercentageStringToNumber,
-} from '../parser/utils';
+} from '../utils';
 
 function parseVideoPage(html: string): ParserResult {
   const schema: ParserFieldsSchemaVideoPage = {
@@ -222,9 +222,7 @@ function parseVideoPage(html: string): ParserResult {
     },
   };
 
-  const parser = new Parser('video-page', html, schema);
-
-  const result = parser.result;
+  const result = parse('video-page', html, schema);
 
   // some fields do not apply to live videos
   if (result.fields.isLive) {

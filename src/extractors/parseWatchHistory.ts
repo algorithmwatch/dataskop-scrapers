@@ -6,11 +6,11 @@ import {
   WatchlistVideoUnavailable,
 } from '../types';
 import { URLSearchParams } from 'url';
-import Parser from '../parser';
+import { parse } from '../parse';
 import {
   convertHHMMSSDurationToMs,
   convertPercentageStringToNumber,
-} from '../parser/utils';
+} from '../utils';
 
 function parseWatchHistory(html: string): ParserResult {
   const schema: ParserFieldsSchemaWatchHistory = {
@@ -102,9 +102,7 @@ function parseWatchHistory(html: string): ParserResult {
     },
   };
 
-  const parser = new Parser('user-watch-history', html, schema);
-
-  return parser.result;
+  return parse('user-watch-history', html, schema);
 }
 
 const watchHistoryUrl = 'https://www.youtube.com/feed/history';

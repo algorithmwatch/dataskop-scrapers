@@ -4,7 +4,7 @@ import {
   ParserResult,
   SearchHistoryEntry,
 } from '../types';
-import Parser, { HarkeParsingError } from '../parser';
+import { parse, HarkeParsingError } from '../parse';
 
 function parseSearchHistory(html: string): ParserResult {
   const isDateHeader = ($el: cheerio.Cheerio) => $el.hasClass('KpksOc');
@@ -57,9 +57,7 @@ function parseSearchHistory(html: string): ParserResult {
     },
   };
 
-  const parser = new Parser('user-search-history', html, schema);
-
-  return parser.result;
+  return parse('user-search-history', html, schema);
 }
 
 const searchHistoryUrl =
