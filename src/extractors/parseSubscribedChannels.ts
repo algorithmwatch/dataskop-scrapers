@@ -4,10 +4,10 @@ import {
   ParserResult,
   SubscribedChannel,
 } from '../types';
-import Parser, { HarkeParsingError } from '../parser';
+import Parser from '../parser';
 import { extractNumberFromString } from '../parser/utils';
 
-function parseSubscribedChannelsPage(html: string): ParserResult {
+function parseSubscribedChannels(html: string): ParserResult {
   const schema: ParserFieldsSchemaSubscribedChannels = {
     channels({ $ }: ParserFieldParams): SubscribedChannel[] {
       const result: SubscribedChannel[] = [];
@@ -55,4 +55,4 @@ function parseSubscribedChannelsPage(html: string): ParserResult {
 
 const subscribedChannelsUrls = 'https://www.youtube.com/feed/channels';
 
-export { subscribedChannelsUrls, parseSubscribedChannelsPage };
+export { subscribedChannelsUrls, parseSubscribedChannels };

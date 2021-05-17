@@ -1,15 +1,15 @@
 import fs from 'fs';
-import { parseSearchHistoryPage } from '../../src';
+import { parseSearchHistory } from '../../src';
 import { ParserResult } from '../../src/types';
 
-describe('parseSearchHistoryPage result 2021-04-15', () => {
+describe('parseSearchHistory result 2021-04-15', () => {
   let playlistPageHtml: string;
   let parsedResult: ParserResult;
 
   beforeAll(() => {
     const filePath = 'test/html/user-search-history-2021-04-15.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
-    parsedResult = parseSearchHistoryPage(playlistPageHtml);
+    parsedResult = parseSearchHistory(playlistPageHtml);
     // console.warn('test', parsedResult.fields.queries)
   });
 
@@ -37,14 +37,14 @@ describe('parseSearchHistoryPage result 2021-04-15', () => {
   });
 });
 
-describe('parseSearchHistoryPage result 2021-04-20', () => {
+describe('parseSearchHistory result 2021-04-20', () => {
   let playlistPageHtml: string;
   let parsedResult: ParserResult;
 
   beforeAll(() => {
     const filePath = 'test/html/user-search-history-2021-04-20.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
-    parsedResult = parseSearchHistoryPage(playlistPageHtml);
+    parsedResult = parseSearchHistory(playlistPageHtml);
     console.warn('test', parsedResult);
   });
 

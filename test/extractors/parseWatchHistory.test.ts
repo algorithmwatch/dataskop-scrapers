@@ -1,15 +1,15 @@
 import fs from 'fs';
-import { parseWatchHistoryPage } from '../../src';
+import { parseWatchHistory } from '../../src';
 import { ParserResult } from '../../src/types';
 
-describe('parseWatchHistoryPage result', () => {
+describe('parseWatchHistory result', () => {
   let playlistPageHtml: string;
   let parsedResult: ParserResult;
 
   beforeAll(() => {
     const filePath = 'test/html/user-watch-history-2021-04-15.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
-    parsedResult = parseWatchHistoryPage(playlistPageHtml);
+    parsedResult = parseWatchHistory(playlistPageHtml);
     // console.warn('test', parsedResult.fields.videos)
   });
 

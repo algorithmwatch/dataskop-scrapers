@@ -1,15 +1,15 @@
 import fs from 'fs';
-import { parseSubscribedChannelsPage } from '../../src';
+import { parseSubscribedChannels } from '../../src';
 import { ParserResult, SubscribedChannel } from '../../src/types';
 
-describe('parseSubscribedChannelsPage result 2021-04-15', () => {
+describe('parseSubscribedChannels result 2021-04-15', () => {
   let playlistPageHtml: string;
   let parsedResult: ParserResult;
 
   beforeAll(() => {
     const filePath = 'test/html/user-subscribed-channels-2021-04-15.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
-    parsedResult = parseSubscribedChannelsPage(playlistPageHtml);
+    parsedResult = parseSubscribedChannels(playlistPageHtml);
     // console.warn('test', parsedResult.fields.channels)
   });
 
@@ -48,14 +48,14 @@ describe('parseSubscribedChannelsPage result 2021-04-15', () => {
   });
 });
 
-describe('parseSubscribedChannelsPage result 2021-04-20', () => {
+describe('parseSubscribedChannels result 2021-04-20', () => {
   let playlistPageHtml: string;
   let parsedResult: ParserResult;
 
   beforeAll(() => {
     const filePath = 'test/html/user-subscribed-channels-2021-04-20.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
-    parsedResult = parseSubscribedChannelsPage(playlistPageHtml);
+    parsedResult = parseSubscribedChannels(playlistPageHtml);
     console.warn('test', parsedResult);
   });
 

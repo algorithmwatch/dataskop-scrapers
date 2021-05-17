@@ -6,13 +6,13 @@ import {
   WatchlistVideoUnavailable,
 } from '../types';
 import { URLSearchParams } from 'url';
-import Parser, { HarkeParsingError } from '../parser';
+import Parser from '../parser';
 import {
   convertHHMMSSDurationToMs,
   convertPercentageStringToNumber,
 } from '../parser/utils';
 
-function parseWatchHistoryPage(html: string): ParserResult {
+function parseWatchHistory(html: string): ParserResult {
   const schema: ParserFieldsSchemaWatchHistory = {
     videos({
       $,
@@ -109,4 +109,4 @@ function parseWatchHistoryPage(html: string): ParserResult {
 
 const watchHistoryUrl = 'https://www.youtube.com/feed/history';
 
-export { watchHistoryUrl, parseWatchHistoryPage };
+export { watchHistoryUrl, parseWatchHistory };

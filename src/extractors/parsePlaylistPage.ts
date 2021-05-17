@@ -1,6 +1,6 @@
 import {
   ParserFieldParams,
-  ParserFieldsSchemaPaylist,
+  ParserFieldsSchemaPaylistPage,
   ParserResult,
   PlaylistVideo,
   PlaylistVideoUnavailable,
@@ -13,7 +13,7 @@ import {
 } from '../parser/utils';
 
 function parsePlaylistPage(html: string): ParserResult {
-  const schema: ParserFieldsSchemaPaylist = {
+  const schema: ParserFieldsSchemaPaylistPage = {
     id({ $ }: ParserFieldParams): string {
       // extract GET param via meta tag
       const url = $('meta[property="og:url"]').attr('content');

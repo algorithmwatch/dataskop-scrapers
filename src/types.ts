@@ -101,7 +101,7 @@ export interface ParserFieldsSchemaVideoPage {
   recommendedVideos(params: ParserFieldParams): RecommendedVideo[];
 }
 
-export interface ParserFieldsSchemaPaylist {
+export interface ParserFieldsSchemaPaylistPage {
   id(params: ParserFieldParams): string;
   title(params: ParserFieldParams): string;
   description(params: ParserFieldParams): string;
@@ -129,7 +129,7 @@ export interface ParserFieldsSchemaSearchHistory {
 
 export type ParserFieldsSchema =
   | ParserFieldsSchemaVideoPage
-  | ParserFieldsSchemaPaylist
+  | ParserFieldsSchemaPaylistPage
   | ParserFieldsSchemaSubscribedChannels
   | ParserFieldsSchemaWatchHistory
   | ParserFieldsSchemaSearchHistory;
