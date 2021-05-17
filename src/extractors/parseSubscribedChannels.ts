@@ -50,6 +50,6 @@ function parseSubscribedChannels(html: string): ParsedSubscribedChannels {
   return parse('user-subscribed-channels', html, schema);
 }
 
-const subscribedChannelsUrls = 'https://www.youtube.com/feed/channels';
+const subscribedChannelsUrl = 'https://www.youtube.com/feed/channels';
 
-export { subscribedChannelsUrls, parseSubscribedChannels };
+export { subscribedChannelsUrl, parseSubscribedChannels };
