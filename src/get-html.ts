@@ -91,7 +91,7 @@ async function goToUrlandParse(url: string, parse, outputLocation = null) {
   }
 }
 
-function validateWatchHistory(outputLocation = null) {
+function getWatchHistory(outputLocation = null) {
   console.log('watch history');
   return goToUrlandParse(
     watchHistoryUrl,
@@ -100,7 +100,7 @@ function validateWatchHistory(outputLocation = null) {
   );
 }
 
-function validateSearchHistory(outputLocation = null) {
+function getSearchHistory(outputLocation = null) {
   console.log('search history');
   return goToUrlandParse(
     searchHistoryUrl,
@@ -109,7 +109,7 @@ function validateSearchHistory(outputLocation = null) {
   );
 }
 
-function validateSubscribedChannels(outputLocation = null) {
+function getSubscribedChannels(outputLocation = null) {
   console.log('subscribed channels');
   return goToUrlandParse(
     subscribedChannelsUrls,
@@ -118,7 +118,7 @@ function validateSubscribedChannels(outputLocation = null) {
   );
 }
 
-function validateLikedVideo(outputLocation = null) {
+function getLikedVideo(outputLocation = null) {
   const LIST_ID_LIKED_VIDEOS = 'LL';
   const url = `https://www.youtube.com/playlist?list=${LIST_ID_LIKED_VIDEOS}`;
 
@@ -134,10 +134,10 @@ function validateVideoPage(url, outputLocation = null) {
 export {
   getHtml,
   loginYoutube,
-  validateWatchHistory,
-  validateSearchHistory,
-  validateSubscribedChannels,
-  validateLikedVideo,
+  getWatchHistory,
+  getSearchHistory,
+  getSubscribedChannels,
+  getLikedVideo,
   validateVideoPage,
   closeBrowser,
 };
