@@ -60,6 +60,7 @@ export interface SubscribedChannel {
 export type ParserResultSlug =
   | 'video-page'
   | 'playlist-page'
+  | 'search-results-videos'
   | 'user-subscribed-channels'
   | 'user-watch-history'
   | 'user-search-history';
@@ -110,6 +111,26 @@ interface PlaylistPage {
   videos: (PlaylistVideo | PlaylistVideoUnavailable)[];
 }
 
+export interface SearchVideo {
+  id: string;
+  duration: number;
+  title: string;
+  description: string;
+  viewCount: number;
+  channelName: string;
+  channelUrl: string;
+  uploadDateString: string;
+}
+
+interface SearchResultsVideos {
+  query: string;
+  videos: SearchVideo[];
+}
+
+export interface ParsedSearchResultsVideo extends ParserResult {
+  fields: Partial<SearchResultsVideos>;
+}
+
 interface WatchHistory {
   videos: (WatchlistVideo | WatchlistVideoUnavailable)[];
 }
@@ -128,9 +149,11 @@ export interface ParsedVideoPage extends ParserResult {
 export interface ParsedPlaylistPage extends ParserResult {
   fields: Partial<PlaylistPage>;
 }
+
 export interface ParsedSubscribedChannels extends ParserResult {
   fields: Partial<SubscribedChannels>;
 }
+
 export interface ParsedWatchHistory extends ParserResult {
   fields: Partial<WatchHistory>;
 }

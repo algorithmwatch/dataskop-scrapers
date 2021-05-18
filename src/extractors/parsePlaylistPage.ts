@@ -68,7 +68,7 @@ function parsePlaylistPage(html: string): ParsedPlaylistPage {
       const result: (PlaylistVideo | PlaylistVideoUnavailable)[] = [];
 
       $('#contents > .ytd-playlist-video-list-renderer').each(
-        (idx, el: cheerio.Element) => {
+        (_idx, el: cheerio.Element) => {
           const $el = $(el);
           const href = $el.find('a#thumbnail').attr('href');
           if (href == null) return;
