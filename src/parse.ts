@@ -31,16 +31,11 @@ function parse(
         linkedData,
       });
     } catch (error) {
-      if (error instanceof HarkeParsingError) {
-        // silently record parsing errors
-        errors.push({
-          field: fieldKey,
-          message: error.message,
-        });
-      } else {
-        // unknown error, rethrow it
-        throw error;
-      }
+      // silently record parsing errors
+      errors.push({
+        field: fieldKey,
+        message: error.message,
+      });
     }
   }
 
