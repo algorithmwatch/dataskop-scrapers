@@ -1,13 +1,5 @@
 import { JsonLinkedData } from './types';
 
-// FIXME: should be done with https://developer.mozilla.org/en-US/docs/Web/API/URLSearchParams
-export const getVideoIdFromUrl = (url: string): string | null => {
-  const pattern = /^(?:(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be))?(?:\/watch\?v=|\/)([^\s&]+)$/;
-  const match = url.match(pattern);
-
-  return match !== null ? match[1] : null;
-};
-
 /**
  * Convert ISO 8601 duration string to milliseconds
  * Sourced from: https://gist.github.com/Fauntleroy/5167736#gistcomment-3649319

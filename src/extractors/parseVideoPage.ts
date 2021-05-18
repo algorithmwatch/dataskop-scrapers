@@ -1,3 +1,4 @@
+import { URLSearchParams } from 'url';
 import { HarkeParsingError, parse } from '../parse';
 import {
   Channel,
@@ -6,10 +7,10 @@ import {
   RecommendedVideo,
 } from '../types';
 import {
+  convertHHMMSSDurationToMs,
   convertISO8601ToMs,
   convertPercentageStringToNumber,
   extractNumberFromString,
-  getVideoIdFromUrl,
 } from '../utils';
 
 function parseVideoPage(html: string): ParsedVideoPage {
@@ -18,7 +19,11 @@ function parseVideoPage(html: string): ParsedVideoPage {
       const urlValue = $('link[rel=canonical]').attr('href');
       if (!urlValue) throw new HarkeParsingError();
 
-      const videoId = getVideoIdFromUrl(urlValue);
+      const params = new URLSearchParams(
+        urlValue.replace('https://www.youtube.com/watch', ''),
+      );
+      const videoId = params.get('v');
+
       if (!videoId) throw new HarkeParsingError('invalid video id');
 
       return videoId;
@@ -187,11 +192,21 @@ function parseVideoPage(html: string): ParsedVideoPage {
         (_idx: number, el: cheerio.Element) => {
           const $el = $(el);
           const videoUrl = $el.find('.metadata > a').attr('href');
-          const id = videoUrl ? getVideoIdFromUrl(videoUrl) : null;
+
+          if (videoUrl == null) return;
+
+          const params = new URLSearchParams(videoUrl.replace('/watch?', ''));
+          const id = params.get('v');
+
+          if (id == null) return;
+
           const title = $el.find('.metadata #video-title').text().trim();
-          // const duration = convertHHMMSSDurationToMs(
-          //   $el.find('.ytd-thumbnail-overlay-time-status-renderer').text()
-          // )
+
+          // `duration` gets lazyloaded but we should still try to get the data.
+          const duration = convertHHMMSSDurationToMs(
+            $el.find('.ytd-thumbnail-overlay-time-status-renderer').text(),
+          );
+
           const channelName = $el
             .find('.metadata .ytd-channel-name #text')
             .text();
@@ -204,18 +219,19 @@ function parseVideoPage(html: string): ParsedVideoPage {
             ? convertPercentageStringToNumber(percWatchedValue)
             : 0;
 
-          if (!id || !title || !channelName) return;
-
           result.push({
             id,
             title,
+            duration,
             channelName,
             percWatched,
           });
         },
       );
 
-      if (!result.length) throw new HarkeParsingError(JSON.stringify(result));
+      // Allow the recommended videos to be empty since it occasionally happen that
+      // there are no recommended videos.
+      // if (!result.length) throw new HarkeParsingError(JSON.stringify(result));
 
       return result;
     },

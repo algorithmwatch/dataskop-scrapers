@@ -52,7 +52,6 @@ function parseSearchResultsVideos(html: string): ParsedSearchResultsVideo {
         } as SearchVideo);
       });
 
-      console.log(result);
       return result;
     },
   };

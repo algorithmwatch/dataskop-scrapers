@@ -75,6 +75,7 @@ function parsePlaylistPage(html: string): ParsedPlaylistPage {
 
           const params = new URLSearchParams(href.replace('/watch?', ''));
           const id = params.get('v');
+
           let title = $el.find('#video-title').text();
           const duration = convertHHMMSSDurationToMs(
             $el

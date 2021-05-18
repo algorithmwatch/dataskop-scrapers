@@ -84,13 +84,6 @@ describe('parseVideoPage result', () => {
     expect(hashtagsArray).toContain('#PeacockTV');
   });
 
-  test('has recommended videos', () => {
-    const videosArray = parsedResult.fields.recommendedVideos;
-    expect(videosArray.every((x: Object) => Object.keys(x).length === 4)).toBe(
-      true,
-    );
-  });
-
   test('viewcount', () => {
     expect(parsedResult.fields.viewCount).toBeGreaterThan(100);
   });

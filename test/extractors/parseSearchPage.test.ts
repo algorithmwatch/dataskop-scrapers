@@ -11,7 +11,7 @@ describe('search-page 2021-05-17', () => {
     const filePath = 'test/html/search-results-videos-2021-05-17.html';
     searchPageHtml = fs.readFileSync(filePath).toString();
     parsedResult = parseSearchResultsVideos(searchPageHtml);
-    console.warn('test', parsedResult);
+    // console.warn('test', parsedResult);
   });
 
   test('no error', () => {
