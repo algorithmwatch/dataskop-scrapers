@@ -122,7 +122,7 @@ export interface SearchVideo {
   viewCount: number;
   channelName: string;
   channelUrl: string;
-  uploadDateString: string;
+  uploadedAtString: string;
 }
 
 interface SearchResultsVideos {

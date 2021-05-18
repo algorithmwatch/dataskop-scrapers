@@ -29,7 +29,7 @@ function parseSearchResultsVideos(html: string): ParsedSearchResultsVideo {
         const viewCount = extractNumberFromString(
           $el.find('#metadata #metadata-line span').first().text(),
         );
-        const uploadDateString = $el
+        const uploadedAtString = $el
           .find('#metadata #metadata-line span')
           .last()
           .text();
@@ -46,7 +46,7 @@ function parseSearchResultsVideos(html: string): ParsedSearchResultsVideo {
           description,
           duration,
           viewCount,
-          uploadDateString,
+          uploadedAtString,
           channelName,
           channelUrl,
         } as SearchVideo);

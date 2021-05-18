@@ -24,7 +24,7 @@ describe('search-page 2021-05-17', () => {
     for (const v of parsedResult.fields.videos) {
       expect(v.title.length).toBeGreaterThan(5);
       expect(v.duration).toBeGreaterThan(1000);
-      expect(v.uploadDateString.length).toBeGreaterThan(5);
+      expect(v.uploadedAtString.length).toBeGreaterThan(5);
       expect(v.viewCount).toBeGreaterThanOrEqual(0);
       expect(v.channelName.length).toBeGreaterThan(2);
       expect(v.channelUrl.length).toBeGreaterThan(5);
