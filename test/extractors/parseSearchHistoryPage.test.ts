@@ -45,7 +45,7 @@ describe('parseSearchHistory result 2021-04-20', () => {
     const filePath = 'test/html/user-search-history-2021-04-20.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
     parsedResult = parseSearchHistory(playlistPageHtml);
-    console.warn('test', parsedResult);
+    // console.warn('test', parsedResult);
   });
 
   test('has 0 entries', () => {

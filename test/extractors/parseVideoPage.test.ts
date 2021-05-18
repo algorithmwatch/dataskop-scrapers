@@ -158,3 +158,21 @@ describe('parseVideoPage was live 2021-05-14', () => {
     expect(parsedResult.fields.clarifyBox.includes('COVID')).toBe(true);
   });
 });
+
+describe('parseVideoPage 2021-05-18', () => {
+  let videoPageHtml: string;
+  let parsedResult: ParserResult;
+
+  beforeAll(() => {
+    // testing
+    const filePath = 'test/html/video-page-2021-05-18.html';
+    videoPageHtml = fs.readFileSync(filePath).toString();
+    parsedResult = parseVideoPage(videoPageHtml);
+    // console.warn('test', parsedResult);
+  });
+
+  test('recommended video tags', () => {
+    expect(parsedResult.fields.recommendedVideosTags.length).toBeGreaterThan(4);
+    // expect(parsedResult.fields.clarifyBox.includes('COVID')).toBe(true);
+  });
+});

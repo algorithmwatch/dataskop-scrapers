@@ -63,7 +63,7 @@ describe('parsePlaylistPage result liked video 2021-04-21', () => {
     const filePath = 'test/html/playlist-page-liked-videos-2021-04-21.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
     parsedResult = parsePlaylistPage(playlistPageHtml);
-    console.warn('test', parsedResult);
+    // console.warn('test', parsedResult);
   });
 
   test('no errors', () => {
@@ -80,7 +80,7 @@ describe('parsePlaylistPage result liked video empty 2021-04-21', () => {
       'test/html/playlist-page-liked-videos-empty-2021-04-21.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
     parsedResult = parsePlaylistPage(playlistPageHtml);
-    console.warn('test', parsedResult);
+    // console.warn('test', parsedResult);
   });
 
   test('no errors', () => {

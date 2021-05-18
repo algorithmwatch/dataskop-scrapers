@@ -56,7 +56,7 @@ describe('parseSubscribedChannels result 2021-04-20', () => {
     const filePath = 'test/html/user-subscribed-channels-2021-04-20.html';
     playlistPageHtml = fs.readFileSync(filePath).toString();
     parsedResult = parseSubscribedChannels(playlistPageHtml);
-    console.warn('test', parsedResult);
+    // console.warn('test', parsedResult);
   });
 
   test('has 2 channels subscribed', () => {

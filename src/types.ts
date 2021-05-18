@@ -99,6 +99,8 @@ interface VideoPage {
   wasLive: boolean;
   hashtags: string[];
   clarifyBox: string;
+  // called `chips` or `cloud` in YT's source code
+  recommendedVideosTags: string[];
   recommendedVideos: RecommendedVideo[];
 }
 
