@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable no-console */
 import {
-  baseSearchUrl,
+  buildSearchUrl,
   parsePlaylistPage,
   parseSearchHistory,
-  parseSearchPage,
+  parseSearchResultsVideos,
   parseSubscribedChannels,
   parseVideoPage,
   parseWatchHistory,
@@ -123,11 +123,11 @@ function getVideoPage(url, outputLocation = null) {
   return goToUrlandParse(url, parseVideoPage, outputLocation);
 }
 
-function getSearchPage(query, outputLocation = null) {
-  console.log('search ' + query);
-  const url = baseSearchUrl + query;
+function getSearchVideoPage(query, outputLocation = null) {
+  console.log('search videos for ' + query);
+  const url = buildSearchUrl(query, 'videos');
   console.log(url);
-  return goToUrlandParse(url, parseSearchPage, outputLocation);
+  return goToUrlandParse(url, parseSearchResultsVideos, outputLocation);
 }
 
 export {
@@ -137,7 +137,7 @@ export {
   getSearchHistory,
   getSubscribedChannels,
   getLikedVideo,
-  getSearchPage,
+  getSearchVideoPage,
   getVideoPage,
   closeBrowser,
 };

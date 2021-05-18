@@ -4,7 +4,7 @@ import {
   closeBrowser,
   getLikedVideo,
   getSearchHistory,
-  getSearchPage,
+  getSearchVideoPage,
   getSubscribedChannels,
   getVideoPage,
   getWatchHistory,
@@ -26,7 +26,7 @@ const cli = meow(cliHelpText, {
       type: 'string',
       alias: 'v',
     },
-    search: {
+    searchVideos: {
       type: 'string',
       alias: 's',
     },
@@ -89,8 +89,11 @@ const cli = meow(cliHelpText, {
     );
   }
 
-  if (cli.flags.all || cli.flags.search != null) {
-    await getSearchPage(cli.flags.search ?? 'antifa', cli.flags.outputLocation);
+  if (cli.flags.all || cli.flags.searchVideos != null) {
+    await getSearchVideoPage(
+      cli.flags.searchVideos ?? 'antifa',
+      cli.flags.outputLocation,
+    );
   }
 
   if (close) await closeBrowser();
