@@ -211,9 +211,13 @@ function parseVideoPage(html: string): ParsedVideoPage {
           const title = $el.find('.metadata #video-title').text().trim();
 
           // `duration` gets lazyloaded but we should still try to get the data.
-          const duration = convertHHMMSSDurationToMs(
-            $el.find('.ytd-thumbnail-overlay-time-status-renderer').text(),
-          );
+          let duration = -1;
+          try {
+            duration = convertHHMMSSDurationToMs(
+              $el.find('.ytd-thumbnail-overlay-time-status-renderer').text(),
+            );
+            // eslint-disable-next-line no-empty
+          } catch (e) {}
 
           const channelName = $el
             .find('.metadata .ytd-channel-name #text')
