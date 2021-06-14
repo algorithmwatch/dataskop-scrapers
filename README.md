@@ -1,6 +1,6 @@
-# harke-parser
+# harke
 
-Parser for harke, a headless YouTube-Scraper
+Parse YouTube's HTML with TypeScipt.
 
 ## Dev setup
 
