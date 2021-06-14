@@ -165,7 +165,7 @@ function parseVideoPage(html: string): ParsedVideoPage {
     hashtags({ $ }: ParserFieldParams): string[] {
       const result: string[] = [];
 
-      $('a[href^="/hashtag/"]').each((idx, el: cheerio.Element) => {
+      $('a[href^="/hashtag/"]').each((_idx, el: cheerio.Element) => {
         const parentEl = el as cheerio.TagElement;
         const childNode = parentEl.firstChild;
 
