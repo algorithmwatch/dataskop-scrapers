@@ -2,8 +2,8 @@
 # yarn lockfile v1
 
 
-"@algorithmwatch/harke-parser@../harke-parser":
-  version "0.1.0-9"
+"@algorithmwatch/harke@../harke":
+  version "0.1.0-13"
   dependencies:
     cheerio "^1.0.0-rc.5"
 

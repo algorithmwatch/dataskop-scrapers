@@ -11,7 +11,7 @@ import {
   searchHistoryUrl,
   subscribedChannelsUrls,
   watchHistoryUrl,
-} from '@algorithmwatch/harke-parser/build';
+} from '@algorithmwatch/harke/build';
 import fs from 'fs';
 import { LaunchOptions } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';

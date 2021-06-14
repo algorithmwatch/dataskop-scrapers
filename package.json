@@ -1,8 +1,11 @@
 {
-  "name": "harke",
-  "version": "1.0.0",
-  "main": "index.js",
-  "repository": "https://github.com/algorithmwatch/harke",
+  "name": "harke-puppeteer",
+  "version": "0.0.0",
+  "main": "./src/cli.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/algorithmwatch/harke-puppeteer.git"
+  },
   "author": "AlgorithmWatch",
   "license": "MIT",
   "scripts": {
@@ -14,7 +17,7 @@
     "harke-cli": "ts-node ./src/cli.ts"
   },
   "dependencies": {
-    "@algorithmwatch/harke-parser": "../harke-parser",
+    "@algorithmwatch/harke": "../harke",
     "meow": "^9.0.0",
     "puppeteer": "9",
     "puppeteer-extra": "^3.1.18",

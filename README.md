@@ -1,4 +1,4 @@
-# harke
+# harke-puppeteer
 
 ## Dev setup
 
@@ -37,13 +37,13 @@ yarn run cli -v https://www.youtube.com/watch?v=IWlGDbMEtxM
 yarn run cli -s antifa
 ```
 
-## Using harke-parser
+## Using harke
 
 ```bash
-cd harke-parser
+cd harke
 yarn build
-cd ../harke
-yarn add ../harke-parser
+cd ../harke-puppeteer
+yarn add ../harke
 ```
 
 ## Log in to Google (complicated)
