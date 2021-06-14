@@ -1,4 +1,6 @@
-import cheerio from 'cheerio';
+// Importing cheerio as below causes problems in DataSkop's JSON validation.
+// import cheerio from 'cheerio';
+import * as cheerio from 'cheerio';
 import { ParserFieldParams, ParserResult, ParserResultSlug } from './types';
 import { extractJsonLinkedData } from './utils';
 
