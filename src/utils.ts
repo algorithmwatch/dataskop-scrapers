@@ -25,7 +25,7 @@ export const convertISO8601ToMs = (duration: string): number => {
 };
 
 export const extractNumberFromString = (str: string): number | null => {
-  const numbers = str.match(/\d/g);
+  const numbers = str?.match(/\d/g);
   if (numbers == null) return null;
   return parseInt(numbers.join(''), 10);
 };
