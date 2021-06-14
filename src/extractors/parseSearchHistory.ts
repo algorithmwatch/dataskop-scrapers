@@ -24,7 +24,7 @@ function parseSearchHistory(html: string): ParsedSearchHistory {
       // parse flat history list
       const result: SearchHistoryEntry[] = [];
       let currentDate: Date;
-      $('.KpksOc, .xDtZAf').each((idx, el: cheerio.Element) => {
+      $('.KpksOc, .xDtZAf').each((_idx, el: cheerio.Element) => {
         const $el = $(el);
 
         if (isDateHeader($el)) {

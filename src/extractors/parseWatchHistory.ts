@@ -20,13 +20,13 @@ function parseWatchHistory(html: string): ParsedWatchHistory {
 
       // parsing date-video chunks
       $('#contents .ytd-section-list-renderer').each(
-        (idx, chunkEl: cheerio.Element) => {
+        (_idx, chunkEl: cheerio.Element) => {
           const $chunkEl = $(chunkEl);
           const watchedAt = $chunkEl.find('#title').text();
 
           $chunkEl
             .find('ytd-video-renderer')
-            .each((idx, el: cheerio.Element) => {
+            .each((_idx, el: cheerio.Element) => {
               const $el = $(el);
               const href = $el.find('a#thumbnail').attr('href');
               if (href == null) return;
