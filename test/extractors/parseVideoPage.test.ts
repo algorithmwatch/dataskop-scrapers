@@ -180,3 +180,21 @@ describe('parseVideoPage 2021-05-18', () => {
     // expect(parsedResult.fields.clarifyBox.includes('COVID')).toBe(true);
   });
 });
+
+describe('parseVideoPage 2021-06-14', () => {
+  let videoPageHtml: string;
+  let parsedResult: ParserResult;
+
+  beforeAll(() => {
+    // testing
+    const filePath = 'test/html/video-page-2021-06-14.html';
+    videoPageHtml = fs.readFileSync(filePath).toString();
+    parsedResult = parseVideoPage(videoPageHtml);
+    // console.warn('test', parsedResult);
+  });
+
+  test('sentiment null', () => {
+    expect(parsedResult.fields.upvotes).toBe(null);
+    expect(parsedResult.fields.downvotes).toBe(null);
+  });
+});

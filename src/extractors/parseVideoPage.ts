@@ -14,6 +14,16 @@ import {
 } from '../utils';
 
 function parseVideoPage(html: string): ParsedVideoPage {
+  const getSentiment = ($: cheerio.Root) => {
+    // check if there is no like bar
+    const likeBarEl = $('#like-bar');
+    if (likeBarEl == null) return null;
+
+    // `likeBarEl.attr('style')` is undefined if no inline style was set
+    if (likeBarEl.attr('style') == null) return null;
+    return $('#sentiment #tooltip').first().text().split(' / ');
+  };
+
   const schema = {
     id({ $ }: ParserFieldParams): string {
       const urlValue = $('link[rel=canonical]').attr('href');
@@ -93,31 +103,27 @@ function parseVideoPage(html: string): ParsedVideoPage {
       return number;
     },
 
-    upvotes({ $ }: ParserFieldParams): number {
-      const ariaLabelText = $('#sentiment #tooltip')
-        .first()
-        .text()
-        .split(' / ')[0];
+    upvotes({ $ }: ParserFieldParams): number | null {
+      const sentiment = getSentiment($);
+      if (sentiment === null) return null;
 
-      if (ariaLabelText === null) throw new HarkeParsingError();
+      const upvotesStr = sentiment[0];
+      if (upvotesStr === null) throw new HarkeParsingError();
 
-      const number = extractNumberFromString(ariaLabelText);
+      const number = extractNumberFromString(upvotesStr);
       if (number === null) throw new HarkeParsingError();
-
       return number;
     },
 
-    downvotes({ $ }: ParserFieldParams): number {
-      const ariaLabelText = $('#sentiment #tooltip')
-        .first()
-        .text()
-        .split(' / ')[1];
+    downvotes({ $ }: ParserFieldParams): number | null {
+      const sentiment = getSentiment($);
+      if (sentiment === null) return null;
 
-      if (ariaLabelText === null) throw new HarkeParsingError();
+      const upvotesStr = sentiment[1];
+      if (upvotesStr === null) throw new HarkeParsingError();
 
-      const number = extractNumberFromString(ariaLabelText);
+      const number = extractNumberFromString(upvotesStr);
       if (number === null) throw new HarkeParsingError();
-
       return number;
     },
 

@@ -92,9 +92,10 @@ interface VideoPage {
   channel: Channel;
   uploadDate: Date;
   viewCount: number;
-  upvotes: number;
+  // video page may hide number of up/down votes
+  upvotes: number | null;
+  downvotes: number | null;
   category: string;
-  downvotes: number;
   isLive: boolean;
   wasLive: boolean;
   hashtags: string[];
