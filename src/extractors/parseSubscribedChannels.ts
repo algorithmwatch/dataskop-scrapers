@@ -11,7 +11,7 @@ function parseSubscribedChannels(html: string): ParsedSubscribedChannels {
     channels({ $ }: ParserFieldParams): SubscribedChannel[] {
       const result: SubscribedChannel[] = [];
 
-      $('#contents #content-section').each((idx, el: cheerio.Element) => {
+      $('#contents #content-section').each((_idx, el: cheerio.Element) => {
         const $el = $(el);
 
         const channelName = $el.find('#channel-title #text').text();
