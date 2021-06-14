@@ -1,6 +1,6 @@
 {
   "name": "@algorithmwatch/harke",
-  "version": "0.1.0-14",
+  "version": "0.1.0-15",
   "main": "src/index.ts",
   "repository": {
     "type": "git",
