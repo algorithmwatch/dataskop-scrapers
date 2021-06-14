@@ -51,6 +51,10 @@ describe('parseVideoPage result', () => {
     test('has URL', () => {
       expect(parsedResult.fields.channel.url).toMatch(/^\/channel\/.+/);
     });
+
+    test('has thumbnail URL', () => {
+      expect(parsedResult.fields.channel.thumbnail.length).toBeGreaterThan(10);
+    });
   });
 
   test('has upload date after Youtube launch date and before now', () => {

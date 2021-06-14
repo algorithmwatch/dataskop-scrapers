@@ -42,7 +42,7 @@ function parseVideoPage(html: string): ParsedVideoPage {
     description({ linkedData }: ParserFieldParams): string {
       if (!linkedData) throw new HarkeParsingError('invalid description');
 
-      return linkedData.description || '';
+      return linkedData.description ?? '';
     },
 
     duration({ linkedData }: ParserFieldParams): number {
@@ -56,6 +56,7 @@ function parseVideoPage(html: string): ParsedVideoPage {
 
     channel({ $ }: ParserFieldParams): Channel {
       const channelLinkEl = $('#upload-info a[href^="/channel/"]').first();
+      const channelImgEl = $('#meta #img').first();
 
       return {
         id: (() => {
@@ -65,14 +66,9 @@ function parseVideoPage(html: string): ParsedVideoPage {
 
           return channelUrlChunks[channelUrlChunks.length - 1];
         })(),
-
-        name: (() => {
-          return channelLinkEl.text() || '';
-        })(),
-
-        url: (() => {
-          return channelLinkEl.attr('href') || '';
-        })(),
+        name: channelLinkEl.text() ?? '',
+        url: channelLinkEl.attr('href') ?? '',
+        thumbnail: channelImgEl.attr('src') ?? '',
       };
     },
 

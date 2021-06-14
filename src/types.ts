@@ -1,9 +1,9 @@
 export interface Channel {
-  id?: string;
+  id: string;
   name: string;
   url: string;
+  thumbnail: string;
   description?: string;
-  thumbnail?: string;
   videoCount?: number;
 }
 
