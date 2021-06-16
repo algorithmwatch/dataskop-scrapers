@@ -6,12 +6,11 @@ import {
 } from '../types';
 import { convertHHMMSSDurationToMs, extractNumberFromString } from '../utils';
 
-function parseSearchResultsVideos(html: string): ParsedSearchResultsVideo {
+function parseSearchResultsVideos(
+  html: string,
+  query: string,
+): ParsedSearchResultsVideo {
   const schema = {
-    query({ $ }: ParserFieldParams): string {
-      return $('#search').first().text().trim();
-    },
-
     videos({ $ }: ParserFieldParams): SearchVideo[] {
       const result: SearchVideo[] = [];
 
@@ -56,7 +55,11 @@ function parseSearchResultsVideos(html: string): ParsedSearchResultsVideo {
     },
   };
 
-  return parse('search-results-videos', html, schema);
+  // It's hard / impossible to extract the query from the rendered page.
+  // So the query is added via param when calling this function.
+  const videoResult = parse('search-results-videos', html, schema);
+  videoResult.fields.query = query;
+  return videoResult;
 }
 
 const baseSearchUrl = 'https://www.youtube.com/results?search_query=';
