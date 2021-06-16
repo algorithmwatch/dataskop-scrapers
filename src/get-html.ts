@@ -127,7 +127,11 @@ function getSearchVideoPage(query, outputLocation = null) {
   console.log('search videos for ' + query);
   const url = buildSearchUrl(query, 'videos');
   console.log(url);
-  return goToUrlandParse(url, parseSearchResultsVideos, outputLocation);
+  return goToUrlandParse(
+    url,
+    (x) => parseSearchResultsVideos(x, query),
+    outputLocation,
+  );
 }
 
 export {
