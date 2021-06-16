@@ -9,7 +9,7 @@ import { convertHHMMSSDurationToMs, extractNumberFromString } from '../utils';
 function parseSearchResultsVideos(html: string): ParsedSearchResultsVideo {
   const schema = {
     query({ $ }: ParserFieldParams): string {
-      return $('title').first().text().trim();
+      return $('#search').first().text().trim();
     },
 
     videos({ $ }: ParserFieldParams): SearchVideo[] {

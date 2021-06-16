@@ -1,6 +1,6 @@
 # harke
 
-Parse YouTube's HTML with TypeScipt.
+Parse YouTube's HTML with TypeScript.
 
 ## Dev setup
 
