@@ -4,7 +4,11 @@ import {
   ParserFieldParams,
   SearchVideo,
 } from '../types';
-import { convertHHMMSSDurationToMs, extractNumberFromString } from '../utils';
+import {
+  convertHHMMSSDurationToMs,
+  extractIdFromUrl,
+  extractNumberFromString,
+} from '../utils';
 
 function parseSearchResultsVideos(
   html: string,
@@ -25,9 +29,10 @@ function parseSearchResultsVideos(
             .text()
             .trim(),
         );
-        const viewCount = extractNumberFromString(
-          $el.find('#metadata #metadata-line span').first().text(),
-        );
+        const viewCount =
+          extractNumberFromString(
+            $el.find('#metadata #metadata-line span').first().text(),
+          ) ?? 0;
         const uploadedAtString = $el
           .find('#metadata #metadata-line span')
           .last()
@@ -38,9 +43,15 @@ function parseSearchResultsVideos(
           .first()
           .text()
           .trim();
-        const channelUrl = $el.find('.ytd-channel-name a').first().attr('href');
+        const channelUrl =
+          $el.find('.ytd-channel-name a').first().attr('href') ?? '';
+
+        const id = extractIdFromUrl(
+          $el.find('#thumbnail').first().attr('href') ?? '',
+        );
 
         result.push({
+          id,
           title,
           description,
           duration,
@@ -48,7 +59,7 @@ function parseSearchResultsVideos(
           uploadedAtString,
           channelName,
           channelUrl,
-        } as SearchVideo);
+        });
       });
 
       return result;

@@ -1,3 +1,4 @@
+import { URLSearchParams } from 'url';
 import { JsonLinkedData } from './types';
 
 /**
@@ -94,4 +95,11 @@ export const convertPercentageStringToNumber = (
   }
 
   return Number(percentString);
+};
+
+export const extractIdFromUrl = (url: string): string => {
+  const params = new URLSearchParams(url.split('?')[1]);
+  const id = params.get('v');
+  if (id === null) return '';
+  return id;
 };

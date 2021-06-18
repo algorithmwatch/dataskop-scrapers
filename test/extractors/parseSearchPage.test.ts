@@ -22,6 +22,7 @@ describe('search-page 2021-05-17', () => {
     expect(parsedResult.fields.videos.length).toBeGreaterThan(10);
 
     for (const v of parsedResult.fields.videos) {
+      expect(v.id.length).toBeGreaterThan(5);
       expect(!v.title.toLowerCase().includes('youtube'));
       expect(v.title.length).toBeGreaterThan(5);
       expect(v.duration).toBeGreaterThan(1000);
