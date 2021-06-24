@@ -197,4 +197,10 @@ describe('parseVideoPage 2021-06-14', () => {
     expect(parsedResult.fields.upvotes).toBe(null);
     expect(parsedResult.fields.downvotes).toBe(null);
   });
+
+  test('recommended videos uploaded string', () => {
+    for (const x of parsedResult.fields.recommendedVideos) {
+      expect(x.uploadedAtString.length).toBeGreaterThan(5);
+    }
+  });
 });

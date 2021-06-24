@@ -233,12 +233,20 @@ function parseVideoPage(html: string): ParsedVideoPage {
             ? convertPercentageStringToNumber(percWatchedValue)
             : 0;
 
+          const uploadedAtString = $el
+            .find(
+              '#metadata-line span.style-scope.ytd-video-meta-block:nth-child(2)',
+            )
+            .text()
+            .trim();
+
           result.push({
             id,
             title,
             duration,
             channelName,
             percWatched,
+            uploadedAtString,
           });
         },
       );

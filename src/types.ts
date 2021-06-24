@@ -13,6 +13,7 @@ export interface RecommendedVideo {
   duration: number;
   channelName: string;
   percWatched: number;
+  uploadedAtString: string;
 }
 
 export interface PlaylistVideo {
