@@ -85,7 +85,7 @@ export type ParserFieldParams = {
   $: cheerio.Root;
   linkedData: JsonLinkedData;
 };
-interface VideoPage {
+export interface VideoPage {
   id: string;
   title: string;
   description: string;
@@ -106,7 +106,7 @@ interface VideoPage {
   recommendedVideos: RecommendedVideo[];
 }
 
-interface PlaylistPage {
+export interface PlaylistPage {
   id: string;
   title: string;
   description: string;
@@ -127,7 +127,7 @@ export interface SearchVideo {
   uploadedAtString: string;
 }
 
-interface SearchResultsVideos {
+export interface SearchResultsVideos {
   query: string;
   videos: SearchVideo[];
 }
@@ -136,10 +136,10 @@ export interface ParsedSearchResultsVideo extends ParserResult {
   fields: Partial<SearchResultsVideos>;
 }
 
-interface WatchHistory {
+export interface WatchHistory {
   videos: (WatchlistVideo | WatchlistVideoUnavailable)[];
 }
-interface SubscribedChannels {
+export interface SubscribedChannels {
   channels: SubscribedChannel[];
 }
 
