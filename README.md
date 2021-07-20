@@ -26,6 +26,10 @@ yarn version --prerelease
 Push tags to GitHub.
 GitHub then publishes the package as a GitHub Package.
 
+```bash
+git push --follow-tags
+```
+
 ## Test files
 
 - Video page: https://www.youtube.com/watch?v=SACB-u41x0M > video_page_no_auth.html
