@@ -71,7 +71,10 @@ const cli = meow(cliHelpText, {
   }
 
   if (cli.flags.all || cli.flags.searchHistory) {
-    await getSearchHistory(cli.flags.outputLocation);
+    const res = await getSearchHistory(cli.flags.outputLocation);
+    for (const x of res.fields.queries) {
+      console.log(x);
+    }
   }
 
   if (cli.flags.all || cli.flags.subscribedChannels) {

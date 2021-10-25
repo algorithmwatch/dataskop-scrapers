@@ -25,6 +25,12 @@ yarn run cli -a
 yarn run cli -w
 ```
 
+### Search History
+
+```
+yarn run cli -h
+```
+
 ### Get HTML from Video
 
 ```

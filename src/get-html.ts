@@ -86,6 +86,7 @@ async function goToUrlandParse(url: string, parse, outputLocation = null) {
       fs.mkdirSync(outputLocation, { recursive: true });
       fs.writeFileSync(`${outputLocation}/${result.slug}-${now}.html`, html);
     }
+    return result;
   } catch (error) {
     console.log(error);
   }
