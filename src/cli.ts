@@ -10,6 +10,7 @@ import {
   getWatchHistory,
   loginYoutube,
 } from './get-html';
+import { monitorDeNews } from './monitor';
 
 const cliHelpText = `
   Usage
@@ -51,19 +52,26 @@ const cli = meow(cliHelpText, {
       alias: 'o',
       default: 'html',
     },
+    monitor: {
+      type: 'boolean',
+      alias: 'm',
+    },
+    dbLocation: {
+      type: 'string',
+      default: 'data/db.json',
+    },
   },
 });
 
 (async function () {
   let close = true;
 
+  console.log('storing htmls files in: ' + cli.flags.outputLocation);
+  console.log('storing monitor data in: ' + cli.flags.dbLocation);
+
   if (cli.flags.login) {
     loginYoutube();
     close = false;
-  }
-
-  if (cli.flags.outputLocation !== null) {
-    console.log('storing htmls files in: ' + cli.flags.outputLocation);
   }
 
   if (cli.flags.all || cli.flags.watchHistory) {
@@ -97,6 +105,11 @@ const cli = meow(cliHelpText, {
       cli.flags.searchVideos ?? 'antifa',
       cli.flags.outputLocation,
     );
+  }
+
+  if (cli.flags.monitor) {
+    close = true;
+    await monitorDeNews(cli.flags.dbLocation);
   }
 
   if (close) await closeBrowser();

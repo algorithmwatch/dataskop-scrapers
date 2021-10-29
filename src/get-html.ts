@@ -1,6 +1,15 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable no-console */
-import {
+import harke from '@algorithmwatch/harke/build';
+import fs from 'fs';
+import { LaunchOptions } from 'puppeteer';
+import puppeteer from 'puppeteer-extra';
+import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import { HarkeInvalidUrl } from './errors';
+import { isValidUrl } from './util';
+
+// some problems with commonjs modules
+const {
   buildSearchUrl,
   parsePlaylistPage,
   parseSearchHistory,
@@ -11,13 +20,7 @@ import {
   searchHistoryUrl,
   subscribedChannelsUrls,
   watchHistoryUrl,
-} from '@algorithmwatch/harke/build';
-import fs from 'fs';
-import { LaunchOptions } from 'puppeteer';
-import puppeteer from 'puppeteer-extra';
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import { HarkeInvalidUrl } from './errors';
-import { isValidUrl } from './util';
+} = harke;
 
 // add stealth plugin and use defaults (all evasion techniques)
 puppeteer.use(StealthPlugin());
@@ -28,7 +31,7 @@ const setupBrowser = async () => {
   if (browser !== null) return browser;
 
   browser = await puppeteer.launch({
-    headless: false,
+    // headless: false,
     userDataDir: './user_data', // `userDataDir` to keep login via sessions
   } as LaunchOptions);
 
@@ -111,12 +114,15 @@ function getSubscribedChannels(outputLocation = null) {
   );
 }
 
+function getPlaylist(id, outputLocation = null) {
+  const url = `https://www.youtube.com/playlist?list=${id}`;
+  return goToUrlandParse(url, parsePlaylistPage, outputLocation);
+}
+
 function getLikedVideo(outputLocation = null) {
   const LIST_ID_LIKED_VIDEOS = 'LL';
-  const url = `https://www.youtube.com/playlist?list=${LIST_ID_LIKED_VIDEOS}`;
-
   console.log('liked videos');
-  return goToUrlandParse(url, parsePlaylistPage, outputLocation);
+  return getPlaylist(LIST_ID_LIKED_VIDEOS, outputLocation);
 }
 
 function getVideoPage(url, outputLocation = null) {
@@ -142,6 +148,7 @@ export {
   getSearchHistory,
   getSubscribedChannels,
   getLikedVideo,
+  getPlaylist,
   getSearchVideoPage,
   getVideoPage,
   closeBrowser,

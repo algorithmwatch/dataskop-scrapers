@@ -41,3 +41,5 @@ dist
 user_data
 html
 build
+data
+deploy.sh
