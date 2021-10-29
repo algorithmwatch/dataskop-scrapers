@@ -31,6 +31,7 @@ const setupBrowser = async () => {
   if (browser !== null) return browser;
 
   browser = await puppeteer.launch({
+    args: ['--no-sandbox', '--disable-setuid-sandbox'],
     // headless: false,
     userDataDir: './user_data', // `userDataDir` to keep login via sessions
   } as LaunchOptions);
@@ -63,9 +64,19 @@ async function getHtml(url: string, closePage = false) {
     waitUntil: 'networkidle2',
   });
 
-  await page.waitForTimeout(3000);
+  await page.waitForTimeout(3000 + 1000 * Math.random());
   const html = await page.content();
 
+  const realUrl = await page.url();
+  if (realUrl.includes('https://consent.youtube.com/')) {
+    const forms = await page.$$('form');
+    // last form is the confirm form
+    const form = forms[forms.length - 1];
+
+    await form.evaluate((form) => form.submit());
+    await page.waitForNavigation();
+    await page.waitForTimeout(3000 + 1000 * Math.random());
+  }
   if (closePage) await page.close();
 
   return html;
