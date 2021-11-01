@@ -7,7 +7,7 @@ import { JsonLinkedData } from './types';
  * @param duration String e.g. "P1DT6H11M55S"
  * @returns number Miliseconds
  */
-export const convertISO8601ToMs = (duration: string): number => {
+const convertISO8601ToMs = (duration: string): number => {
   const time_extractor = /^P([0-9]*D)?T([0-9]*H)?([0-9]*M)?([0-9]*S)?$/i;
   const extracted = time_extractor.exec(duration);
   if (extracted) {
@@ -25,7 +25,7 @@ export const convertISO8601ToMs = (duration: string): number => {
   return 0;
 };
 
-export const extractNumberFromString = (str: string): number | null => {
+const extractNumberFromString = (str: string): number | null => {
   const numbers = str?.match(/\d/g);
   if (numbers == null) return null;
   return parseInt(numbers.join(''), 10);
@@ -37,7 +37,7 @@ export const extractNumberFromString = (str: string): number | null => {
  * @param $ Cheerio Root
  * @returns JsonLinkedData
  */
-export const extractJsonLinkedData = ($: cheerio.Root): JsonLinkedData => {
+const extractJsonLinkedData = ($: cheerio.Root): JsonLinkedData => {
   const schemaText = $('script[type=application\\/ld\\+json]#scriptTag')
     .first()
     .html();
@@ -56,7 +56,7 @@ export const extractJsonLinkedData = ($: cheerio.Root): JsonLinkedData => {
  * @param durationString e.g. 5:08, 46:11, 19:33:49
  * @returns number Miliseconds
  */
-export const convertHHMMSSDurationToMs = (durationString: string): number => {
+const convertHHMMSSDurationToMs = (durationString: string): number => {
   const spl = durationString.split(':');
   let milliseconds = 0;
   let hours, minutes, seconds;
@@ -85,9 +85,7 @@ export const convertHHMMSSDurationToMs = (durationString: string): number => {
   return milliseconds;
 };
 
-export const convertPercentageStringToNumber = (
-  percentString: string,
-): number => {
+const convertPercentageStringToNumber = (percentString: string): number => {
   percentString = percentString.trim();
 
   if (percentString.endsWith('%')) {
@@ -97,9 +95,46 @@ export const convertPercentageStringToNumber = (
   return Number(percentString);
 };
 
-export const extractIdFromUrl = (url: string): string => {
+const extractIdFromUrl = (url: string): string => {
   const params = new URLSearchParams(url.split('?')[1]);
   const id = params.get('v');
   if (id === null) return '';
   return id;
+};
+
+const getThumbnails = (id: string): any => {
+  /**
+   * Returns all thumbnails to given YT video it.
+    https://yt-thumb.canbeuseful.com/en
+   */
+
+  // the first image is the `default` image.
+  const small = [1, 2, 3].map(
+    (x) => `https://img.youtube.com/vi/${id}/${x}.jpg`,
+  );
+
+  small.unshift(`https://img.youtube.com/vi/${id}/default.jpg`);
+
+  const defaultImage = {
+    mq: `https://img.youtube.com/vi/${id}/mqdefault.jpg`,
+    hq: `https://img.youtube.com/vi/${id}/hqdefault.jpg`,
+    sd: `https://img.youtube.com/vi/${id}/sddefault.jpg`,
+    maxRes: `https://img.youtube.com/vi/${id}/maxresdefault.jpg`,
+  };
+
+  return { small, default: defaultImage };
+};
+
+const getVideoUrl = (id: string): string =>
+  `https://www.youtube.com/watch?v=${id}`;
+
+export {
+  getThumbnails,
+  getVideoUrl,
+  extractIdFromUrl,
+  convertPercentageStringToNumber,
+  convertHHMMSSDurationToMs,
+  extractJsonLinkedData,
+  extractNumberFromString,
+  convertISO8601ToMs,
 };
