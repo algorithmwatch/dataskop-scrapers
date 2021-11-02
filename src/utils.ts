@@ -1,4 +1,3 @@
-import { URLSearchParams } from 'url';
 import { JsonLinkedData } from './types';
 
 /**

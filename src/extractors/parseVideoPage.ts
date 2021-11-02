@@ -1,4 +1,3 @@
-import { URLSearchParams } from 'url';
 import { HarkeParsingError, parse } from '../parse';
 import {
   Channel,

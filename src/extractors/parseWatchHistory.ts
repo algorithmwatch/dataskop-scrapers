@@ -1,4 +1,3 @@
-import { URLSearchParams } from 'url';
 import { parse } from '../parse';
 import {
   ParsedWatchHistory,
