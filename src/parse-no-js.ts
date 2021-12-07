@@ -24,7 +24,12 @@ const parseVideoNoJs = (html: string) => {
   const categoryEl = $root('div#watch7-content meta[itemprop="genre"]').first();
   const category = categoryEl.attr('content');
 
-  return { unlisted, viewCount, category };
+  const publishedAtEl = $root(
+    'div#watch7-content meta[itemprop="datePublished"]',
+  ).first();
+  const publishedAt = publishedAtEl.attr('content');
+
+  return { unlisted, viewCount, category, publishedAt };
 };
 
 export { parseVideoNoJs };

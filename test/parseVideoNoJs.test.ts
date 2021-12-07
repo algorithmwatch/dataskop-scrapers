@@ -16,6 +16,7 @@ describe('video no js', () => {
     expect(parsedResult.unlisted).toBe(false);
     expect(parsedResult.viewCount).toBeGreaterThan(10);
     expect(parsedResult.category.length).toBeGreaterThan(10);
+    expect(parsedResult.publishedAt.length).toBeGreaterThan(8);
   });
 });
 
@@ -34,6 +35,7 @@ describe('video no js - unlisted', () => {
     expect(parsedResult.unlisted).toBe(true);
     expect(parsedResult.viewCount).toBeGreaterThan(10);
     expect(parsedResult.category.length).toBeGreaterThan(10);
+    expect(parsedResult.publishedAt.length).toBeGreaterThan(8);
   });
 });
 
