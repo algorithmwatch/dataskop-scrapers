@@ -1,9 +1,21 @@
 # harke-puppeteer
 
-## Dev setup
+Headless scraper for YouTube using Puppeteer based on our YouTube parser [harke](https://github.com/algorithmwatch/harke).
+It's mainly used for testing the parsers as well as monitoring some playlists on a server (without API).
 
-1. Run `yarn` to install dependencies
-2. Run `yarn dev:main` for development mode
+## Installation
+
+```bash
+git clone https://github.com/algorithmwatch/harke.git
+cd harke
+yarn install
+yarn build
+cd ..
+git clone https://github.com/algorithmwatch/harke-puppeteer.git
+cd harke-puppeteer
+yarn install
+yarn add ../harke
+```
 
 ## Usage
 
@@ -13,25 +25,25 @@
 yarn run cli -l
 ```
 
-### all
+### Rnn all parsers to check if they are working
 
 ```
 yarn run cli -a
 ```
 
-### Watch History
+### Watch history
 
 ```
 yarn run cli -w
 ```
 
-### Search History
+### Search history
 
 ```
 yarn run cli -h
 ```
 
-### Get HTML from Video
+### Single video
 
 ```
 yarn run cli -v https://www.youtube.com/watch?v=IWlGDbMEtxM
@@ -43,41 +55,12 @@ yarn run cli -v https://www.youtube.com/watch?v=IWlGDbMEtxM
 yarn run cli -s antifa
 ```
 
-## Using harke
+### Monitoring
 
-```bash
-cd harke
-yarn build
-cd ../harke-puppeteer
-yarn add ../harke
-```
+To monitor YouTube's news playlists.
 
-## Log in to Google (complicated)
-
-We have to use some obfuscation to make the Google login work.
-We are using: <https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth>
-
-### Firefox
-
-Alternativly, we could use puppeteer with Firefox.
-To setup, specify this in `.launch`:
-
-```
-  product: 'firefox',
-```
-
-```bash
-yarn remove puppeteer
-PUPPETEER_PRODUCT=firefox yarn add puppeteer
-```
-
-Unfortunatly, using it with Firefox was buggy. (But Google was not blocking the login)
-
-## Monitoring
-
-- install npm, yarn
-- install all missing deps for puppeeter
-- `./deploy.sh`
+- install npm, yarn, and all missing deps for puppeeter on your server
+- `./deploy.sh` (see script below)
 - then:
 
 ```bash
@@ -111,6 +94,35 @@ echo $date
 cd /root/code/harke-puppeteer
 yarn run cli -m --dbLocation $db_location
 ```
+
+Crontab:
+
+```bash
+*/7 * * * * /root/run.sh
+```
+
+## Documentation
+
+### Log in to Google (complicated)
+
+We have to use some obfuscation to make the Google login work.
+We are using: <https://github.com/berstend/puppeteer-extra/tree/master/packages/puppeteer-extra-plugin-stealth>
+
+### Firefox
+
+Alternativly, we could use puppeteer with Firefox.
+To setup, specify this in `.launch`:
+
+```
+  product: 'firefox',
+```
+
+```bash
+yarn remove puppeteer
+PUPPETEER_PRODUCT=firefox yarn add puppeteer
+```
+
+Unfortunatly, using it with Firefox was buggy. (But Google was not blocking the login)
 
 ## License
 
