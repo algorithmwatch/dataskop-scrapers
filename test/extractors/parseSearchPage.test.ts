@@ -1,4 +1,4 @@
-import fs from 'fs';
+import * as fs from 'fs';
 import { parseSearchResultsVideos } from '../../src';
 import { ParserResult } from '../../src/types';
 

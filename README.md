@@ -7,20 +7,19 @@ Parse YouTube's HTML with TypeScript.
 We are storing HTML test files with [git lfs](https://git-lfs.github.com/).
 Please set it up.
 
-1. Run `yarn` to install dependencies
-2. Run `yarn dev` for development mode
-
-Based on https://khalilstemmler.com/blogs/typescript/node-starter-project/
+```
+npm i
+```
 
 ## Release a new Version
 
 Choose a new version according to <https://semver.org/>.
 
 ```bash
-yarn version --major
-yarn version --minor
-yarn version --patch
-yarn version --prerelease
+npm version major
+npm version minor
+npm version patch
+npm version prerelease
 ```
 
 Push tags to GitHub.

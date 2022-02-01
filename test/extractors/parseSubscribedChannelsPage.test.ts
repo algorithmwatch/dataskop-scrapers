@@ -1,4 +1,4 @@
-import fs from 'fs';
+import * as fs from 'fs';
 import { parseSubscribedChannels } from '../../src';
 import { ParserResult, SubscribedChannel } from '../../src/types';
 

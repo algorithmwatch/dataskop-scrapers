@@ -1,4 +1,4 @@
-import fs from 'fs';
+import * as fs from 'fs';
 import { parseVideoNoJs } from '../src';
 
 describe('video no js', () => {

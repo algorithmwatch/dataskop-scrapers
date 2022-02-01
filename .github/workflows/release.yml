@@ -26,8 +26,8 @@ jobs:
           registry-url: "https://npm.pkg.github.com"
           # Defaults to the user or organization that owns the workflow file
           scope: "@algorithmwatch"
-      - run: yarn
-      - run: yarn test
-      - run: yarn publish
+      - run: npm
+      - run: npm test
+      - run: npm publish
         env:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
