@@ -1,8 +1,6 @@
-import constants from '@algorithmwatch/harke/build/constants';
+import { constants } from '@algorithmwatch/harke';
 import { JSONFile, Low } from 'lowdb';
-import { getPlaylist } from '.';
-
-const { newsPlaylists } = constants;
+import { getPlaylist } from './get-html';
 
 type ScrapeResult = {
   result: any;
@@ -18,7 +16,7 @@ const monitorDeNews = async (dbLocation: string): Promise<void> => {
   const adapter = new JSONFile<Data>(dbLocation);
   const db = new Low<Data>(adapter);
 
-  for (const pl of newsPlaylists.de) {
+  for (const pl of constants.newsPlaylists.de) {
     const result = await getPlaylist(pl.id);
 
     await db.read();

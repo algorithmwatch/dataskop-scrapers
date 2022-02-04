@@ -1,15 +1,6 @@
 /* eslint-disable @typescript-eslint/explicit-module-boundary-types */
 /* eslint-disable no-console */
-import harke from '@algorithmwatch/harke/build';
-import fs from 'fs';
-import { LaunchOptions } from 'puppeteer';
-import puppeteer from 'puppeteer-extra';
-import StealthPlugin from 'puppeteer-extra-plugin-stealth';
-import { HarkeInvalidUrl } from './errors';
-import { isValidUrl } from './util';
-
-// some problems with commonjs modules
-const {
+import {
   buildSearchUrl,
   parsePlaylistPage,
   parseSearchHistory,
@@ -18,45 +9,17 @@ const {
   parseVideoPage,
   parseWatchHistory,
   searchHistoryUrl,
-  subscribedChannelsUrls,
+  subscribedChannelsUrl,
   watchHistoryUrl,
-} = harke;
+} from '@algorithmwatch/harke';
+import fs from 'fs';
+import { closeBrowser, newPage } from '../browser';
+import { isValidUrl } from '../util';
 
-// add stealth plugin and use defaults (all evasion techniques)
-puppeteer.use(StealthPlugin());
-
-let browser = null;
-
-const setupBrowser = async () => {
-  if (browser !== null) return browser;
-
-  browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    // headless: false,
-    userDataDir: './user_data', // `userDataDir` to keep login via sessions
-  } as LaunchOptions);
-
-  return browser;
-};
-
-const closeBrowser = async () => {
-  await browser.close();
-  browser = null;
-};
-
-const newPage = async () => {
-  const b = await setupBrowser();
-  const page = await b.newPage();
-  await page.setViewport({
-    width: 1920,
-    height: 1080,
-    deviceScaleFactor: 1,
-  });
-  return page;
-};
+// TOOD: make headless work with browser
 
 async function getHtml(url: string, closePage = false) {
-  if (!isValidUrl(url)) throw HarkeInvalidUrl;
+  if (!isValidUrl(url)) throw 'Invalid url';
 
   const page = await newPage();
 
@@ -119,7 +82,7 @@ function getSearchHistory(outputLocation = null) {
 function getSubscribedChannels(outputLocation = null) {
   console.log('subscribed channels');
   return goToUrlandParse(
-    subscribedChannelsUrls,
+    subscribedChannelsUrl,
     parseSubscribedChannels,
     outputLocation,
   );
