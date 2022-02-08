@@ -13,7 +13,7 @@ const cli = meow(cliHelpText, {
   flags: {
     youtube: { type: 'boolean' },
     tiktok: { type: 'boolean' },
-    headless: { type: 'boolean' },
+    headless: { type: 'boolean', default: false },
     login: { type: 'boolean', alias: 'l' },
     credentials: { type: 'string' },
     playlist: { type: 'boolean', alias: 'p' },
@@ -50,6 +50,13 @@ const cli = meow(cliHelpText, {
     monitor: {
       type: 'boolean',
       alias: 'm',
+    },
+    feed: {
+      type: 'boolean',
+    },
+    scroll: {
+      type: 'number',
+      default: 30,
     },
     dbLocation: {
       type: 'string',

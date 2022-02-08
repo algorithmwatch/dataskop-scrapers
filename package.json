@@ -22,9 +22,11 @@
   },
   "dependencies": {
     "@algorithmwatch/harke": "^0.4.5",
+    "lodash": "^4.17.21",
     "lowdb": "^3.0.0",
     "meow": "^9.0.0",
     "puppeteer": "9",
+    "puppeteer-autoscroll-down": "^1.0.0",
     "puppeteer-extra": "^3.1.18",
     "puppeteer-extra-plugin-stealth": "^2.7.8",
     "tiktok-captcha-solver": "^0.0.7",

@@ -1,6 +1,7 @@
 import { LaunchOptions } from 'puppeteer';
 import puppeteer from 'puppeteer-extra';
 import StealthPlugin from 'puppeteer-extra-plugin-stealth';
+import { randomNormalNumber } from './util';
 
 // add stealth plugin and use defaults (all evasion techniques)
 puppeteer.use(StealthPlugin());
@@ -12,7 +13,7 @@ const setupBrowser = async (options) => {
 
   browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox'],
-    // userDataDir: './user_data', // `userDataDir` to keep login via sessions
+    userDataDir: './user_data', // `userDataDir` to keep login via sessions
     ...options,
   } as LaunchOptions);
 
@@ -35,4 +36,6 @@ const newPage = async (options = {}) => {
   return page;
 };
 
-export { closeBrowser, newPage };
+const randomDelay = (page) => page.waitForTimeout(randomNormalNumber(2000));
+
+export { closeBrowser, newPage, randomDelay };
