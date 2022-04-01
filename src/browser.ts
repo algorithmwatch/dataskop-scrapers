@@ -21,8 +21,10 @@ const setupBrowser = async (options) => {
 };
 
 const closeBrowser = async () => {
-  await browser.close();
-  browser = null;
+  if (browser != null) {
+    await browser.close();
+    browser = null;
+  }
 };
 
 const newPage = async (options = {}) => {

@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 import meow from 'meow';
-import runTT from './tiktok/commands';
-import runYt from './youtube/commands';
+import runTiktok from './tiktok/commands';
+import runYoutube from './youtube/commands';
 
 const cliHelpText = `
   Usage
-    $ npm run cli --youtube -l
-    $ npm run cli --youtube -a
+    $ npm run cli -- --youtube -l
+    $ npm run cli -- --youtube -a
 `;
 
 const cli = meow(cliHelpText, {
@@ -66,16 +66,20 @@ const cli = meow(cliHelpText, {
 });
 
 (async function () {
+  if (!cli.flags.tiktok && !cli.flags.youtube) {
+    console.error(
+      'Please explicity specify the platform using --tiktok or --youtube',
+    );
+  }
+
   console.log('storing htmls files in: ' + cli.flags.outputLocation);
   console.log('storing monitor data in: ' + cli.flags.dbLocation);
 
   if (cli.flags.youtube) {
-    runYt(cli);
+    runYoutube(cli);
   }
 
-  console.log(cli.flags.tiktok);
-
   if (cli.flags.tiktok) {
-    runTT(cli);
+    runTiktok(cli);
   }
 })();
