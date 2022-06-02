@@ -8,4 +8,5 @@ export * from './extractors/parseVideoPage';
 export * from './extractors/parseWatchHistory';
 export * from './parse-no-js';
 export * from './types';
+export * from './utils';
 export { constants };
