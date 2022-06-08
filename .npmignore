@@ -32,3 +32,10 @@ node_modules/
 .env.test
 
 .DS_Store
+
+# Ignore various files to keep package size down
+.*
+src
+test
+README.md
+jest*
