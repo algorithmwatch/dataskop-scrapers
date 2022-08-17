@@ -28,8 +28,7 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.5",
-    "lodash": "^4.17.21",
-    "tiktok-scraper": "^1.4.36"
+    "lodash": "^4.17.21"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.27",
