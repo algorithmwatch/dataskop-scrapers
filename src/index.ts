@@ -1,2 +1,2 @@
-export * from './redaction';
-// export * from './types';
+export * from './redact';
+export * from './scrape';

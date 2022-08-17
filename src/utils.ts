@@ -27,4 +27,6 @@ const getHtml = (url) => {
   });
 };
 
-export { getHtml };
+const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export { getHtml, delay };

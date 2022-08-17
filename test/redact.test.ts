@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-import { redactTiktokDump } from '../src/redaction';
+import { redactTiktokDump } from '../src/redact';
 import data from './data/filter8000-22-07-2022.json';
 
 describe('filter8000 dump from 22-07-2022', () => {
