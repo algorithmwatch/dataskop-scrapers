@@ -1,39 +1,114 @@
 import _ from 'lodash';
+import os from 'os';
 import { parseTikTokVideo } from './parse';
-import { delay, getHtml } from './utils';
+import { delay, getHtml, readJSON, writeJSON } from './utils';
 
-const fixUrl = (x: string) => {
-  return 'https://www.tiktok.com/@user/video' + x.match(/\/\d*\/$/)[0];
+const CACHE_DIR = os.homedir() + '/.dataskop-cache.json';
+
+const fixUrl = (url: string) => {
+  if (url.startsWith('https://www.tiktokv.com/share'))
+    return 'https://www.tiktok.com/@user/video' + url.match(/\/\d*\/$/)[0];
+  return url;
 };
 
-const scrapeTiktokVideos = async (videoUrls: string[], delayMs: number) => {
-  const results = [];
-  for (let url of videoUrls) {
-    try {
-      if (url.startsWith('https://www.tiktokv.com/share')) url = fixUrl(url);
+const scrapeTiktokVideos = async (
+  videoUrls: string[],
+  cache: any,
+  options: any,
+): Promise<any> => {
+  console.log(videoUrls.slice(0, 10));
+  console.log(options);
 
-      const html = (await getHtml(url)) as string;
+  const results = [];
+  const newCache = {};
+
+  for (const url of videoUrls) {
+    try {
+      if (url in cache) {
+        results.push(cache[url]);
+        continue;
+      }
+      if (url in newCache) {
+        results.push(newCache[url]);
+        continue;
+      }
+      if (options.verbose) {
+        console.log(`Fetching ${url}`);
+      }
+      const html = (await getHtml(fixUrl(url))) as string;
       const metaData = parseTikTokVideo(html);
-      results.push({
+      const result = {
         meta: { results: metaData, scrapedAt: Date.now(), error: null },
-      });
-      await delay(delayMs);
+      };
+      results.push(result);
+      newCache[url] = result;
+
+      if (options.verbose) {
+        console.log('Success');
+      }
+
+      if (options.saveCache) {
+        writeJSON(CACHE_DIR, _.merge(cache, newCache));
+      }
+
+      await delay(options.delay);
     } catch (error) {
       results.push({ meta: { results: null, scrapedAt: Date.now(), error } });
+
+      if (options.verbose) {
+        console.error(error);
+      }
     }
   }
-  return results;
+  return [results, newCache];
 };
 
-const getTiktokVideosFromDump = async (dump: any, limit = 10, delay = 1000) => {
+const getTiktokVideosFromDump = async (
+  dump: any,
+  limit = 10,
+  cache = {},
+  options = { delay: 1000, saveCache: false, verbose: false },
+) => {
   const videoList: any[] = dump['Activity']['Video Browsing History'][
     'VideoList'
-  ].slice(0, limit);
-  const metaDataList = await scrapeTiktokVideos(
+  ].slice(0, limit ? limit : 9999999999999999);
+  const [metaDataList, newCacheItems] = await scrapeTiktokVideos(
     videoList.map((x) => x['VideoLink']),
-    delay,
+    cache,
+    options,
   );
-  return _.merge(videoList, metaDataList);
+  return [_.merge(videoList, metaDataList), newCacheItems];
 };
 
-export { scrapeTiktokVideos, getTiktokVideosFromDump };
+const getTiktokVideosFromDumpDev = async (
+  dump_location,
+  delay = 1000,
+  limit = 99999999,
+) => {
+  console.log(dump_location);
+  const dump = readJSON(dump_location);
+  const cache = readJSON(CACHE_DIR);
+
+  const result = [
+    await getTiktokVideosFromDump(dump, limit, cache, {
+      saveCache: true,
+      delay,
+      verbose: true,
+    }),
+  ];
+
+  // broken, fixme
+  const videos = result[0];
+
+  console.log(videos.length);
+
+  dump['Activity']['Video Browsing History']['VideoList'] = videos;
+
+  writeJSON(dump_location + '_enriched.json', dump);
+};
+
+export {
+  scrapeTiktokVideos,
+  getTiktokVideosFromDump,
+  getTiktokVideosFromDumpDev,
+};
