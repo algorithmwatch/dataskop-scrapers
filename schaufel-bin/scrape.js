@@ -1,5 +1,5 @@
 /*
-$ npm start ~/Downloads/data/000.json
+$ npm run scrape ~/Downloads/data/000.json 1000 10
 */
 
 const fs = require('fs');

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index.js"
+    "redact": "node redact.js",
+    "scrape": "node scrape.js"
   },
   "author": "",
   "license": "MIT",

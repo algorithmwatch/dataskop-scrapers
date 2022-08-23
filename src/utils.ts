@@ -31,6 +31,7 @@ const getHtml = (url: string): Promise<string> => {
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 const writeJSON = (path, data) => fs.writeFileSync(path, JSON.stringify(data));
+
 const readJSON = (path) => {
   if (!fs.existsSync(path)) {
     writeJSON(path, {});

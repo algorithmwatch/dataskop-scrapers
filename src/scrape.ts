@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import _ from 'lodash';
 import os from 'os';
 import { parseTikTokVideo } from './parse';
@@ -11,13 +12,35 @@ const fixUrl = (url: string) => {
   return url;
 };
 
+const pruneResult = (result) => {
+  return _.pick(result, [
+    'result.id',
+    'result.desc',
+    'result.createTime',
+    'result.author',
+    'result.nickname',
+    'result.authorId',
+    'result.video.duration',
+    'result.stats',
+    'result.music.id',
+    'result.music.title',
+    'result.music.authorName',
+    'result.music.original',
+    'result.diversificationLabels',
+    'scrapedAt',
+    'error',
+  ]);
+};
+
 const scrapeTiktokVideos = async (
   videoUrls: string[],
   cache: any,
   options: any,
 ): Promise<any> => {
-  console.log(videoUrls.slice(0, 10));
-  console.log(options);
+  if (options.verbose) {
+    console.log(`Starting to fetch ${videoUrls.length} videos.`);
+    console.log(options);
+  }
 
   const results = [];
   const newCache = {};
@@ -25,10 +48,19 @@ const scrapeTiktokVideos = async (
   for (const url of videoUrls) {
     try {
       if (url in cache) {
+        if (options.verbose) {
+          console.log('cache hit');
+        }
+
         results.push(cache[url]);
         continue;
       }
+
       if (url in newCache) {
+        if (options.verbose) {
+          console.log('new cache hit');
+        }
+
         results.push(newCache[url]);
         continue;
       }
@@ -38,7 +70,9 @@ const scrapeTiktokVideos = async (
       const html = (await getHtml(fixUrl(url))) as string;
       const metaData = parseTikTokVideo(html);
       const result = {
-        meta: { results: metaData, scrapedAt: Date.now(), error: null },
+        result: metaData,
+        scrapedAt: Date.now(),
+        error: null,
       };
       results.push(result);
       newCache[url] = result;
@@ -53,62 +87,84 @@ const scrapeTiktokVideos = async (
 
       await delay(options.delay);
     } catch (error) {
-      results.push({ meta: { results: null, scrapedAt: Date.now(), error } });
+      results.push({ result: null, scrapedAt: Date.now(), error });
 
       if (options.verbose) {
         console.error(error);
       }
     }
   }
-  return [results, newCache];
+  return [results, _.merge(cache, newCache)];
 };
 
 const getTiktokVideosFromDump = async (
   dump: any,
-  limit = 10,
+  limit: number | null = 10,
   cache = {},
   options = { delay: 1000, saveCache: false, verbose: false },
-) => {
-  const videoList: any[] = dump['Activity']['Video Browsing History'][
-    'VideoList'
-  ].slice(0, limit ? limit : 9999999999999999);
-  const [metaDataList, newCacheItems] = await scrapeTiktokVideos(
+): Promise<any> => {
+  let videoList: any[] =
+    dump['Activity']['Video Browsing History']['VideoList'];
+
+  if (limit != null) {
+    videoList = videoList.slice(0, limit);
+  }
+
+  const [metaDataList, newCache] = await scrapeTiktokVideos(
     videoList.map((x) => x['VideoLink']),
     cache,
     options,
   );
-  return [_.merge(videoList, metaDataList), newCacheItems];
+  return [
+    _.merge(
+      videoList,
+      metaDataList.map((x) => ({ meta: x })),
+    ),
+    newCache,
+  ];
 };
 
-const getTiktokVideosFromDumpDev = async (
-  dump_location,
+const enrichTiktokDump = async (
+  dump_location: string,
   delay = 1000,
-  limit = 99999999,
-) => {
+  limit = null,
+): Promise<any> => {
   console.log(dump_location);
   const dump = readJSON(dump_location);
   const cache = readJSON(CACHE_DIR);
 
-  const result = [
-    await getTiktokVideosFromDump(dump, limit, cache, {
-      saveCache: true,
-      delay,
-      verbose: true,
-    }),
-  ];
+  const result = await getTiktokVideosFromDump(dump, limit, cache, {
+    saveCache: true,
+    delay,
+    verbose: true,
+  });
 
-  // broken, fixme
-  const videos = result[0];
-
-  console.log(videos.length);
-
-  dump['Activity']['Video Browsing History']['VideoList'] = videos;
+  dump['Activity']['Video Browsing History']['VideoList'] = result[0];
 
   writeJSON(dump_location + '_enriched.json', dump);
+};
+
+const getTiktokVideoMeta = async (
+  videos: string[],
+  prune = true,
+): Promise<any> => {
+  const cache = readJSON(CACHE_DIR);
+
+  const results = await scrapeTiktokVideos(videos, cache, {
+    delay: 1000,
+    saveCache: false,
+    verbose: true,
+  });
+
+  writeJSON(CACHE_DIR, results[1]);
+
+  if (prune) return results[0].map(pruneResult);
+  return results[0];
 };
 
 export {
   scrapeTiktokVideos,
   getTiktokVideosFromDump,
-  getTiktokVideosFromDumpDev,
+  enrichTiktokDump,
+  getTiktokVideoMeta,
 };

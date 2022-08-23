@@ -1,5 +1,5 @@
 /*
-$ npm start ~/Downloads/data/000.json
+$ npm run redact ~/Downloads/data/000.json
 */
 
 const fs = require('fs');
