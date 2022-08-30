@@ -1,14 +1,32 @@
 /* eslint-disable no-console */
+import got from 'got';
 import _ from 'lodash';
 import os from 'os';
 import { parseTikTokVideo } from './parse';
-import { delay, getHtml, readJSON, writeJSON } from './utils';
+import { delay, readJSON, writeJSON } from './utils';
 
 const CACHE_DIR = os.homedir() + '/.dataskop-cache.json';
 
+const headers = {
+  'User-Agent':
+    'Mozilla/5.0 (Macintosh; Intel Mac OS X 12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Vivaldi/4.3',
+};
+
+const get = async (url, headers) => {
+  const resp = await got(url, { http2: true, headers });
+  return [resp.rawBody.toString(), resp.statusCode];
+};
+
+const prependTiktokSuffix = (id: string | number): string => `tv${id}`;
+
+const idToTiktokUrl = (id: string) =>
+  `https://www.tiktok.com/@user/video/${id.slice(2)}/`;
+
+const getIdFromUrl = (url: string): string => url.match(/\/(\d*)\/$/)[1];
+
 const fixUrl = (url: string) => {
   if (url.startsWith('https://www.tiktokv.com/share'))
-    return 'https://www.tiktok.com/@user/video' + url.match(/\/\d*\/$/)[0];
+    return `https://www.tiktok.com/@user/video/${getIdFromUrl(url)}/`;
   return url;
 };
 
@@ -67,8 +85,17 @@ const scrapeTiktokVideos = async (
       if (options.verbose) {
         console.log(`Fetching ${url}`);
       }
-      const html = (await getHtml(fixUrl(url))) as string;
-      const metaData = parseTikTokVideo(html);
+      const [html, status] = await get(fixUrl(url), headers);
+      if (options.verbose) {
+        console.log(`Fetching done`);
+      }
+
+      if (status !== 200)
+        throw new Error(
+          `Fetching failed with status code ${status} for ${url}`,
+        );
+
+      const metaData = parseTikTokVideo(html as string);
       const result = {
         result: metaData,
         scrapedAt: Date.now(),
@@ -78,7 +105,7 @@ const scrapeTiktokVideos = async (
       newCache[url] = result;
 
       if (options.verbose) {
-        console.log('Success');
+        console.log('Parsing finished successfully');
       }
 
       if (options.saveCache) {
@@ -115,6 +142,7 @@ const getTiktokVideosFromDump = async (
     cache,
     options,
   );
+
   return [
     _.merge(
       videoList,
@@ -163,8 +191,12 @@ const getTiktokVideoMeta = async (
 };
 
 export {
+  fixUrl,
+  getIdFromUrl,
   scrapeTiktokVideos,
   getTiktokVideosFromDump,
   enrichTiktokDump,
   getTiktokVideoMeta,
+  prependTiktokSuffix,
+  idToTiktokUrl,
 };

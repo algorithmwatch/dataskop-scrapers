@@ -2,29 +2,65 @@ import fs from 'fs';
 import https from 'https';
 
 /**
- * Get HTML from URL
+ * Simplify requests with node
+ *
+ * Don't use it for scraping because TT blocks http1, we need http2.
  */
-const getHtml = (url: string): Promise<string> => {
+const request = (
+  url: string,
+  method = 'get',
+  headers: any,
+  data = null,
+): Promise<[string | JSON, number]> => {
   const urlObj = new URL(url);
+
+  if (data !== null) {
+    data = JSON.stringify(data);
+
+    headers = {
+      ...headers,
+      'Content-Type': 'application/json',
+      'Content-Length': data.length,
+    };
+  }
+
   return new Promise((resolve, reject) => {
-    https
-      .get(
+    const req = https
+      .request(
         {
+          method,
           hostname: urlObj.hostname,
           path: urlObj.pathname,
-          headers: {
-            'USER-AGENT':
-              'Mozilla/5.0 (Macintosh; Intel Mac OS X 12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Vivaldi/4.3',
-          },
+          headers,
+          timeout: 60 * 1000,
         },
         (res) => {
           res.setEncoding('utf8');
           let body = '';
           res.on('data', (chunk) => (body += chunk));
-          res.on('end', () => resolve(body));
+          res.on('end', () =>
+            resolve([
+              res.headers['content-type'] == 'application/json'
+                ? JSON.parse(body)
+                : body,
+              res.statusCode,
+            ]),
+          );
         },
       )
-      .on('error', reject);
+      .on('error', (e) => {
+        console.error(e);
+        reject(e);
+      });
+
+    req.on('timeout', () => {
+      console.log('timeout');
+      req.destroy();
+      reject();
+    });
+
+    if (data !== null) req.write(data);
+    req.end();
   });
 };
 
@@ -40,4 +76,6 @@ const readJSON = (path) => {
   return JSON.parse(String(fs.readFileSync(path)));
 };
 
-export { getHtml, delay, writeJSON, readJSON };
+const b64encode = (str: string): string => Buffer.from(str).toString('base64');
+
+export { request, delay, writeJSON, readJSON, b64encode };

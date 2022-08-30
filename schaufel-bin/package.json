@@ -4,12 +4,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "redact": "node redact.js",
-    "scrape": "node scrape.js"
+    "dump-redact": "node dump-redact.js",
+    "dump-scrape": "node dump-scrape.js",
+    "dump-add-videos": "node dump-add-videos.js",
+    "work": "node work.js"
   },
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@algorithmwatch/schaufel": "file:.."
+    "@algorithmwatch/schaufel": "file:..",
+    "dotenv": "^16.0.1"
   }
 }

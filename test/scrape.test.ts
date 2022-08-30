@@ -1,13 +1,28 @@
-import { getTiktokVideoMeta, getTiktokVideosFromDump } from '../src/scrape';
+import {
+  fixUrl,
+  getTiktokVideoMeta,
+  getTiktokVideosFromDump,
+} from '../src/scrape';
 
 import data from './data/filter8000-22-07-2022.json';
 
-jest.setTimeout(90000);
+jest.setTimeout(10000);
 
 describe('filter8000 dump from 22-07-2022', () => {
+  test('check for fix url', () => {
+    expect(
+      fixUrl('https://www.tiktokv.com/share/video/7108640878507445509/'),
+    ).toBe('https://www.tiktok.com/@user/video/7108640878507445509/');
+  });
+
   test('enrich dump', async () => {
-    const videos = await getTiktokVideosFromDump(data, 2);
-    console.log(JSON.stringify(videos, null, 2));
+    const videos = await getTiktokVideosFromDump(
+      data,
+      2,
+      {},
+      { verbose: true, delay: 1000, saveCache: false },
+    );
+    // console.log(JSON.stringify(videos, null, 2));
   });
 });
 
