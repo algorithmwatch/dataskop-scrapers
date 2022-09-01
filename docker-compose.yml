@@ -28,3 +28,9 @@ services:
       - ./docker/.env
     command: curl https://am.i.mullvad.net/connected
     restart: unless-stopped
+
+    logging:
+      driver: "gelf"
+      options:
+        gelf-address: "udp://gra1.logs.ovh.com:2202"
+        env: _X-OVH-TOKEN
