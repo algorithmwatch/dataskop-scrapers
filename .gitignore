@@ -68,3 +68,4 @@ yarn-error.log*
 dist
 data
 docker/gluetun-volume
+docker/volume

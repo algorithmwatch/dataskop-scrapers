@@ -1,20 +1,18 @@
 /* eslint-disable no-console */
-import got from 'got';
 import _ from 'lodash';
 import os from 'os';
+import { get } from './mullvad';
 import { parseTikTokVideo } from './parse';
 import { delay, readJSON, writeJSON } from './utils';
 
-const CACHE_DIR = os.homedir() + '/.dataskop-cache.json';
+let CACHE_DIR = os.homedir() + '/.schaufel-cache.json';
+
+if (process.env.CACHE_DIR)
+  CACHE_DIR = process.env.CACHE_DIR + '/schaufel-cache.json';
 
 const headers = {
   'User-Agent':
     'Mozilla/5.0 (Macintosh; Intel Mac OS X 12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Vivaldi/4.3',
-};
-
-const get = async (url, headers) => {
-  const resp = await got(url, { http2: true, headers });
-  return [resp.rawBody.toString(), resp.statusCode];
 };
 
 const prependTiktokSuffix = (id: string | number): string => `tv${id}`;
@@ -67,7 +65,7 @@ const scrapeTiktokVideos = async (
     try {
       if (url in cache) {
         if (options.verbose) {
-          console.log('cache hit');
+          console.log('Cache hit');
         }
 
         results.push(cache[url]);
@@ -76,7 +74,7 @@ const scrapeTiktokVideos = async (
 
       if (url in newCache) {
         if (options.verbose) {
-          console.log('new cache hit');
+          console.log('New cache hit');
         }
 
         results.push(newCache[url]);
@@ -179,7 +177,7 @@ const getTiktokVideoMeta = async (
   const cache = readJSON(CACHE_DIR);
 
   const results = await scrapeTiktokVideos(videos, cache, {
-    delay: 1000,
+    delay: 0,
     saveCache: false,
     verbose: true,
   });
