@@ -1,0 +1,30 @@
+version: "3"
+services:
+  gluetun:
+    image: qmcgaw/gluetun
+    container_name: gluetun
+    # line above must be uncommented to allow external containers to connect. See https://github.com/qdm12/gluetun/wiki/Connect-a-container-to-gluetun#external-container-to-gluetun
+    cap_add:
+      - NET_ADMIN
+    devices:
+      - /dev/net/tun:/dev/net/tun
+    # ports:
+    #   - 8888:8888/tcp # HTTP proxy
+    #   - 8388:8388/tcp # Shadowsocks
+    #   - 8388:8388/udp # Shadowsocks
+    volumes:
+      - ./docker/gluetun-volume:/gluetun
+    env_file:
+      - ./docker/.env
+  worker:
+    network_mode: "service:gluetun"
+    build:
+      context: .
+      dockerfile: ./docker/Dockerfile
+    image: schaufel_worker
+    volumes:
+      - ./docker/volume:/schaufel:z
+    env_file:
+      - ./docker/.env
+    command: curl https://am.i.mullvad.net/connected
+    restart: unless-stopped
