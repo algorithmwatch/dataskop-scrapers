@@ -12,7 +12,7 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@algorithmwatch/schaufel": "file:..",
+    "@algorithmwatch/schaufel": "latest",
     "dotenv": "^16.0.1"
   }
 }

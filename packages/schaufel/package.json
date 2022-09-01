@@ -1,0 +1,70 @@
+{
+  "name": "@algorithmwatch/schaufel",
+  "version": "0.1.0",
+  "type": "module",
+  "source": "src/index.ts",
+  "exports": {
+    "require": "./dist/schaufel.cjs",
+    "default": "./dist/schaufel.modern.js"
+  },
+  "main": "./dist/schaufel.cjs",
+  "module": "./dist/schaufel.module.js",
+  "unpkg": "./dist/schaufel.umd.js",
+  "types": "./dist/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/algorithmwatch/schaufel.git"
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "author": "AlgorithmWatch",
+  "license": "MIT",
+  "scripts": {
+    "build": "microbundle",
+    "dev": "microbundle watch",
+    "test": "jest",
+    "test:dev": "jest --watchAll"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.5",
+    "got": "^11.8.5",
+    "lodash": "^4.17.21"
+  },
+  "peerDependencies": {
+    "@algorithmwatch/schaufel-ab": "*"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.27",
+    "@types/jest": "^26.0.20",
+    "@types/lodash": "^4.14.182",
+    "@types/node": "^14.14.33",
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "@typescript-eslint/parser": "^4.17.0",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-jest": "^24.2.1",
+    "jest": "^26.6.3",
+    "microbundle": "^0.14.2",
+    "prettier": "^2.2.1",
+    "ts-jest": "^26.5.3",
+    "ts-node": "^10.9.1",
+    "typescript": "^4.2.3"
+  },
+  "prettier": {
+    "overrides": [
+      {
+        "files": [
+          ".prettierrc",
+          ".babelrc",
+          ".eslintrc"
+        ],
+        "options": {
+          "parser": "json"
+        }
+      }
+    ],
+    "singleQuote": true,
+    "trailingComma": "all"
+  }
+}
