@@ -111,6 +111,8 @@ const workOnDoneData = async (data: any) => {
     done: true,
     error: !allGood,
   });
+  if (allGood) console.log('Done working on `input_done`');
+  else console.log(log);
 };
 
 const workOnTodo = async (data) => {
@@ -133,6 +135,7 @@ const workOnTodo = async (data) => {
       done: numDoneIds === ids.length,
     });
   }
+  console.log('Done working on `input_todo`');
 };
 
 const startJob = async (): Promise<void> => {

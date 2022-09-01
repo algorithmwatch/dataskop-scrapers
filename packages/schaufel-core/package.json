@@ -1,5 +1,5 @@
 {
-  "name": "@algorithmwatch/schaufel",
+  "name": "@algorithmwatch/schaufel-core",
   "version": "0.1.0",
   "type": "module",
   "source": "src/index.ts",

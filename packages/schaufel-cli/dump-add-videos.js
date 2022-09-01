@@ -3,11 +3,11 @@
 $ npm run dump-add-video ~/Downloads/data/000.json
 */
 
-require('dotenv').config();
+require("dotenv").config();
 
-const process = require('process');
-const schaufel = require('@algorithmwatch/schaufel');
-const fs = require('fs');
+const process = require("process");
+const schaufel = require("@algorithmwatch/schaufel-core");
+const fs = require("fs");
 
 const args = process.argv.slice(2);
 

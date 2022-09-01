@@ -3,10 +3,10 @@
 $ npm run work
 */
 
-require('dotenv').config();
+require("dotenv").config();
 
-const process = require('process');
-const schaufel = require('@algorithmwatch/schaufel');
+const process = require("process");
+const schaufel = require("@algorithmwatch/schaufel-core");
 
 const args = process.argv.slice(2);
 
