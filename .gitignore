@@ -69,3 +69,4 @@ dist
 data
 docker/gluetun-volume
 docker/volume
+deploy.sh

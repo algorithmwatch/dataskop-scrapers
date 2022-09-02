@@ -23,7 +23,7 @@ const getProxy = async (): Promise<string> => {
 };
 
 const get = async (url, headers) => {
-  const MAX_TRIES = 3;
+  const MAX_TRIES = 5;
   for (const i of _.range(MAX_TRIES)) {
     const tunnel = (new SocksProxyAgent(await getProxy()) as any).agent;
     const resp: any = await got(url, {
@@ -32,11 +32,11 @@ const get = async (url, headers) => {
       headers,
       agent: { http: tunnel, https: tunnel, http2: tunnel },
     });
-    if (resp.statusCode == 200 || i + 1 == MAX_TRIES)
+    if (resp.statusCode == 200 || resp.statusCode == 404 || i + 1 == MAX_TRIES)
       return [resp.rawBody.toString(), resp.statusCode];
     else {
       console.error('Error fetching, retry');
-      await delay(1000);
+      await delay(500 * i);
     }
   }
 };

@@ -8,10 +8,32 @@ require("dotenv").config();
 const process = require("process");
 const schaufel = require("@algorithmwatch/schaufel-core");
 
-const args = process.argv.slice(2);
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
-console.log(args[0]);
+let cont = true;
+
+process.on("SIGTERM", function () {
+  console.log("*** GOT SIGTERM ***");
+  cont = false;
+  // process.exit(0);
+});
+
+process.on("SIGINT", function () {
+  console.log("*** GOT SIGINT ***");
+  cont = false;
+  // process.exit(0);
+});
 
 (async () => {
-  await schaufel.startJob();
+  while (true) {
+    await schaufel.startJob();
+    if (!cont) {
+      console.log("About to exit `work`");
+      process.exit(0);
+    }
+
+    // Don't spam the server and wait some seconds
+    console.log("Waiting");
+    await delay(3000);
+  }
 })();

@@ -21,6 +21,9 @@ services:
     build:
       context: .
       dockerfile: ./docker/Dockerfile
+      args:
+         NPM_GITHUB_AUTH: ${NPM_GITHUB_AUTH}
+
     image: schaufel_worker
     volumes:
       - ./docker/volume:/schaufel
@@ -29,7 +32,7 @@ services:
     environment:
       CACHE_DIR: "/schaufel"
     command: bash -c "cd packages/schaufel-cli && npm run work"
-    restart: unless-stopped
+    restart: on-failure:3
 
     logging:
       driver: "gelf"
