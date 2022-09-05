@@ -3,6 +3,7 @@ import got from 'got';
 import _ from 'lodash';
 import memoize from 'memoizee';
 import { SocksProxyAgent } from 'socks-proxy-agent';
+import UserAgent from 'user-agents';
 import { delay } from './utils';
 
 const _getProxyList = async () => {
@@ -25,11 +26,12 @@ const getProxy = async (): Promise<string> => {
 const get = async (url, headers) => {
   const MAX_TRIES = 5;
   for (const i of _.range(MAX_TRIES)) {
+    const userAgent = new UserAgent().toString();
     const tunnel = (new SocksProxyAgent(await getProxy()) as any).agent;
     const resp: any = await got(url, {
       throwHttpErrors: false,
       http2: true,
-      headers,
+      headers: { 'User-Agent': userAgent, ...headers },
       agent: { http: tunnel, https: tunnel, http2: tunnel },
     });
     if (resp.statusCode == 200 || resp.statusCode == 404 || i + 1 == MAX_TRIES)

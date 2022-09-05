@@ -10,11 +10,6 @@ let CACHE_DIR = os.homedir() + '/.schaufel-cache.json';
 if (process.env.CACHE_DIR)
   CACHE_DIR = process.env.CACHE_DIR + '/schaufel-cache.json';
 
-const headers = {
-  'User-Agent':
-    'Mozilla/5.0 (Macintosh; Intel Mac OS X 12_1) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36 Vivaldi/4.3',
-};
-
 const prependTiktokSuffix = (id: string | number): string => `tv${id}`;
 
 const idToTiktokUrl = (id: string) =>
@@ -83,34 +78,47 @@ const scrapeTiktokVideos = async (
       if (options.verbose) {
         console.log(`Fetching ${url}`);
       }
-      const [html, status] = await get(fixUrl(url), headers);
-      if (options.verbose) {
-        console.log(`Fetching done`);
+      let parseTry = 0;
+      try {
+        // eslint-disable-next-line no-constant-condition
+        while (true) {
+          const [html, status] = await get(fixUrl(url), {});
+          if (options.verbose) {
+            console.log(`Fetching done`);
+          }
+
+          if (status !== 200)
+            throw new Error(
+              `Fetching failed with status code ${status} for ${url}`,
+            );
+
+          const metaData = parseTikTokVideo(html as string);
+          const result = {
+            result: metaData,
+            scrapedAt: Date.now(),
+            error: null,
+          };
+          results.push(result);
+          newCache[url] = result;
+
+          if (options.verbose) {
+            console.log('Parsing finished successfully');
+          }
+
+          if (options.saveCache) {
+            writeJSON(CACHE_DIR, _.merge(cache, newCache));
+          }
+
+          await delay(options.delay);
+          break;
+        }
+      } catch (err) {
+        parseTry += 1;
+        if (parseTry < 5) {
+          await delay(1000 + 500 * parseTry);
+          continue;
+        } else throw err;
       }
-
-      if (status !== 200)
-        throw new Error(
-          `Fetching failed with status code ${status} for ${url}`,
-        );
-
-      const metaData = parseTikTokVideo(html as string);
-      const result = {
-        result: metaData,
-        scrapedAt: Date.now(),
-        error: null,
-      };
-      results.push(result);
-      newCache[url] = result;
-
-      if (options.verbose) {
-        console.log('Parsing finished successfully');
-      }
-
-      if (options.saveCache) {
-        writeJSON(CACHE_DIR, _.merge(cache, newCache));
-      }
-
-      await delay(options.delay);
     } catch (error) {
       results.push({ result: null, scrapedAt: Date.now(), error });
 
