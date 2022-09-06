@@ -20,7 +20,7 @@ describe('filter8000 dump from 22-07-2022', () => {
       data,
       2,
       {},
-      { verbose: true, delay: 1000, saveCache: false },
+      { verbose: true, delay: 1000, saveCache: false, proxy: true },
     );
     // console.log(JSON.stringify(videos, null, 2));
   });

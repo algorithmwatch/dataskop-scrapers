@@ -82,7 +82,7 @@ const scrapeTiktokVideos = async (
       try {
         // eslint-disable-next-line no-constant-condition
         while (true) {
-          const [html, status] = await get(fixUrl(url), {});
+          const [html, status] = await get(fixUrl(url), options.proxy);
           if (options.verbose) {
             console.log(`Fetching done`);
           }
@@ -134,7 +134,7 @@ const getTiktokVideosFromDump = async (
   dump: any,
   limit: number | null = 10,
   cache = {},
-  options = { delay: 1000, saveCache: false, verbose: false },
+  options = { delay: 1000, saveCache: false, verbose: false, proxy: true },
 ): Promise<any> => {
   let videoList: any[] =
     dump['Activity']['Video Browsing History']['VideoList'];
@@ -171,6 +171,7 @@ const enrichTiktokDump = async (
     saveCache: true,
     delay,
     verbose: true,
+    proxy: true,
   });
 
   dump['Activity']['Video Browsing History']['VideoList'] = result[0];
@@ -181,16 +182,20 @@ const enrichTiktokDump = async (
 const getTiktokVideoMeta = async (
   videos: string[],
   prune = true,
+  proxy = true,
+  useCache = true,
+  delay = 0,
 ): Promise<any> => {
-  const cache = readJSON(CACHE_DIR);
+  const cache = useCache ? readJSON(CACHE_DIR) : {};
 
   const results = await scrapeTiktokVideos(videos, cache, {
-    delay: 0,
+    delay,
     saveCache: false,
     verbose: true,
+    proxy,
   });
 
-  writeJSON(CACHE_DIR, results[1]);
+  if (useCache) writeJSON(CACHE_DIR, results[1]);
 
   if (prune) return results[0].map(pruneResult);
   return results[0];
