@@ -1,6 +1,6 @@
 {
   "name": "@algorithmwatch/schaufel-core",
-  "version": "0.1.0",
+  "version": "0.1.6",
   "type": "module",
   "source": "src/index.ts",
   "exports": {
@@ -31,7 +31,8 @@
     "got": "^11.8.5",
     "lodash": "^4.17.21",
     "memoizee": "^0.4.15",
-    "socks-proxy-agent": "^7.0.0"
+    "socks-proxy-agent": "^7.0.0",
+    "user-agents": "^1.0.1130"
   },
   "peerDependencies": {
     "@algorithmwatch/schaufel-ab": "*"

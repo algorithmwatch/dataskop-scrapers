@@ -21,14 +21,20 @@ jobs:
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@v2
         with:
-          always-auth: true
-          node-version: "12.x"
+          node-version: "16.x"
           registry-url: "https://npm.pkg.github.com"
           # Defaults to the user or organization that owns the workflow file
           scope: "@algorithmwatch"
-      - run: npm ci
-      - run: npm test
-      - run: npm run build
+
+      - name: Setup NPM auth token github packages
+        shell: bash
+        run: >
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.READ_WRITE_PACKAGES_TOKEN }}" >> .npmrc
+
+      - run: npm install
+      - run: npx turbo run build test
+      - run: cp .npmrc packages/schaufel-core/
       - run: npm publish
+        working-directory: packages/schaufel-core
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.READ_WRITE_PACKAGES_TOKEN }}

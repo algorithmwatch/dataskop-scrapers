@@ -1,5 +1,8 @@
 {
   "name": "schaufel-monorepo",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
   "version": "0.0.0",
   "private": true,
   "workspaces": [
@@ -13,8 +16,5 @@
   "devDependencies": {
     "prettier": "latest",
     "turbo": "latest"
-  },
-  "dependencies": {
-    "user-agents": "^1.0.1129"
   }
 }
