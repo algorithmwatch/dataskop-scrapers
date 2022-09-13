@@ -79,9 +79,9 @@ const scrapeTiktokVideos = async (
         console.log(`Fetching ${url}`);
       }
       let parseTry = 0;
-      try {
-        // eslint-disable-next-line no-constant-condition
-        while (true) {
+      // eslint-disable-next-line no-constant-condition
+      while (true) {
+        try {
           const [html, status] = await get(fixUrl(url), options.proxy);
           if (options.verbose) {
             console.log(`Fetching done`);
@@ -109,21 +109,28 @@ const scrapeTiktokVideos = async (
             writeJSON(CACHE_DIR, _.merge(cache, newCache));
           }
 
-          await delay(options.delay);
+          if (options.delay > 0) await delay(options.delay);
           break;
+        } catch (err) {
+          if (err.message == 'Parsing error' && parseTry < 3) {
+            parseTry += 1;
+            if (options.verbose) {
+              console.log('Retrying parsing');
+            }
+            await delay(1000 + 500 * parseTry);
+            continue;
+          } else throw err;
         }
-      } catch (err) {
-        parseTry += 1;
-        if (parseTry < 5) {
-          await delay(1000 + 500 * parseTry);
-          continue;
-        } else throw err;
       }
     } catch (error) {
-      results.push({ result: null, scrapedAt: Date.now(), error });
+      results.push({
+        result: null,
+        scrapedAt: Date.now(),
+        error: error.message,
+      });
 
       if (options.verbose) {
-        console.error(error);
+        console.log(`Failed to scrape with: ${error.message}`);
       }
     }
   }

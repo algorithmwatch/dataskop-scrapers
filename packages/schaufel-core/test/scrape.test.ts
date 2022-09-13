@@ -6,7 +6,7 @@ import {
 
 import data from './data/filter8000-22-07-2022.json';
 
-jest.setTimeout(10000);
+jest.setTimeout(20000);
 
 describe('filter8000 dump from 22-07-2022', () => {
   test('check for fix url', () => {
@@ -24,13 +24,18 @@ describe('filter8000 dump from 22-07-2022', () => {
     );
     // console.log(JSON.stringify(videos, null, 2));
   });
-});
 
-describe('pruned metadata from filter8000 dump from 22-07-2022', () => {
   test('get video meta', async () => {
     const videos = data['Activity']['Video Browsing History']['VideoList'].map(
       (x) => x['VideoLink'],
     );
     const meta = await getTiktokVideoMeta(videos.slice(0, 2));
   });
+});
+
+describe('Check parsing error', () => {
+  test('Check parsing error', async () =>
+    expect(
+      (await getTiktokVideoMeta(['https://johannesfilter.com']))[0].error,
+    ).toBe('Parsing error'));
 });

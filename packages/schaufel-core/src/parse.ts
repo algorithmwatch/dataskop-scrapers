@@ -55,7 +55,7 @@ const parseTikTokVideo = (html: string): any => {
     return videoData;
   }
 
-  throw new Error('No available parser for html page');
+  throw new Error('Parsing error');
 };
 
 export { parseTikTokVideo };
