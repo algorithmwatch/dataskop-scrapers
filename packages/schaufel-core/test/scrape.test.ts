@@ -6,7 +6,7 @@ import {
 
 import data from './data/filter8000-22-07-2022.json';
 
-jest.setTimeout(20000);
+jest.setTimeout(30000);
 
 describe('filter8000 dump from 22-07-2022', () => {
   test('check for fix url', () => {
@@ -15,14 +15,23 @@ describe('filter8000 dump from 22-07-2022', () => {
     ).toBe('https://www.tiktok.com/@user/video/7108640878507445509/');
   });
 
-  test('enrich dump', async () => {
-    const videos = await getTiktokVideosFromDump(
-      data,
-      2,
-      {},
-      { verbose: true, delay: 1000, saveCache: false, proxy: true },
-    );
-    // console.log(JSON.stringify(videos, null, 2));
+  test('enrich dump', () => {
+    expect(async () => {
+      const videos = await getTiktokVideosFromDump(
+        data,
+        10,
+        {},
+        {
+          verbose: true,
+          delay: 1000,
+          saveCache: false,
+          proxy: true,
+          logBrokenHtml: true,
+        },
+      );
+      // console.log(JSON.stringify(videos, null, 2));
+      return videos.length;
+    }).toBeTruthy();
   });
 
   test('get video meta', async () => {

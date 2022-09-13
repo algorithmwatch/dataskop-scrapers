@@ -30,7 +30,7 @@ services:
     env_file:
       - ./docker/.env
     environment:
-      CACHE_DIR: "/schaufel"
+      SCHAUFEL_DIR: "/schaufel"
     command: bash -c "cd packages/schaufel-cli && npm run work"
     restart: on-failure:3
 

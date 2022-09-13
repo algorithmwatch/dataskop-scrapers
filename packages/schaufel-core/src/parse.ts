@@ -23,6 +23,9 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
+import fs from 'fs';
+import path from 'path';
+
 /**
  * Extracts structured meta data from a videos html page.
  *
@@ -31,28 +34,58 @@ SOFTWARE.
  * @param html
  * @returns Parsed data
  */
-const parseTikTokVideo = (html: string): any => {
-  if (html.includes('__NEXT_DATA__')) {
-    const rawVideoMetadata = html
-      .split(
-        /<script id="__NEXT_DATA__" type="application\/json" nonce="[\w-]+" crossorigin="anonymous">/,
-        2,
-      )[1]
-      .split(`</script>`, 1)[0];
+const parseTikTokVideo = (
+  html: string,
+  brokenHtmlLocation: null | string,
+): any => {
+  try {
+    if (html.includes('__NEXT_DATA__')) {
+      const rawVideoMetadata = html
+        .split(
+          /<script id="__NEXT_DATA__" type="application\/json" nonce="[\w-]+" crossorigin="anonymous">/,
+          2,
+        )[1]
+        .split(`</script>`, 1)[0];
 
-    const videoProps = JSON.parse(rawVideoMetadata);
-    const videoData = videoProps.props.pageProps.itemInfo.itemStruct;
-    return videoData;
-  }
+      const videoProps = JSON.parse(rawVideoMetadata);
+      const videoData = videoProps.props.pageProps.itemInfo.itemStruct;
+      return videoData;
+    }
 
-  if (html.includes('SIGI_STATE')) {
-    const rawVideoMetadata = html
-      .split('<script id="SIGI_STATE" type="application/json">', 2)[1]
-      .split('</script>', 1)[0];
+    if (html.includes('SIGI_STATE')) {
+      const rawVideoMetadata = html
+        .split('<script id="SIGI_STATE" type="application/json">', 2)[1]
+        .split('</script>', 1)[0];
 
-    const videoProps = JSON.parse(rawVideoMetadata);
-    const videoData = Object.values(videoProps.ItemModule)[0];
-    return videoData;
+      const videoProps = JSON.parse(rawVideoMetadata);
+      const videoData = Object.values(videoProps.ItemModule)[0];
+      return videoData;
+    }
+  } catch (error) {
+    if (
+      html
+        .split('</title>', 1)[0]
+        .split('<title data-rh="true">', 2)[1]
+        .trim() ===
+      'This video is unavailable. Visit TikTok to discover more trending videos.'
+    ) {
+      throw new Error('Video is unavailable');
+    }
+
+    console.log('Are the parsers oudated? Failed parsing with: ');
+    console.error(error);
+    if (brokenHtmlLocation) {
+      console.log('Storing broken html');
+      if (!fs.existsSync(brokenHtmlLocation)) {
+        fs.mkdirSync(brokenHtmlLocation);
+      }
+
+      fs.writeFileSync(
+        path.join(brokenHtmlLocation, `${Date.now()}.html`),
+        html,
+      );
+    }
+    throw new Error('Parsing error');
   }
 
   throw new Error('Parsing error');

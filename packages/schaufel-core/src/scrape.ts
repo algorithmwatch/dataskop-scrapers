@@ -1,14 +1,17 @@
 /* eslint-disable no-console */
 import _ from 'lodash';
 import os from 'os';
+import path from 'path';
 import { get } from './mullvad';
 import { parseTikTokVideo } from './parse';
 import { delay, readJSON, writeJSON } from './utils';
 
-let CACHE_DIR = os.homedir() + '/.schaufel-cache.json';
+let SCHAUFEL_DIR = os.homedir();
 
-if (process.env.CACHE_DIR)
-  CACHE_DIR = process.env.CACHE_DIR + '/schaufel-cache.json';
+if (process.env.SCHAUFEL_DIR) SCHAUFEL_DIR = process.env.SCHAUFEL_DIR;
+
+const CACHE_LOCATION = path.join(SCHAUFEL_DIR, 'schaufel-cache.json');
+const BROKEN_HTML_LOCATION = path.join(SCHAUFEL_DIR, 'schaufel-broken-html');
 
 const prependTiktokSuffix = (id: string | number): string => `tv${id}`;
 
@@ -92,7 +95,10 @@ const scrapeTiktokVideos = async (
               `Fetching failed with status code ${status} for ${url}`,
             );
 
-          const metaData = parseTikTokVideo(html as string);
+          const metaData = parseTikTokVideo(
+            html as string,
+            options.logBrokenHtml ? BROKEN_HTML_LOCATION : null,
+          );
           const result = {
             result: metaData,
             scrapedAt: Date.now(),
@@ -106,7 +112,7 @@ const scrapeTiktokVideos = async (
           }
 
           if (options.saveCache) {
-            writeJSON(CACHE_DIR, _.merge(cache, newCache));
+            writeJSON(CACHE_LOCATION, _.merge(cache, newCache));
           }
 
           if (options.delay > 0) await delay(options.delay);
@@ -141,7 +147,13 @@ const getTiktokVideosFromDump = async (
   dump: any,
   limit: number | null = 10,
   cache = {},
-  options = { delay: 1000, saveCache: false, verbose: false, proxy: true },
+  options = {
+    delay: 1000,
+    saveCache: false,
+    verbose: false,
+    proxy: true,
+    logBrokenHtml: true,
+  },
 ): Promise<any> => {
   let videoList: any[] =
     dump['Activity']['Video Browsing History']['VideoList'];
@@ -172,13 +184,14 @@ const enrichTiktokDump = async (
 ): Promise<any> => {
   console.log(dump_location);
   const dump = readJSON(dump_location);
-  const cache = readJSON(CACHE_DIR);
+  const cache = readJSON(CACHE_LOCATION);
 
   const result = await getTiktokVideosFromDump(dump, limit, cache, {
     saveCache: true,
     delay,
     verbose: true,
     proxy: true,
+    logBrokenHtml: true,
   });
 
   dump['Activity']['Video Browsing History']['VideoList'] = result[0];
@@ -191,18 +204,20 @@ const getTiktokVideoMeta = async (
   prune = true,
   proxy = true,
   useCache = true,
+  logBrokenHtml = true,
   delay = 0,
 ): Promise<any> => {
-  const cache = useCache ? readJSON(CACHE_DIR) : {};
+  const cache = useCache ? readJSON(CACHE_LOCATION) : {};
 
   const results = await scrapeTiktokVideos(videos, cache, {
     delay,
     saveCache: false,
     verbose: true,
     proxy,
+    logBrokenHtml,
   });
 
-  if (useCache) writeJSON(CACHE_DIR, results[1]);
+  if (useCache) writeJSON(CACHE_LOCATION, results[1]);
 
   if (prune) return results[0].map(pruneResult);
   return results[0];
