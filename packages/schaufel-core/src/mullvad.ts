@@ -34,7 +34,7 @@ const get = async (url, proxy = true) => {
       headers: { 'User-Agent': userAgent },
     };
 
-    if (!proxy) {
+    if (proxy) {
       const tunnel = (new SocksProxyAgent(await getProxy()) as any).agent;
       options['agent'] = { http: tunnel, https: tunnel, http2: tunnel };
     }
