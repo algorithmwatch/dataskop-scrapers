@@ -50,10 +50,11 @@ const scrapeTiktokVideos = async (
   videoUrls: string[],
   cache: any,
   options: any,
+  logFun = console.log,
 ): Promise<any> => {
   if (options.verbose) {
-    console.log(`Starting to fetch ${videoUrls.length} videos.`);
-    console.log(options);
+    logFun(`Starting to fetch ${videoUrls.length} videos.`);
+    logFun(options);
   }
 
   const results = [];
@@ -63,7 +64,7 @@ const scrapeTiktokVideos = async (
     try {
       if (url in cache) {
         if (options.verbose) {
-          console.log('Cache hit');
+          logFun('Cache hit');
         }
 
         results.push(cache[url]);
@@ -72,32 +73,31 @@ const scrapeTiktokVideos = async (
 
       if (url in newCache) {
         if (options.verbose) {
-          console.log('New cache hit');
+          logFun('New cache hit');
         }
 
         results.push(newCache[url]);
         continue;
       }
       if (options.verbose) {
-        console.log(`Fetching ${url}`);
+        logFun(`Fetching ${url}`);
       }
       let parseTry = 0;
       // eslint-disable-next-line no-constant-condition
       while (true) {
         try {
-          const [html, status] = await get(fixUrl(url), options.proxy);
+          const [html, status] = await get(fixUrl(url), options.proxy, logFun);
           if (options.verbose) {
-            console.log(`Fetching done`);
+            logFun(`Fetching done`);
           }
 
           if (status !== 200)
-            throw new Error(
-              `Fetching failed with status code ${status} for ${url}`,
-            );
+            throw new Error(`Fetching failed with status code: ${status}`);
 
           const metaData = parseTikTokVideo(
             html as string,
             options.logBrokenHtml ? BROKEN_HTML_LOCATION : null,
+            logFun,
           );
           const result = {
             result: metaData,
@@ -108,7 +108,7 @@ const scrapeTiktokVideos = async (
           newCache[url] = result;
 
           if (options.verbose) {
-            console.log('Parsing finished successfully');
+            logFun('Parsing finished successfully');
           }
 
           if (options.saveCache) {
@@ -121,7 +121,7 @@ const scrapeTiktokVideos = async (
           if (err.message == 'Parsing error' && parseTry < 3) {
             parseTry += 1;
             if (options.verbose) {
-              console.log('Retrying parsing');
+              logFun('Retrying parsing');
             }
             await delay(1000 + 500 * parseTry);
             continue;
@@ -136,7 +136,7 @@ const scrapeTiktokVideos = async (
       });
 
       if (options.verbose) {
-        console.log(`Failed to scrape with: ${error.message}`);
+        logFun(`Failed to scrape with: ${error.message}`);
       }
     }
   }
@@ -206,16 +206,22 @@ const getTiktokVideoMeta = async (
   useCache = true,
   logBrokenHtml = true,
   delay = 0,
+  logFun = console.log,
 ): Promise<any> => {
   const cache = useCache ? readJSON(CACHE_LOCATION) : {};
 
-  const results = await scrapeTiktokVideos(videos, cache, {
-    delay,
-    saveCache: false,
-    verbose: true,
-    proxy,
-    logBrokenHtml,
-  });
+  const results = await scrapeTiktokVideos(
+    videos,
+    cache,
+    {
+      delay,
+      saveCache: false,
+      verbose: true,
+      proxy,
+      logBrokenHtml,
+    },
+    logFun,
+  );
 
   if (useCache) writeJSON(CACHE_LOCATION, results[1]);
 

@@ -37,6 +37,7 @@ import path from 'path';
 const parseTikTokVideo = (
   html: string,
   brokenHtmlLocation: null | string,
+  logFun = console.log,
 ): any => {
   try {
     if (html.includes('__NEXT_DATA__')) {
@@ -72,10 +73,9 @@ const parseTikTokVideo = (
       throw new Error('Video is unavailable');
     }
 
-    console.log('Are the parsers oudated? Failed parsing with: ');
-    console.error(error);
+    logFun(`Are the parsers oudated? Failed parsing with: ${error}`);
     if (brokenHtmlLocation) {
-      console.log('Storing broken html');
+      logFun('Storing broken html');
       if (!fs.existsSync(brokenHtmlLocation)) {
         fs.mkdirSync(brokenHtmlLocation);
       }
