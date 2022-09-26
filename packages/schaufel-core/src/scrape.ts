@@ -163,7 +163,7 @@ const getTiktokVideosFromDump = async (
   }
 
   const [metaDataList, newCache] = await scrapeTiktokVideos(
-    videoList.map((x) => x['VideoLink']),
+    videoList.map((x) => x.VideoLink ?? x.Link),
     cache,
     options,
   );

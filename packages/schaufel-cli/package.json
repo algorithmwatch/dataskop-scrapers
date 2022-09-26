@@ -6,7 +6,7 @@
   "scripts": {
     "dump-redact": "node dump-redact.js",
     "dump-scrape": "node dump-scrape.js",
-    "dump-add-videos": "node dump-add-videos.js",
+    "add-dump-videos-to-queue": "node add-dump-videos-to-queue.js",
     "work": "node work.js"
   },
   "author": "",

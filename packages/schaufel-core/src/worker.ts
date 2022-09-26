@@ -28,7 +28,7 @@ const updateBackend = (path, method, data = null) => {
 
 const addVideoDumpJob = async (data) => {
   const videoUrls = data['Activity']['Video Browsing History']['VideoList'].map(
-    (x) => x['VideoLink'],
+    (x) => x.VideoLink ?? x.Link,
   );
   const videoIds = _.uniq(videoUrls).map(getIdFromUrl).map(prependTiktokSuffix);
 
