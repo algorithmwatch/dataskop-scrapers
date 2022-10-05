@@ -59,17 +59,42 @@ const parseTikTokVideo = (
         .split('</script>', 1)[0];
 
       const videoProps = JSON.parse(rawVideoMetadata);
-      const videoData = Object.values(videoProps.ItemModule)[0];
-      return videoData;
+      if ('ItemModule' in videoProps) {
+        const videoData = Object.values(videoProps.ItemModule)[0];
+        return videoData;
+      }
+
+      // Last resort: Find sub object
+      const getVideoData = (o) => {
+        for (const [k, v] of Object.entries(o)) {
+          if (k === 'videoData') {
+            return v;
+          }
+          if (typeof v === 'object') {
+            const found = getVideoData(v);
+            if (found) return found;
+          }
+        }
+        return null;
+      };
+
+      const vidData = getVideoData(videoProps);
+      if (
+        vidData &&
+        'itemInfo' in vidData &&
+        'itemStruct' in vidData.itemInfo
+      ) {
+        return vidData.itemInfo.itemStruct;
+      }
+
+      throw new Error('Parsing error');
     }
   } catch (error) {
-    if (
-      html
-        .split('</title>', 1)[0]
-        .split('<title data-rh="true">', 2)[1]
-        .trim() ===
-      'This video is unavailable. Visit TikTok to discover more trending videos.'
-    ) {
+    const title = html
+      .split('</title>', 1)[0]
+      .split('<title data-rh="true">', 2)[1];
+
+    if (title.trim().startsWith('This video is unavailable.')) {
       throw new Error('Video is unavailable');
     }
 
@@ -87,8 +112,6 @@ const parseTikTokVideo = (
     }
     throw new Error('Parsing error');
   }
-
-  throw new Error('Parsing error');
 };
 
 export { parseTikTokVideo };
