@@ -86,15 +86,16 @@ const parseTikTokVideo = (
       ) {
         return vidData.itemInfo.itemStruct;
       }
-
-      throw new Error('Parsing error');
     }
+
+
+    throw new Error('Parsing error');
   } catch (error) {
     const title = html
       .split('</title>', 1)[0]
       .split('<title data-rh="true">', 2)[1];
 
-    if (title.trim().startsWith('This video is unavailable.')) {
+    if (title && title.trim().startsWith('This video is unavailable.')) {
       throw new Error('Video is unavailable');
     }
 
