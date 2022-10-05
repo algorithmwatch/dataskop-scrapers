@@ -36,7 +36,7 @@ describe('filter8000 dump from 22-07-2022', () => {
 
   test('get video meta', async () => {
     const videos = data['Activity']['Video Browsing History']['VideoList'].map(
-      (x) => x.VideoLink ?? x.Link,
+      (x) => x.VideoLink,
     );
     const meta = await getTiktokVideoMeta(videos.slice(0, 2));
   });
