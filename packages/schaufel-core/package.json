@@ -28,6 +28,7 @@
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.5",
+    "dayjs": "^1.11.6",
     "got": "^11.8.5",
     "lodash": "^4.17.21",
     "memoizee": "^0.4.15",
