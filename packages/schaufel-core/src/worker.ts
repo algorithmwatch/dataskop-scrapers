@@ -3,13 +3,9 @@
 import { a, b } from '@algorithmwatch/schaufel-ab';
 import _ from 'lodash';
 import process from 'process';
-import {
-  getIdFromUrl,
-  getTiktokVideoMeta,
-  idToTiktokUrl,
-  prependTiktokSuffix,
-} from './scrape';
+import { getIdFromUrl, getTiktokVideoMeta, idToTiktokUrl } from './scrape';
 import { b64encode, request } from './utils';
+import { prependTiktokSuffix } from './wrangle';
 
 const updateBackend = (path, method, data = null) => {
   return request(
