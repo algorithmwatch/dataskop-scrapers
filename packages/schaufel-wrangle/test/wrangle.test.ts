@@ -1,4 +1,4 @@
-import data from './data/filter8000-22-07-2022.json';
+import data from '../../schaufel-core/test/data/filter8000-22-07-2022.json';
 
 import _ from 'lodash';
 import { getMostRecentWatchVideos, getWatchedVideos } from '../src/wrangle';

@@ -1,11 +1,11 @@
 /* eslint-disable no-console */
+import { getIdFromUrl } from '@algorithmwatch/schaufel-wrangle/src/index';
 import _ from 'lodash';
 import os from 'os';
 import path from 'path';
 import { get } from './mullvad';
 import { parseTikTokVideo } from './parse';
 import { delay, readJSON, writeJSON } from './utils';
-import { getIdFromUrl } from './wrangle';
 
 let SCHAUFEL_DIR = os.homedir();
 

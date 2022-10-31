@@ -1,5 +1,5 @@
 {
-  "name": "@algorithmwatch/schaufel-core",
+  "name": "@algorithmwatch/schaufel-wrangle",
   "version": "0.10.1",
   "type": "module",
   "source": "src/index.ts",
@@ -21,21 +21,15 @@
   "author": "AlgorithmWatch",
   "license": "MIT",
   "scripts": {
-    "build": "microbundle --target node",
+    "build": "microbundle --target web",
     "dev": "microbundle watch",
     "test": "jest",
     "test:dev": "jest --watchAll",
     "push-version": "../../scripts/postversion.sh $npm_package_version"
   },
   "dependencies": {
-    "@algorithmwatch/schaufel-wrangle": "latest",
-    "cheerio": "^1.0.0-rc.5",
     "dayjs": "^1.11.6",
-    "got": "^11.8.5",
-    "lodash": "^4.17.21",
-    "memoizee": "^0.4.15",
-    "socks-proxy-agent": "^7.0.0",
-    "user-agents": "^1.0.1130"
+    "lodash": "^4.17.21"
   },
   "peerDependencies": {
     "@algorithmwatch/schaufel-ab": "*"

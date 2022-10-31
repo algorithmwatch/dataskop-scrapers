@@ -38,3 +38,9 @@ jobs:
         working-directory: packages/schaufel-core
         env:
           NODE_AUTH_TOKEN: ${{ secrets.READ_WRITE_PACKAGES_TOKEN }}
+
+      - run: cp .npmrc packages/schaufel-wrangle/
+      - run: npm publish
+        working-directory: packages/schaufel-wrangle
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.READ_WRITE_PACKAGES_TOKEN }}
