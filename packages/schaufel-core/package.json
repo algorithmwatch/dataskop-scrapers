@@ -1,6 +1,6 @@
 {
   "name": "@algorithmwatch/schaufel-core",
-  "version": "0.7.2",
+  "version": "0.8.0",
   "type": "module",
   "source": "src/index.ts",
   "exports": {
@@ -25,7 +25,7 @@
     "dev": "microbundle watch",
     "test": "jest",
     "test:dev": "jest --watchAll",
-    "postversion": "../../scripts/postversion.sh $npm_package_version"
+    "push-version": "../../scripts/postversion.sh $npm_package_version"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.5",
