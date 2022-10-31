@@ -24,7 +24,8 @@
     "build": "microbundle --target node",
     "dev": "microbundle watch",
     "test": "jest",
-    "test:dev": "jest --watchAll"
+    "test:dev": "jest --watchAll",
+    "postversion": "../../scripts/postversion.sh $npm_package_version"
   },
   "dependencies": {
     "cheerio": "^1.0.0-rc.5",
