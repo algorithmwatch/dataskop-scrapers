@@ -5,6 +5,7 @@ import path from 'path';
 import { get } from './mullvad';
 import { parseTikTokVideo } from './parse';
 import { delay, readJSON, writeJSON } from './utils';
+import { getIdFromUrl } from './wrangle';
 
 let SCHAUFEL_DIR = os.homedir();
 
@@ -13,12 +14,8 @@ if (process.env.SCHAUFEL_DIR) SCHAUFEL_DIR = process.env.SCHAUFEL_DIR;
 const CACHE_LOCATION = path.join(SCHAUFEL_DIR, 'schaufel-cache.json');
 const BROKEN_HTML_LOCATION = path.join(SCHAUFEL_DIR, 'schaufel-broken-html');
 
-const prependTiktokSuffix = (id: string | number): string => `tv${id}`;
-
 const idToTiktokUrl = (id: string) =>
   `https://www.tiktok.com/@user/video/${id.slice(2)}/`;
-
-const getIdFromUrl = (url: string): string => url.match(/\/(\d*)\/$/)[1];
 
 const fixUrl = (url: string) => {
   if (url.startsWith('https://www.tiktokv.com/share'))
@@ -236,6 +233,5 @@ export {
   getTiktokVideosFromDump,
   enrichTiktokDump,
   getTiktokVideoMeta,
-  prependTiktokSuffix,
   idToTiktokUrl,
 };

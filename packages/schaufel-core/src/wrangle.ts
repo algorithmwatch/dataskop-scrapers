@@ -1,6 +1,9 @@
 import dayjs, { Dayjs } from 'dayjs';
 import _ from 'lodash';
-import { getIdFromUrl, prependTiktokSuffix } from './scrape';
+
+const prependTiktokSuffix = (id: string | number): string => `tv${id}`;
+
+const getIdFromUrl = (url: string): string => url.match(/\/(\d*)\/$/)[1];
 
 /**
  * Returns the N most recent (or all) watched videos from a dump in descending order.
@@ -55,4 +58,10 @@ const getMostRecentWatchVideos = (
   return _.uniq(lookupIds).slice(0, max);
 };
 
-export { getMostRecentWatchVideos, getWatchedVideos, getLookupId };
+export {
+  getMostRecentWatchVideos,
+  getWatchedVideos,
+  getLookupId,
+  getIdFromUrl,
+  prependTiktokSuffix,
+};

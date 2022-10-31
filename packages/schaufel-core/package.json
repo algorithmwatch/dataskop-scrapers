@@ -5,7 +5,8 @@
   "source": "src/index.ts",
   "exports": {
     "require": "./dist/schaufel.cjs",
-    "default": "./dist/schaufel.modern.js"
+    "default": "./dist/schaufel.modern.js",
+    "wrangle": "./src/wrangle.ts"
   },
   "main": "./dist/schaufel.cjs",
   "module": "./dist/schaufel.module.js",
@@ -21,7 +22,7 @@
   "author": "AlgorithmWatch",
   "license": "MIT",
   "scripts": {
-    "build": "microbundle --target web",
+    "build": "microbundle --target node",
     "dev": "microbundle watch",
     "test": "jest",
     "test:dev": "jest --watchAll",
