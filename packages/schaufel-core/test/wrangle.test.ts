@@ -1,8 +1,7 @@
 import data from './data/filter8000-22-07-2022.json';
 
-import { getMostRecentWatchVideos } from '../src/wrangle';
-
-jest.setTimeout(30000);
+import _ from 'lodash';
+import { getMostRecentWatchVideos, getWatchedVideos } from '../src/wrangle';
 
 describe('filter8000 dump from 22-07-2022', () => {
   test('increasing seconds reduced the number of results', () => {
@@ -31,11 +30,27 @@ describe('filter8000 dump from 22-07-2022', () => {
 
   test('limit works', () => {
     expect(getMostRecentWatchVideos(data, 100, 2).length).toBe(100);
+
     expect(getMostRecentWatchVideos(data, 100, 2)).toEqual(
       getMostRecentWatchVideos(data, 100, 2),
     );
+
     expect(getMostRecentWatchVideos(data, 100, 2)).not.toEqual(
       getMostRecentWatchVideos(data, 100, 1),
     );
+  });
+
+  test('correct order', () => {
+    const r1 = getWatchedVideos(data, 10, 2);
+    const r1Sorted = _.sortBy(r1, '-Date');
+
+    expect(r1).toEqual(r1Sorted);
+    expect(r1[0].Date).toBe('2022-07-22 23:08:10');
+    expect(r1[1].Date).toBe('2022-07-22 23:06:13');
+    expect(r1[4].Date).toBe('2022-07-22 23:05:43');
+
+    // ensure a videos is correctly skipped
+    const r2 = getWatchedVideos(data, 10, 5);
+    expect(r2[3].Date).toBe('2022-07-22 23:05:43');
   });
 });

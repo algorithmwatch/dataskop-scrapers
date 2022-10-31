@@ -2,35 +2,36 @@ import dayjs, { Dayjs } from 'dayjs';
 import _ from 'lodash';
 import { getIdFromUrl, prependTiktokSuffix } from './scrape';
 
+/**
+ * Returns the N most recent (or all) watched videos from a dump in descending order.
+ * Optionally skips over shortly watched videos.
+ */
 const getWatchedVideos = (
   dump: any,
   max: null | number = null,
   minWatchedSeconds: null | number = null,
-) => {
-  const videos = dump.Activity['Video Browsing History'].VideoList;
+): any[] => {
+  let videos = dump.Activity['Video Browsing History'].VideoList;
 
   if (minWatchedSeconds) {
     let lastDate: null | Dayjs = null;
     const resultingVideos = [];
-    // Loop in reverse to get videos from the end
-    for (let i = videos.length - 1; i >= 0; i -= 1) {
-      const vid = videos[i];
+    // Loop through the sorted videos.
+    // We have to iterate over all videos even though we only want to last N
+    // videos because we don't know over how many videos we will skip.
+    for (const vid of _.sortBy(videos, 'Date')) {
       const vidDate = dayjs(vid.Date);
       if (
         lastDate === null ||
         vidDate.diff(lastDate, 'second') > minWatchedSeconds
       ) {
-        resultingVideos.push(vid);
-
-        // Exit if we have enough videos
-        if (max && resultingVideos.length === max) return resultingVideos;
+        resultingVideos.unshift(vid);
       }
       lastDate = vidDate;
     }
-    return resultingVideos;
+    videos = resultingVideos;
   }
-
-  if (max) return videos.slice(-max);
+  if (max) return videos.slice(0, max);
   return videos;
 };
 
@@ -51,7 +52,7 @@ const getMostRecentWatchVideos = (
   // get last N * 2 videos before making them unique by id
   const videos = getWatchedVideos(dump, max * 2, minWatchedSeconds);
   const lookupIds = getLookupIdsFromDump(videos);
-  return _.uniq(lookupIds).slice(-max);
+  return _.uniq(lookupIds).slice(0, max);
 };
 
-export { getMostRecentWatchVideos, getLookupId };
+export { getMostRecentWatchVideos, getWatchedVideos, getLookupId };
