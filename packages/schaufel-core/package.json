@@ -21,7 +21,7 @@
   "author": "AlgorithmWatch",
   "license": "MIT",
   "scripts": {
-    "build": "microbundle --target node",
+    "build": "microbundle --target web",
     "dev": "microbundle watch",
     "test": "jest",
     "test:dev": "jest --watchAll",
