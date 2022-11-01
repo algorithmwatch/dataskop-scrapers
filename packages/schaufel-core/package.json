@@ -28,7 +28,7 @@
     "push-version": "../../scripts/postversion.sh $npm_package_version"
   },
   "dependencies": {
-    "@algorithmwatch/schaufel-wrangle": "latest",
+    "@algorithmwatch/schaufel-wrangle": "file:../schaufel-wrangle",
     "cheerio": "^1.0.0-rc.5",
     "dayjs": "^1.11.6",
     "got": "^11.8.5",
