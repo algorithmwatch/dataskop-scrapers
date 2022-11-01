@@ -1,5 +1,5 @@
 /* eslint-disable no-console */
-import { getIdFromUrl } from '@algorithmwatch/schaufel-wrangle/src/index';
+import { getIdFromUrl } from '@algorithmwatch/schaufel-wrangle';
 import _ from 'lodash';
 import os from 'os';
 import path from 'path';

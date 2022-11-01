@@ -4,7 +4,7 @@ import { a, b } from '@algorithmwatch/schaufel-ab';
 import {
   getIdFromUrl,
   prependTiktokSuffix,
-} from '@algorithmwatch/schaufel-wrangle/src/index';
+} from '@algorithmwatch/schaufel-wrangle';
 import _ from 'lodash';
 import process from 'process';
 import { getTiktokVideoMeta, idToTiktokUrl } from './scrape';
