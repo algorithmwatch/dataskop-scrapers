@@ -1,6 +1,6 @@
 {
   "name": "@algorithmwatch/schaufel-core",
-  "version": "0.10.1",
+  "version": "0.11.0",
   "type": "module",
   "source": "src/index.ts",
   "exports": {
