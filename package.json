@@ -1,6 +1,6 @@
 {
   "name": "schaufel-monorepo",
-  "version": "0.0.0",
+  "version": "0.0.1",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -9,7 +9,9 @@
     "build": "turbo run build",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postversion": "./scripts/postversion.sh $npm_package_version"
+    "version:patch": "npm version patch --no-git-tag-version && npm version patch",
+    "version:minor": "npm version minor --no-git-tag-version && npm version minor",
+    "push-version": "./scripts/postversion.sh $npm_package_version"
   },
   "devDependencies": {
     "prettier": "latest",
