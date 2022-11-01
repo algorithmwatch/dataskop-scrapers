@@ -14,7 +14,7 @@ if [ "$(git diff --name-only --cached | wc -l)" -eq "0" ]; then
   git add package-lock.json
   git add packages/*/package.json
 
-  if [ "$(git diff --name-only --cached | wc -l)" -eq "4" ]; then
+  if [ "$(git diff --name-only --cached | wc -l)" -eq "5" ]; then
     git commit --no-verify -m "v$1"
     git tag -a "v$1" HEAD -m "v$1"
     git push --follow-tags
