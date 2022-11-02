@@ -115,12 +115,14 @@ const scrapeTiktokVideos = async (
           if (options.delay > 0) await delay(options.delay);
           break;
         } catch (err) {
-          if (err.message == 'Parsing error' && parseTry < 3) {
+          if ((err.message == 'Parsing error' || 'Needs JS') && parseTry < 3) {
             parseTry += 1;
             if (options.verbose) {
               logFun('Retrying parsing');
             }
-            await delay(1000 + 500 * parseTry);
+            await delay(
+              1000 + (err.message == 'Needs JS' ? 1000 : 500) * parseTry,
+            );
             continue;
           } else throw err;
         }

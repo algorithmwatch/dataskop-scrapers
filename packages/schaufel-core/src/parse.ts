@@ -88,7 +88,6 @@ const parseTikTokVideo = (
       }
     }
 
-
     throw new Error('Parsing error');
   } catch (error) {
     const title = html
@@ -99,7 +98,14 @@ const parseTikTokVideo = (
       throw new Error('Video is unavailable');
     }
 
-    logFun(`Are the parsers oudated? Failed parsing with: ${error}`);
+    // Test if TT forces us to execute JS (we are getting throttled)
+    if (html.includes('<body> Please wait... </body>')) {
+      logFun('Parsing error: JS needs to get executed');
+      throw new Error('Needs JS');
+    }
+
+    logFun(`Failed with: ${error}`);
+
     if (brokenHtmlLocation) {
       logFun('Storing broken html');
       if (!fs.existsSync(brokenHtmlLocation)) {

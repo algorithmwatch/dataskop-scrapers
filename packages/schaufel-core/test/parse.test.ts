@@ -27,4 +27,10 @@ describe('Parse HTML', () => {
       expect(parsed).toBeTruthy();
     }
   });
+
+  test('Parse other HTML', () => {
+    const html = fs.readFileSync(`./test/html/1667322463554.html`, 'utf8');
+
+    expect(() => parseTikTokVideo(html, null)).toThrow(Error('Needs JS'));
+  });
 });

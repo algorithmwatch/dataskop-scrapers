@@ -45,6 +45,14 @@ describe('filter8000 dump from 22-07-2022', () => {
 describe('Check parsing error', () => {
   test('Check parsing error', async () =>
     expect(
-      (await getTiktokVideoMeta(['https://johannesfilter.com']))[0].error,
+      (
+        await getTiktokVideoMeta(
+          ['https://johannesfilter.com'],
+          false,
+          false,
+          false,
+          false,
+        )
+      )[0].error,
     ).toBe('Parsing error'));
 });
