@@ -18,12 +18,51 @@ const textTolength = (messages: any[], field: string) => {
   return messages;
 };
 
+const pickArray = (arr: any[], keys: string[]) => {
+  return arr.map((x) => _.pick(x, keys));
+};
+
 const removeChatText = (obj: any) => {
   return _.mapValues(obj, (messages) => textTolength(messages, 'Content'));
 };
 
 const removeCommentText = (comments: any[]) => {
   return textTolength(comments, 'Comment');
+};
+
+const removeProfile = (obj) => {
+  for (const x of [
+    'bioDescription',
+    'telephoneNumber',
+    'profileVideo',
+    'profilePhoto',
+    'likesReceived',
+    'emailAddress',
+    'PlatformInfo',
+  ]) {
+    obj[x] = toStringLength(obj[x]);
+  }
+
+  let year = obj.birthDate.split('-');
+  if (year.length === 3 && year[2]) year = parseInt(year[2]);
+  obj.birthDate = year;
+  return obj;
+};
+
+const removeLiveText = (obj) => {
+  return _.mapValues(obj, (x) => {
+    if (x.Questions !== null)
+      x.Questions.forEach(
+        (xx) => (xx.QuestionContent = xx.QuestionContent.length),
+      );
+
+    if (x.Comments !== null)
+      x.Comments.forEach(
+        (xx) => (xx.CommentContent = xx.CommentContent.length),
+      );
+
+    return x;
+  });
 };
 
 /**
@@ -42,6 +81,26 @@ const redactTiktokDump = (data: any) => {
     {
       path: ['Direct Messages', 'Chat History', 'ChatHistory'],
       transform: removeChatText,
+    },
+    {
+      path: ['Profile', 'Profile Information', 'ProfileMap'],
+      transform: removeProfile,
+    },
+    {
+      path: ['Tiktok Live', 'Go Live History'],
+      transform: toStringLength,
+    },
+    {
+      path: ['Tiktok Live', 'Go Live Settings'],
+      transform: toStringLength,
+    },
+    {
+      path: ['Tiktok Live', 'Watch Live History', 'WatchLiveMap'],
+      transform: removeLiveText,
+    },
+    {
+      path: ['Video', 'Videos', 'VideoList'],
+      transform: (x) => pickArray(x, ['Date', 'Likes']),
     },
   ];
 
