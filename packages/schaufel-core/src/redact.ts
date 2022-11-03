@@ -71,6 +71,23 @@ const removeLiveText = (obj) => {
 const redactTiktokDump = (data: any) => {
   const transformations = [
     {
+      path: ['Activity', 'Follower List', 'FansList'],
+      transform: (x) => pickArray(x, ['Date']),
+    },
+    {
+      path: ['Activity', 'Login History', 'LoginHistoryList'],
+      transform: (x) =>
+        pickArray(x, ['Date', 'DeviceModel', 'DeviceSystem', 'NetworkType']),
+    },
+    {
+      path: ['Activity', 'Purchase History', 'SendGifts', 'SendGifts'],
+      transform: (x) => pickArray(x, ['Date', 'GiftAmount']),
+    },
+    {
+      path: ['Activity', 'Status'],
+      transform: toStringLength,
+    },
+    {
       path: 'Tiktok Shopping',
       transform: toStringLength,
     },

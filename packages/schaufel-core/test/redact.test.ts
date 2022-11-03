@@ -96,5 +96,27 @@ describe('filter8000 dump from 22-07-2022', () => {
         redactedData['Profile']['Profile Information']['ProfileMap'],
       ).every((x) => _.isNumber(x) || x === 'filter8000'),
     ).toBeTruthy();
+
+    console.log(redactedData['Activity']['Purchase History']);
+
+    expect(
+      redactedData['Activity']['Purchase History']['BuyGifts']['BuyGifts'],
+    ).toStrictEqual(
+      origData['Activity']['Purchase History']['BuyGifts']['BuyGifts'],
+    );
+
+    expect(
+      redactedData['Activity']['Purchase History']['SendGifts']['SendGifts'],
+    ).not.toStrictEqual(
+      origData['Activity']['Purchase History']['SendGifts']['SendGifts'],
+    );
+
+    expect(redactedData['Activity']['Follower List']).not.toStrictEqual(
+      origData['Activity']['Follower List'],
+    );
+
+    expect(redactedData['Activity']['Login History']).not.toStrictEqual(
+      origData['Activity']['Login History'],
+    );
   });
 });
