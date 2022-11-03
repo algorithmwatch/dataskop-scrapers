@@ -5,7 +5,7 @@ $ npm run dump-redact ~/Downloads/data/000.json
 
 const fs = require("fs");
 const process = require("process");
-const schaufel = require("@algorithmwatch/schaufel-core");
+const schaufel = require("@algorithmwatch/schaufel-wrangle");
 
 for (const p of process.argv.slice(2)) {
   console.log(p);

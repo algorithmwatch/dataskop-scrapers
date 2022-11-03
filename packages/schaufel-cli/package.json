@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "@algorithmwatch/schaufel-core": "file:../schaufel-core",
+    "@algorithmwatch/schaufel-wrangle": "file:../schaufel-wrangle",
     "dotenv": "^16.0.1"
   }
 }
