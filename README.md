@@ -1,32 +1,28 @@
 # schaufel
 
-TikTok utilities for Dataskop
+TikTok utilities for DataSkop
 
 ## Dev setup
 
-We are storing HTML test files with [git lfs](https://git-lfs.github.com/).
+We store some artefacts with [git lfs](https://git-lfs.github.com/).
 Please set it up.
+Also familiarize yourself with [turborepo](https://turbo.build/repo).
 
-```
-npm i
-```
-
-## Release a new Version
+## Release a new version
 
 Choose a new version according to <https://semver.org/>.
 
+First:
+
 ```bash
-npm version major
-npm version minor
-npm version patch
-npm version prerelease
+npm run version:minor
+npm run version:patch
 ```
 
-Push tags to GitHub.
-GitHub then publishes the package as a GitHub Package.
+Second:
 
 ```bash
-git push --follow-tags
+npm run push-version
 ```
 
 ## Deploy scraper
