@@ -1,6 +1,6 @@
 {
   "name": "@algorithmwatch/schaufel-wrangle",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "type": "module",
   "source": "src/index.ts",
   "exports": {
