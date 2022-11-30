@@ -40,7 +40,7 @@ const get = async (url, proxy = true, logFun = console.log) => {
     }
     const resp: any = await got(url, options);
     if (resp.statusCode == 200 || resp.statusCode == 404 || i + 1 == MAX_TRIES)
-      return [resp.rawBody.toString(), resp.statusCode];
+      return [resp.rawBody, resp.statusCode];
     else {
       logFun('Error fetching, retry');
       await delay(500 * i);

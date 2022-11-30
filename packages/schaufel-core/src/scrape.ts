@@ -92,7 +92,7 @@ const scrapeTiktokVideos = async (
             throw new Error(`Fetching failed with status code: ${status}`);
 
           const metaData = parseTikTokVideo(
-            html as string,
+            html.toString() as string,
             options.logBrokenHtml ? BROKEN_HTML_LOCATION : null,
             logFun,
           );
