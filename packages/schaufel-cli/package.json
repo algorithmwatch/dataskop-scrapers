@@ -7,7 +7,8 @@
     "dump-redact": "node dump-redact.js",
     "dump-scrape": "node dump-scrape.js",
     "add-dump-videos-to-queue": "node add-dump-videos-to-queue.js",
-    "work": "node work.js"
+    "work": "node work.js",
+    "merge-lookups": "node merge-lookups.js"
   },
   "author": "",
   "license": "MIT",

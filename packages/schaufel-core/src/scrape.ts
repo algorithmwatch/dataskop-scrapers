@@ -236,4 +236,5 @@ export {
   enrichTiktokDump,
   getTiktokVideoMeta,
   idToTiktokUrl,
+  pruneResult,
 };

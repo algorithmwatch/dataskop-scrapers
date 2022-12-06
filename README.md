@@ -35,6 +35,15 @@ rsync -avz --exclude node_modules --exclude .git --exclude docker/volume --exclu
 ssh awlab1 "cd code/schaufel && NPM_GITHUB_AUTH=the_token docker-compose up --detach --build"
 ```
 
+## Commands
+
+### Merge test lookups (playwright) to dev lookups
+
+```bash
+cd packages/schaufel-cli
+npm run merge-lookups ~/Library/Application\ Support/Electron/databases/lookup.json ~/Library/Application\ Support/dataskop-electron/databases/lookup.json
+```
+
 ## License
 
 MIT
