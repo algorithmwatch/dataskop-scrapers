@@ -28,9 +28,19 @@ describe('Parse HTML', () => {
     }
   });
 
-  test('Parse other HTML', () => {
-    const html = fs.readFileSync(`./test/html/1667322463554.html`, 'utf8');
+  test('Parse needs JS', () => {
+    const html = fs.readFileSync(
+      `./test/html-needs-js/1667322463554.html`,
+      'utf8',
+    );
 
     expect(() => parseTikTokVideo(html, null)).toThrow(Error('Needs JS'));
+
+    const html2 = fs.readFileSync(
+      `./test/html-needs-js/1670262789752.html`,
+      'utf8',
+    );
+
+    expect(() => parseTikTokVideo(html2, null)).toThrow(Error('Needs JS'));
   });
 });

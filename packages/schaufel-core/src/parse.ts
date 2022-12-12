@@ -99,7 +99,7 @@ const parseTikTokVideo = (
     }
 
     // Test if TT forces us to execute JS (we are getting throttled)
-    if (html.includes('<body> Please wait... </body>')) {
+    if (html.includes('Please wait...')) {
       logFun('Parsing error: JS needs to get executed');
       throw new Error('Needs JS');
     }
