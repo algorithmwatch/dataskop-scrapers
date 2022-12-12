@@ -20,7 +20,7 @@ console.log(
 const merged = { ...s, ...t };
 
 Object.keys(merged).forEach((key) => {
-  merged[key] = schaufel.pruneResult(merged[key]);
+  if (key.startsWith("tv")) merged[key] = schaufel.pruneResult(merged[key]);
 });
 
 console.log(`Result: ${Object.keys(merged).length} objects`);
