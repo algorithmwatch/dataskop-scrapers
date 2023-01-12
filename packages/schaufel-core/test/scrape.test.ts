@@ -15,23 +15,20 @@ describe('filter8000 dump from 22-07-2022', () => {
     ).toBe('https://www.tiktok.com/@user/video/7108640878507445509/');
   });
 
-  test('enrich dump', () => {
-    expect(async () => {
-      const videos = await getTiktokVideosFromDump(
-        data,
-        10,
-        {},
-        {
-          verbose: true,
-          delay: 1000,
-          saveCache: false,
-          proxy: true,
-          logBrokenHtml: true,
-        },
-      );
-      // console.log(JSON.stringify(videos, null, 2));
-      return videos.length;
-    }).toBeTruthy();
+  test('enrich dump', async () => {
+    const videos = await getTiktokVideosFromDump(
+      data,
+      2,
+      {},
+      {
+        verbose: true,
+        delay: 1000,
+        saveCache: false,
+        proxy: true,
+        storeBrokenHtml: 'peterlustig',
+      },
+    );
+    expect(videos.length).toBeGreaterThan(1);
   });
 
   test('get video meta', async () => {
