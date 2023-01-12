@@ -14,16 +14,16 @@ if (process.env.SCHAUFEL_DIR) SCHAUFEL_DIR = process.env.SCHAUFEL_DIR;
 const CACHE_LOCATION = path.join(SCHAUFEL_DIR, 'schaufel-cache.json');
 const BROKEN_HTML_LOCATION = path.join(SCHAUFEL_DIR, 'schaufel-broken-html');
 
-const idToTiktokUrl = (id: string) =>
+const idToTiktokUrl = (id: string): string =>
   `https://www.tiktok.com/@user/video/${id.slice(2)}/`;
 
-const fixUrl = (url: string) => {
+const fixUrl = (url: string): string => {
   if (url.startsWith('https://www.tiktokv.com/share'))
     return `https://www.tiktok.com/@user/video/${getIdFromUrl(url)}/`;
   return url;
 };
 
-const pruneResult = (result) => {
+const pruneResult = (result): any => {
   return _.pick(result, [
     'result.id',
     'result.desc',
@@ -53,6 +53,14 @@ const scrapeTiktokVideos = async (
     logFun(`Starting to fetch ${videoUrls.length} videos.`);
     logFun(options);
   }
+
+  // Use defaul location or use a provided path
+  let storeBrokenHtml = null;
+  if (options.storeBrokenHtml === true) storeBrokenHtml = BROKEN_HTML_LOCATION;
+  else if (typeof options.storeBrokenHtml === 'string')
+    storeBrokenHtml = options.storeBrokenHtml;
+
+  logFun(`broken html folder: ${storeBrokenHtml}`);
 
   const results = [];
   const newCache = {};
@@ -93,7 +101,7 @@ const scrapeTiktokVideos = async (
 
           const metaData = parseTikTokVideo(
             html.toString() as string,
-            options.logBrokenHtml ? BROKEN_HTML_LOCATION : null,
+            storeBrokenHtml,
             logFun,
           );
           const result = {
@@ -146,12 +154,12 @@ const getTiktokVideosFromDump = async (
   dump: any,
   limit: number | null = 10,
   cache = {},
-  options = {
+  options: any = {
     delay: 1000,
     saveCache: false,
     verbose: false,
     proxy: true,
-    logBrokenHtml: true,
+    storeBrokenHtml: true,
   },
 ): Promise<any> => {
   let videoList: any[] =
@@ -190,7 +198,7 @@ const enrichTiktokDump = async (
     delay,
     verbose: true,
     proxy: true,
-    logBrokenHtml: true,
+    storeBrokenHtml: true,
   });
 
   dump['Activity']['Video Browsing History']['VideoList'] = result[0];
@@ -203,7 +211,7 @@ const getTiktokVideoMeta = async (
   prune = true,
   proxy = true,
   useCache = true,
-  logBrokenHtml = true,
+  storeBrokenHtml: boolean | string = true,
   delay = 0,
   logFun = console.log,
 ): Promise<any> => {
@@ -217,7 +225,7 @@ const getTiktokVideoMeta = async (
       saveCache: false,
       verbose: true,
       proxy,
-      logBrokenHtml,
+      storeBrokenHtml,
     },
     logFun,
   );
