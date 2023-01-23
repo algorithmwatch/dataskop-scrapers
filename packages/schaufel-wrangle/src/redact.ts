@@ -19,6 +19,8 @@ const textTolength = (messages: any[], field: string) => {
 };
 
 const pickArray = (arr: any[], keys: string[]) => {
+  // Catch all `null` or `undefined` values for the array
+  if (arr == null) return [];
   return arr.map((x) => _.pick(x, keys));
 };
 

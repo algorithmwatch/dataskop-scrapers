@@ -1,7 +1,15 @@
 import _ from 'lodash';
 
 import data from '../../schaufel-core/test/data/filter8000-22-07-2022.json';
+import data2 from '../../schaufel-core/test/data/lorenzmatthiasx-23-01-2023.json';
 import { redactTiktokDump } from '../src/redact';
+
+describe('lorenzmatthiasx dump from 23-01-2023', () => {
+  test('information gets removed', () => {
+    const redactedData = redactTiktokDump(data2);
+    expect(redactedData['Tiktok Shopping']).toBeGreaterThan(0);
+  });
+});
 
 describe('filter8000 dump from 22-07-2022', () => {
   let redactedData: any;
