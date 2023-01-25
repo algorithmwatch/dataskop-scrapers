@@ -79,7 +79,13 @@ const redactTiktokDump = (data: any) => {
     {
       path: ['Activity', 'Login History', 'LoginHistoryList'],
       transform: (x) =>
-        pickArray(x, ['Date', 'DeviceModel', 'DeviceSystem', 'NetworkType']),
+        pickArray(x, [
+          'Date',
+          'DeviceModel',
+          'DeviceSystem',
+          'NetworkType',
+          'Carrier',
+        ]),
     },
     {
       path: ['Activity', 'Purchase History', 'SendGifts', 'SendGifts'],
