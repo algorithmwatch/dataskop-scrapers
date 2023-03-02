@@ -42,14 +42,19 @@ const addVideoDumpJob = async (data) => {
 const workOnDoneData = async (data: any) => {
   console.log('Workig on `input_done`');
 
-  // Check if done data is valid
-  const numProbes = _.min([
-    _.ceil(Object.keys(data.input_done).length / 100),
-    30,
-  ]);
-  const probes = _.sampleSize(data.input_done, numProbes);
+  const allKeys = Object.keys(data.input_done);
 
+  // Check if done data is valid, at max check for 10 items
+  const numProbes = _.min([_.ceil(allKeys.length / 100), 10]);
+
+  console.log(`Number of probes: ${numProbes}`);
+
+  const probeKeys = _.sampleSize(allKeys, numProbes);
+  const probes = _.pick(data.input_done, probeKeys);
   const p_ids = Object.keys(probes);
+
+  console.log(`First in p_id: ${p_ids[0]}, length of p_ids: ${p_ids.length}`);
+
   const p_results = await getTiktokVideoMeta(p_ids.map(idToTiktokUrl));
 
   const staticAttributes = [

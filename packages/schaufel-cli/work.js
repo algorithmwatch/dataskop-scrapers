@@ -34,6 +34,6 @@ process.on("SIGINT", function () {
 
     // Don't spam the server and wait some seconds
     console.log("Waiting");
-    await delay(3000);
+    await delay(30000);
   }
 })();
