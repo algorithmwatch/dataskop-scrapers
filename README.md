@@ -25,13 +25,43 @@ Second:
 npm run push-version
 ```
 
-## Deploy scraper
+## Deployment of the TikTok scraper
+
+We have a specific setup to run the scraper on the server.
+
+## Requirements
+
+- a [Mullvad](https://mullvad.net/) subscriptions (you need to change the code if you choose another VPN provider)
+- a 'Logs Data Platform' instance in Gravelines (GRA) on [OVH](https://ovh.com)
+- `NPM_GITHUB_AUTH` token to read private packages on GitHub
+
+### Create the dot env file `docker/.env`
+
+```bash
+# schaufel / DataSkop
+PLATFORM_URL=https://dataskop-platform-url.net
+SERIOUS_PROTECTION=basic-auth-pw
+API_KEY=drf-api-key
+
+# gluetun
+VPN_SERVICE_PROVIDER=mullvad
+VPN_TYPE=wireguard
+WIREGUARD_PRIVATE_KEY=private-key
+WIREGUARD_ADDRESSES=ip-address
+SERVER_CITIES=a-city
+DOT=off
+
+# Send Logs to OVH
+_X-OVH-TOKEN=ovh-logs-data-stream-token
+```
+
+### Deploy script
 
 ```bash
 # `deploy.sh`
 #!/usr/bin/env bash
 
-rsync -avz --exclude node_modules --exclude .git --exclude docker/volume --exclude docker/gluetun-volume . awlab1:~/code/schaufel
+rsync -avz --exclude node_modules --exclude .git --exclude docker/volume --exclude docker/gluetun-volume  --exclude test . sshlocation:~/code/schaufel
 ssh awlab1 "cd code/schaufel && NPM_GITHUB_AUTH=the_token docker-compose up --detach --build"
 ```
 
