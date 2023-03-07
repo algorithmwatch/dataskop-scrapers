@@ -1,5 +1,5 @@
 {
-  "name": "@algorithmwatch/schaufel-core",
+  "name": "@algorithmwatch/schaufel-worker",
   "version": "0.19.0",
   "type": "module",
   "source": "src/index.ts",
@@ -22,17 +22,12 @@
   "license": "MIT",
   "scripts": {
     "build": "microbundle --target node",
-    "dev": "microbundle watch",
-    "test": "jest",
-    "test:dev": "jest --watchAll"
+    "dev": "microbundle watch"
   },
   "dependencies": {
-    "@algorithmwatch/schaufel-wrangle": "file:../schaufel-wrangle",
-    "dayjs": "^1.11.6",
-    "got": "^11.0.0",
-    "lodash": "^4.17.21",
+    "@algorithmwatch/schaufel-core": "file:../schaufel-core",
     "memoizee": "^0.4.15",
-    "socks-proxy-agent": "^7.0.0",
+    "node-libcurl": "^3.0.0",
     "user-agents": "^1.0.1130"
   },
   "peerDependencies": {

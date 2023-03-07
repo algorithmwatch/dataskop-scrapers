@@ -6,22 +6,29 @@ $ npm run work
 require("dotenv").config();
 
 const process = require("process");
-const schaufel = require("@algorithmwatch/schaufel-core");
+const schaufel = require("@algorithmwatch/schaufel-worker");
 
 const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
 let cont = true;
+let waiting = false;
 
 process.on("SIGTERM", function () {
   console.log("*** GOT SIGTERM ***");
-  cont = false;
-  // process.exit(0);
+  if (waiting) {
+    process.exit(0);
+  } else {
+    cont = false;
+  }
 });
 
 process.on("SIGINT", function () {
   console.log("*** GOT SIGINT ***");
-  cont = false;
-  // process.exit(0);
+  if (waiting) {
+    process.exit(0);
+  } else {
+    cont = false;
+  }
 });
 
 (async () => {
@@ -34,6 +41,8 @@ process.on("SIGINT", function () {
 
     // Don't spam the server and wait some seconds
     console.log("Waiting");
+    waiting = true;
     await delay(30000);
+    waiting = false;
   }
 })();

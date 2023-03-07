@@ -1,14 +1,77 @@
 /* eslint-disable no-console */
-
-import { a, b } from '@algorithmwatch/schaufel-ab';
+import { a } from '@algorithmwatch/schaufel-ab';
+import {
+  b64encode,
+  getTiktokVideoMeta,
+  idToTiktokUrl,
+} from '@algorithmwatch/schaufel-core';
 import {
   getIdFromUrl,
   prependTiktokSuffix,
 } from '@algorithmwatch/schaufel-wrangle';
+import https from 'https';
 import _ from 'lodash';
 import process from 'process';
-import { getTiktokVideoMeta, idToTiktokUrl } from './scrape';
-import { b64encode, request } from './utils';
+import { get } from './mullvad';
+
+// FIXME: Use 3rd-party http client
+const request = (
+  url: string,
+  method = 'get',
+  headers: any,
+  data = null,
+): Promise<[string | JSON, number]> => {
+  const urlObj = new URL(url);
+
+  if (data !== null) {
+    data = JSON.stringify(data);
+
+    headers = {
+      ...headers,
+      'Content-Type': 'application/json',
+      'Content-Length': data.length,
+    };
+  }
+
+  return new Promise((resolve, reject) => {
+    const req = https
+      .request(
+        {
+          method,
+          hostname: urlObj.hostname,
+          path: urlObj.pathname,
+          headers,
+          timeout: 60 * 1000,
+        },
+        (res) => {
+          res.setEncoding('utf8');
+          let body = '';
+          res.on('data', (chunk) => (body += chunk));
+          res.on('end', () =>
+            resolve([
+              res.headers['content-type'] == 'application/json'
+                ? JSON.parse(body)
+                : body,
+              res.statusCode,
+            ]),
+          );
+        },
+      )
+      .on('error', (e) => {
+        console.error(e);
+        reject(e);
+      });
+
+    req.on('timeout', () => {
+      console.log('timeout');
+      req.destroy();
+      reject();
+    });
+
+    if (data !== null) req.write(data);
+    req.end();
+  });
+};
 
 const updateBackend = (path, method, data = null) => {
   return request(
@@ -23,6 +86,10 @@ const updateBackend = (path, method, data = null) => {
     },
     data,
   );
+};
+
+const normalizeObject = (x) => {
+  return Object.fromEntries(Object.entries(x).sort());
 };
 
 const addVideoDumpJob = async (data) => {
@@ -55,40 +122,49 @@ const workOnDoneData = async (data: any) => {
 
   console.log(`First in p_id: ${p_ids[0]}, length of p_ids: ${p_ids.length}`);
 
-  const p_results = await getTiktokVideoMeta(p_ids.map(idToTiktokUrl));
+  const p_results = await getTiktokVideoMeta(
+    p_ids.map(idToTiktokUrl),
+    true,
+    true,
+    true,
+    3000,
+    console.log,
+    get,
+    15,
+  );
 
   const staticAttributes = [
     'result.id',
     'result.desc',
     'result.createTime',
-    'result.author',
-    'result.nickname',
     'result.authorId',
     'result.video.duration',
     'result.music.id',
-    'result.music.title',
-    'result.music.authorName',
-    'result.music.original',
   ];
+  // Not static!
+  // 'result.author',
+  // 'result.nickname',
+  // 'result.music.original'
+  // 'result.music.title'
+  // 'result.music.authorName'
+  // 'result.diversificationLabels'
 
-  // ignore result.diversificationLabels
-
-  let allGood = true;
+  let numNotIdentical = 0;
   let log = '';
 
-  for (const [id, res] of _.zip(p_ids, p_results)) {
-    const pr = b(probes[id]);
-    if (
-      !_.isEqual(_.pick(res, staticAttributes), _.pick(pr, staticAttributes))
-    ) {
-      allGood = false;
+  for (const [id, resOrg] of _.zip(p_ids, p_results)) {
+    const res = _.pick(normalizeObject(resOrg), staticAttributes);
+    const pr = _.pick(normalizeObject(probes[id]), staticAttributes);
+
+    if (!_.isEqual(res, pr)) {
+      numNotIdentical += 1;
       log +=
         'input_done: error (1) with\n' +
         JSON.stringify(res) +
         '\n' +
         JSON.stringify(pr) +
         '\n';
-      break;
+      continue;
     }
 
     const statsRes = _.pick(res, 'result.stats');
@@ -97,7 +173,7 @@ const workOnDoneData = async (data: any) => {
       // Fresher data should be equal or larger that old data.
       // This may not be true if likes get removed etc, but we ignore this edge case.
       if (statsRes[x] < statsProbes[x]) {
-        allGood = false;
+        numNotIdentical += 1;
         log +=
           'input_done: error (2) with\n' +
           JSON.stringify(res) +
@@ -109,17 +185,38 @@ const workOnDoneData = async (data: any) => {
     }
   }
 
-  await updateBackend(`lookupjobs/${data.id}`, 'put', {
-    results: allGood ? data.input_done : {},
-    log: allGood ? `input_done: passed all checks` : log,
+  const results = Object.fromEntries(
+    Object.entries(data.input_done).map((x) => [x[0], a(x[1])]),
+  );
+
+  // 50% error allowed
+  const allGood = numNotIdentical < numProbes * 0.5;
+  log += `\nerror: ${numNotIdentical}\n`;
+
+  if (allGood) log += `\ninput_done: passed all checks\n`;
+  else log += `\ninput_done: failed!\n`;
+
+  const updateData = {
+    log,
     done: true,
     error: !allGood,
-  });
-  if (allGood) console.log('Done working on `input_done`');
-  else console.log(log);
+  };
+
+  if (allGood) updateData['results'] = results;
+
+  const updateResp = await updateBackend(
+    `lookupjobs/${data.id}`,
+    'put',
+    updateData,
+  );
+
+  console.log(
+    'Done working on `input_done`, update backend status: ' + updateResp[1],
+  );
 };
 
 const workOnTodo = async (data) => {
+  // TODO: Improve error handling
   console.log('Workig on `input_todo`');
 
   // Scrape new data and upload it
@@ -129,7 +226,16 @@ const workOnTodo = async (data) => {
   // check if valid
   const ids: string = data.input_todo;
   for (const c_ids of _.chunk(ids, CHUNK_SIZE)) {
-    const results = await getTiktokVideoMeta(c_ids.map(idToTiktokUrl));
+    const results = await getTiktokVideoMeta(
+      c_ids.map(idToTiktokUrl),
+      true,
+      true,
+      true,
+      0,
+      console.log,
+      get,
+      15,
+    );
     numDoneIds += c_ids.length;
 
     const toUploads = _.zipObject(c_ids, results.map(a));

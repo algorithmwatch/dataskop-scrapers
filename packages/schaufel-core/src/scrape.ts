@@ -3,7 +3,7 @@ import { getIdFromUrl } from '@algorithmwatch/schaufel-wrangle';
 import _ from 'lodash';
 import os from 'os';
 import path from 'path';
-import { get } from './mullvad';
+import { get } from './get';
 import { parseTikTokVideo } from './parse';
 import { delay, readJSON, writeJSON } from './utils';
 
@@ -48,6 +48,8 @@ const scrapeTiktokVideos = async (
   cache: any,
   options: any,
   logFun = console.log,
+  fetchFun = undefined,
+  fetchMaxTries = undefined,
 ): Promise<any> => {
   if (options.verbose) {
     logFun(`Starting to fetch ${videoUrls.length} videos.`);
@@ -91,7 +93,12 @@ const scrapeTiktokVideos = async (
       // eslint-disable-next-line no-constant-condition
       while (true) {
         try {
-          const [html, status] = await get(fixUrl(url), options.proxy, logFun);
+          const [html, status] = await get(
+            fixUrl(url),
+            logFun,
+            fetchFun,
+            fetchMaxTries,
+          );
           if (options.verbose) {
             logFun(`Fetching done`);
           }
@@ -99,11 +106,7 @@ const scrapeTiktokVideos = async (
           if (status !== 200)
             throw new Error(`Fetching failed with status code: ${status}`);
 
-          const metaData = parseTikTokVideo(
-            html.toString() as string,
-            storeBrokenHtml,
-            logFun,
-          );
+          const metaData = parseTikTokVideo(html, storeBrokenHtml, logFun);
           const result = {
             result: metaData,
             scrapedAt: Date.now(),
@@ -123,10 +126,13 @@ const scrapeTiktokVideos = async (
           if (options.delay > 0) await delay(options.delay);
           break;
         } catch (err) {
-          if ((err.message == 'Parsing error' || 'Needs JS') && parseTry < 3) {
+          if (
+            (err.message == 'Parsing error' || err.message == 'Needs JS') &&
+            parseTry < 3
+          ) {
             parseTry += 1;
             if (options.verbose) {
-              logFun('Retrying parsing');
+              logFun('Retrying parsing:', err.message);
             }
             await delay(
               1000 + (err.message == 'Needs JS' ? 1000 : 500) * parseTry,
@@ -158,7 +164,6 @@ const getTiktokVideosFromDump = async (
     delay: 1000,
     saveCache: false,
     verbose: false,
-    proxy: true,
     storeBrokenHtml: true,
   },
 ): Promise<any> => {
@@ -197,7 +202,6 @@ const enrichTiktokDump = async (
     saveCache: true,
     delay,
     verbose: true,
-    proxy: true,
     storeBrokenHtml: true,
   });
 
@@ -209,11 +213,12 @@ const enrichTiktokDump = async (
 const getTiktokVideoMeta = async (
   videos: string[],
   prune = true,
-  proxy = true,
   useCache = true,
   storeBrokenHtml: boolean | string = true,
   delay = 0,
   logFun = console.log,
+  fetchFun = undefined,
+  fetchMaxTries = undefined,
 ): Promise<any> => {
   const cache = useCache ? readJSON(CACHE_LOCATION) : {};
 
@@ -224,10 +229,11 @@ const getTiktokVideoMeta = async (
       delay,
       saveCache: false,
       verbose: true,
-      proxy,
       storeBrokenHtml,
     },
     logFun,
+    fetchFun,
+    fetchMaxTries,
   );
 
   if (useCache) writeJSON(CACHE_LOCATION, results[1]);

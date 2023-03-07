@@ -1,4 +1,4 @@
-import { get } from '../src/mullvad';
+import { get } from '../src/get';
 
 jest.setTimeout(10000);
 

@@ -48,7 +48,6 @@ describe('Check parsing error', () => {
           false,
           false,
           false,
-          false,
         )
       )[0].error,
     ).toBe('Parsing error'));
