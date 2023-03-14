@@ -93,18 +93,10 @@ const scrapeTiktokVideos = async (
       // eslint-disable-next-line no-constant-condition
       while (true) {
         try {
-          const [html, status] = await get(
-            fixUrl(url),
-            logFun,
-            fetchFun,
-            fetchMaxTries,
-          );
+          const html = await get(fixUrl(url), logFun, fetchFun, fetchMaxTries);
           if (options.verbose) {
             logFun(`Fetching done`);
           }
-
-          if (status !== 200)
-            throw new Error(`Fetching failed with status code: ${status}`);
 
           const metaData = parseTikTokVideo(html, storeBrokenHtml, logFun);
           const result = {
@@ -126,6 +118,7 @@ const scrapeTiktokVideos = async (
           if (options.delay > 0) await delay(options.delay);
           break;
         } catch (err) {
+          // Don't retry fetching errors (e.g. 403/404). Only retry specifing parsing errors.
           if (
             (err.message == 'Parsing error' || err.message == 'Needs JS') &&
             parseTry < 3

@@ -27,10 +27,11 @@ const get = async (
           ? resp.rawBody
           : resp.rawBody.toString()
         : resp.data;
-      if (resp.statusCode == 200 || resp.statusCode == 404)
-        return [body, resp.statusCode];
-      throw Error(`Faulty status code: ${resp.statusCode}`);
+      return body;
     } catch (error) {
+      // Don't retry when there is no resource.
+      if (error.message.includes(404)) throw error;
+
       if (i + 1 == maxTries) throw error;
       else {
         logFun(`Error fetching, retry: ${error.message}`);
