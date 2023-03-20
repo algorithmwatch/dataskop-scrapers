@@ -1,11 +1,9 @@
-name: Release GH Package
+name: Publish packages to GitHub
 
 on:
-  workflow_dispatch:
   push:
-    # Sequence of patterns matched against refs/tags
-    tags:
-      - "v*" # Push events to matching v*, i.e. v1.0, v20.15.10
+    branches:
+      - main
 
 jobs:
   build:
@@ -31,15 +29,11 @@ jobs:
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.READ_WRITE_PACKAGES_TOKEN }}" >> .npmrc
 
       - run: npm install
-      - run: npx turbo run build test
-      - run: cp .npmrc packages/schaufel-core/
-      - run: npm publish
-        working-directory: packages/schaufel-core
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.READ_WRITE_PACKAGES_TOKEN }}
 
-      - run: cp .npmrc packages/schaufel-wrangle/
-      - run: npm publish
-        working-directory: packages/schaufel-wrangle
+      - name: Create Release Pull Request or Publish to npm
+        id: changesets
+        uses: changesets/action@v1
+        with:
+          publish: npm run publish-packages
         env:
-          NODE_AUTH_TOKEN: ${{ secrets.READ_WRITE_PACKAGES_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

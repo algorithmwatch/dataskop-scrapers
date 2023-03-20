@@ -27,7 +27,7 @@
     "test:dev": "jest --watchAll"
   },
   "dependencies": {
-    "@algorithmwatch/schaufel-wrangle": "file:../schaufel-wrangle",
+    "@algorithmwatch/schaufel-wrangle": "0.21.0",
     "dayjs": "^1.11.6",
     "got": "^11.0.0",
     "lodash": "^4.17.21",

@@ -13,9 +13,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@algorithmwatch/schaufel-core": "file:../schaufel-core",
-    "@algorithmwatch/schaufel-worker": "file:../schaufel-worker",
-    "@algorithmwatch/schaufel-wrangle": "file:../schaufel-wrangle",
+    "@algorithmwatch/schaufel-core": "0.21.0",
+    "@algorithmwatch/schaufel-worker": "0.21.0",
+    "@algorithmwatch/schaufel-wrangle": "0.21.0",
     "dotenv": "^16.0.1"
   }
 }

@@ -25,7 +25,7 @@
     "dev": "microbundle watch"
   },
   "dependencies": {
-    "@algorithmwatch/schaufel-core": "file:../schaufel-core",
+    "@algorithmwatch/schaufel-core": "0.21.0",
     "memoizee": "^0.4.15",
     "node-libcurl": "^3.0.0",
     "user-agents": "^1.0.1130"

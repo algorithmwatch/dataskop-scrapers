@@ -24,8 +24,7 @@
     "build": "microbundle --target web",
     "dev": "microbundle watch",
     "test": "jest",
-    "test:dev": "jest --watchAll",
-    "push-version": "../../scripts/postversion.sh $npm_package_version"
+    "test:dev": "jest --watchAll"
   },
   "dependencies": {
     "dayjs": "^1.11.6",

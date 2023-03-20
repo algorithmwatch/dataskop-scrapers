@@ -1,6 +1,5 @@
 {
-  "name": "schaufel-monorepo",
-  "version": "0.21.0",
+  "name": "dataskop-scrapers",
   "private": true,
   "workspaces": [
     "packages/*"
@@ -10,12 +9,13 @@
     "lint": "turbo run lint",
     "test": "turbo run test",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "version:patch": "npm version patch --no-git-tag-version && npm version patch --workspaces",
-    "version:minor": "npm version minor --no-git-tag-version && npm version minor --workspaces",
-    "push-version": "./scripts/postversion.sh $npm_package_version"
+    "publish-packages": "turbo run build test && changeset version && changeset publish"
   },
   "devDependencies": {
     "prettier": "latest",
     "turbo": "1.7.*"
+  },
+  "dependencies": {
+    "@changesets/cli": "^2.26.0"
   }
 }

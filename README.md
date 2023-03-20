@@ -1,41 +1,30 @@
-# schaufel
+# `dataskop-scrapers`
 
-TikTok utilities for DataSkop
+Scrapers, parsers, data wrangling and utilities for TikTok and YouTube.
 
 ## Dev setup
 
-We store some artefacts with [git lfs](https://git-lfs.github.com/).
-Please set it up.
-Also familiarize yourself with [turborepo](https://turbo.build/repo).
+We store large files with [git lfs](https://git-lfs.github.com/).
+We manage our monorepo with [turborepo](https://turbo.build/repo).
+We publish new releases with [changeset](https://github.com/changesets/changesets)
 
 ## Release a new version
 
-Choose a new version according to <https://semver.org/>.
+## TikTok scraper: schaufel
 
-First:
+TikTok utilities for DataSkop
 
-```bash
-npm run version:minor
-npm run version:patch
-```
-
-Second:
-
-```bash
-npm run push-version
-```
-
-## Deployment of the TikTok scraper
+### Deployment of the TikTok scraper
 
 We have a specific setup to run the scraper on the server.
 
-## Requirements
+### Requirements
 
 - a [Mullvad](https://mullvad.net/) subscriptions (you need to change the code if you choose another VPN provider)
 - a 'Logs Data Platform' instance in Gravelines (GRA) on [OVH](https://ovh.com)
 - `NPM_GITHUB_AUTH` token to read private packages on GitHub
 
-### Create the dot env file `docker/.env`
+#### Create the dot env file `docker/.env`
 
 ```bash
 # schaufel / DataSkop
@@ -55,7 +44,7 @@ DOT=off
 _X-OVH-TOKEN=ovh-logs-data-stream-token
 ```
 
-### Deploy script
+#### Deploy script
 
 ```bash
 # `deploy.sh`
@@ -65,9 +54,9 @@ rsync -avz --exclude node_modules --exclude .git --exclude docker/volume --exclu
 ssh awlab1 "cd code/schaufel && NPM_GITHUB_AUTH=the_token docker-compose up --detach --build"
 ```
 
-## Commands
+### Commands
 
-### Merge test lookups (playwright) to dev lookups
+#### Merge test lookups (playwright) to dev lookups
 
 ```bash
 cd packages/schaufel-cli
