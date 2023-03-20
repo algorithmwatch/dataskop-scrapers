@@ -1,6 +1,6 @@
 {
   "name": "@algorithmwatch/schaufel-cli",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "description": "",
   "main": "index.js",
   "scripts": {
@@ -13,9 +13,9 @@
   "author": "",
   "license": "MIT",
   "dependencies": {
-    "@algorithmwatch/schaufel-core": "0.21.0",
-    "@algorithmwatch/schaufel-worker": "0.21.0",
-    "@algorithmwatch/schaufel-wrangle": "0.21.0",
+    "@algorithmwatch/schaufel-core": "0.22.0",
+    "@algorithmwatch/schaufel-worker": "0.22.0",
+    "@algorithmwatch/schaufel-wrangle": "0.22.0",
     "dotenv": "^16.0.1"
   }
 }

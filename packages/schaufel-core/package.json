@@ -1,6 +1,6 @@
 {
   "name": "@algorithmwatch/schaufel-core",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "type": "module",
   "source": "src/index.ts",
   "exports": {
@@ -27,7 +27,7 @@
     "test:dev": "jest --watchAll"
   },
   "dependencies": {
-    "@algorithmwatch/schaufel-wrangle": "0.21.0",
+    "@algorithmwatch/schaufel-wrangle": "0.22.0",
     "dayjs": "^1.11.6",
     "got": "^11.0.0",
     "lodash": "^4.17.21",
