@@ -11,15 +11,9 @@
   "module": "./dist/harke.module.js",
   "unpkg": "./dist/harke.umd.js",
   "types": "./dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/algorithmwatch/harke.git"
-  },
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
   },
-  "author": "AlgorithmWatch",
-  "license": "MIT",
   "scripts": {
     "build": "microbundle",
     "dev": "microbundle watch",
