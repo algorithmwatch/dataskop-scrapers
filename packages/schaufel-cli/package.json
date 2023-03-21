@@ -1,8 +1,7 @@
 {
   "name": "@algorithmwatch/schaufel-cli",
+  "private": true,
   "version": "0.22.0",
-  "description": "",
-  "main": "index.js",
   "scripts": {
     "dump-redact": "node dump-redact.js",
     "dump-scrape": "node dump-scrape.js",
@@ -10,8 +9,6 @@
     "work": "node work.js",
     "merge-lookups": "node merge-lookups.js"
   },
-  "author": "",
-  "license": "MIT",
   "dependencies": {
     "@algorithmwatch/schaufel-core": "0.22.0",
     "@algorithmwatch/schaufel-worker": "0.22.0",

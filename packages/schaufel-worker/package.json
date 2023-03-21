@@ -1,5 +1,6 @@
 {
   "name": "@algorithmwatch/schaufel-worker",
+  "private": true,
   "version": "0.22.0",
   "type": "module",
   "source": "src/index.ts",
@@ -11,15 +12,6 @@
   "module": "./dist/schaufel.module.js",
   "unpkg": "./dist/schaufel.umd.js",
   "types": "./dist/index.d.ts",
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/algorithmwatch/schaufel.git"
-  },
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
-  "author": "AlgorithmWatch",
-  "license": "MIT",
   "scripts": {
     "build": "microbundle --target node",
     "dev": "microbundle watch"

@@ -1,5 +1,28 @@
 {
   "name": "dataskop-scrapers",
+  "description": "Scrapers, parsers, data wrangling and utilities for TikTok and YouTube",
+  "license": "MIT",
+  "author": {
+    "name": "AW AlgorithmWatch gGmbH",
+    "email": "it@algorithmwatch.org",
+    "url": "https://algorithmwatch.org"
+  },
+  "contributors": [
+    {
+      "name": "Johannes Filter",
+      "email": "hi@jfilter.de",
+      "url": "https://johannesfilter.com"
+    },
+    {
+      "name": "Gregor Weichbrodt",
+      "email": "gregorweichbrodt@gmail.com",
+      "url": "https://gregorweichbrodt.de"
+    }
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/algorithmwatch/schaufel.git"
+  },
   "private": true,
   "workspaces": [
     "packages/*"
