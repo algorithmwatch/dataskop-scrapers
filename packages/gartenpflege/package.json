@@ -1,17 +1,12 @@
 {
   "name": "gartenpflege",
-  "type": "module",
+  "private": true,
   "version": "0.0.0",
+  "type": "module",
   "main": "./src/cli.ts",
   "exports": {
     ".": "./src/cli.ts"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/algorithmwatch/gartenpflege.git"
-  },
-  "author": "AlgorithmWatch",
-  "license": "MIT",
   "scripts": {
     "dev:main": "nodemon",
     "cli": "node --loader ts-node/esm --es-module-specifier-resolution=node ./src/cli.ts",
@@ -21,7 +16,7 @@
     "harke-cli": "node --loader ts-node/esm --es-module-specifier-resolution=node ./src/cli.ts"
   },
   "dependencies": {
-    "@algorithmwatch/harke": "^0.4.5",
+    "@algorithmwatch/harke": "^0.5.0",
     "lodash": "^4.17.21",
     "lowdb": "^3.0.0",
     "meow": "^9.0.0",
