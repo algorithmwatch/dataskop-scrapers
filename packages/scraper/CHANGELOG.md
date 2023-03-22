@@ -1,6 +1,6 @@
-# @algorithmwatch/schaufel-wrangle
+# @algorithmwatch/scraper
 
-## 0.23.0
+## 0.2.0
 
 ### Minor Changes
 
@@ -10,9 +10,3 @@
 
 - Updated dependencies [6aef46b]
   - @algorithmwatch/utils@0.2.0
-
-## 0.22.0
-
-### Minor Changes
-
-- a99e369: New way to publish releases

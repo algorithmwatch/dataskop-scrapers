@@ -1,6 +1,6 @@
 {
   "name": "@algorithmwatch/schaufel-wrangle",
-  "version": "0.22.0",
+  "version": "0.23.0",
   "type": "module",
   "source": "src/index.ts",
   "exports": {
@@ -27,7 +27,7 @@
   "dependencies": {
     "dayjs": "^1.11.6",
     "lodash": "^4.17.21",
-    "@algorithmwatch/utils": "^0.1.0"
+    "@algorithmwatch/utils": "^0.2.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

@@ -1,5 +1,16 @@
 # @algorithmwatch/schaufel-worker
 
+## 0.23.0
+
+### Minor Changes
+
+- 6aef46b: Refactor & new features
+
+### Patch Changes
+
+- Updated dependencies [6aef46b]
+  - @algorithmwatch/schaufel-core@0.23.0
+
 ## 0.22.0
 
 ### Minor Changes
