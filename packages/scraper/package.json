@@ -1,8 +1,14 @@
 {
   "name": "@algorithmwatch/scraper",
-  "private": true,
   "version": "0.2.0",
   "type": "module",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/algorithmwatch/dataskop-scrapers.git"
+  },
   "source": "src/index.ts",
   "exports": {
     "require": "./dist/scraper.cjs",
