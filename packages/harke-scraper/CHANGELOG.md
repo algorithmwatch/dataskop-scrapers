@@ -1,5 +1,11 @@
 # @algorithmwatch/harke
 
+## 0.8.0
+
+### Minor Changes
+
+- 2c53e29: Change dump function to return urls
+
 ## 0.7.0
 
 ### Minor Changes
