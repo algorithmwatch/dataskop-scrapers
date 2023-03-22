@@ -1,5 +1,5 @@
+import { parseVideoNoJs } from '@algorithmwatch/harke-parser';
 import { scrapeItems } from '@algorithmwatch/scraper';
-import { parseVideoNoJs } from './parse-no-js';
 
 const parseFun = (html, storeBrokenHtml, logFun) => {
   try {

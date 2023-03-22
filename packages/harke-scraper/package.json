@@ -1,0 +1,66 @@
+{
+  "name": "@algorithmwatch/harke-scraper",
+  "version": "0.6.0",
+  "type": "module",
+  "source": "src/index.ts",
+  "exports": {
+    "require": "./dist/harke.cjs",
+    "default": "./dist/harke.modern.js"
+  },
+  "main": "./dist/harke.cjs",
+  "module": "./dist/harke.module.js",
+  "unpkg": "./dist/harke.umd.js",
+  "types": "./dist/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/algorithmwatch/dataskop-scrapers.git"
+  },
+  "scripts": {
+    "build": "microbundle --target node",
+    "dev": "microbundle watch",
+    "test": "jest",
+    "test:dev": "jest --watchAll"
+  },
+  "dependencies": {
+    "cheerio": "^1.0.0-rc.5",
+    "lodash": "^4.17.21",
+    "@algorithmwatch/scraper": "^0.2.0",
+    "@algorithmwatch/harke-parser": "^0.6.0",
+    "@algorithmwatch/utils": "^0.2.0"
+  },
+  "devDependencies": {
+    "@types/cheerio": "^0.22.27",
+    "@types/jest": "^26.0.20",
+    "@types/node": "^14.14.33",
+    "@typescript-eslint/eslint-plugin": "^4.17.0",
+    "@typescript-eslint/parser": "^4.17.0",
+    "eslint": "^7.21.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-jest": "^24.2.1",
+    "jest": "^26.6.3",
+    "microbundle": "^0.14.2",
+    "prettier": "^2.2.1",
+    "ts-jest": "^26.5.3",
+    "ts-node": "^9.1.1",
+    "typescript": "^4.2.3"
+  },
+  "prettier": {
+    "overrides": [
+      {
+        "files": [
+          ".prettierrc",
+          ".babelrc",
+          ".eslintrc"
+        ],
+        "options": {
+          "parser": "json"
+        }
+      }
+    ],
+    "singleQuote": true,
+    "trailingComma": "all"
+  }
+}

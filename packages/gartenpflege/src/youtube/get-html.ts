@@ -11,7 +11,7 @@ import {
   searchHistoryUrl,
   subscribedChannelsUrl,
   watchHistoryUrl,
-} from '@algorithmwatch/harke';
+} from '@algorithmwatch/harke-parser';
 import fs from 'fs';
 import { closeBrowser, newPage } from '../browser';
 import { isValidUrl } from '../util';

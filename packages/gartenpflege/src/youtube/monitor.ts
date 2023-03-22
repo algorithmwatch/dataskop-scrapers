@@ -1,4 +1,4 @@
-import { constants } from '@algorithmwatch/harke';
+import { constants } from '@algorithmwatch/harke-parser';
 import { JSONFile, Low } from 'lowdb';
 import { getPlaylist } from './get-html';
 

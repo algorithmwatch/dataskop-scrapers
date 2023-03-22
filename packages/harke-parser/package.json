@@ -1,6 +1,6 @@
 {
-  "name": "@algorithmwatch/harke",
-  "version": "0.6.1",
+  "name": "@algorithmwatch/harke-parser",
+  "version": "0.6.0",
   "type": "module",
   "source": "src/index.ts",
   "exports": {
@@ -19,7 +19,7 @@
     "url": "https://github.com/algorithmwatch/dataskop-scrapers.git"
   },
   "scripts": {
-    "build": "microbundle",
+    "build": "microbundle --target web",
     "dev": "microbundle watch",
     "test": "jest",
     "test:dev": "jest --watchAll"
@@ -27,8 +27,7 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.5",
     "lodash": "^4.17.21",
-    "@algorithmwatch/scraper": "^0.3.0",
-    "@algorithmwatch/utils": "^0.3.0"
+    "@algorithmwatch/utils": "^0.2.0"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.27",

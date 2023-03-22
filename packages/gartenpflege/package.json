@@ -16,7 +16,7 @@
     "harke-cli": "node --loader ts-node/esm --es-module-specifier-resolution=node ./src/cli.ts"
   },
   "dependencies": {
-    "@algorithmwatch/harke": "^0.6.0",
+    "@algorithmwatch/harke-parser": "^0.6.0",
     "lodash": "^4.17.21",
     "lowdb": "^3.0.0",
     "meow": "^9.0.0",
