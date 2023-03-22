@@ -1,6 +1,6 @@
 {
   "name": "@algorithmwatch/harke-scraper",
-  "version": "0.8.0",
+  "version": "0.8.1",
   "type": "module",
   "source": "src/index.ts",
   "exports": {

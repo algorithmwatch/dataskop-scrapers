@@ -1,5 +1,11 @@
 # @algorithmwatch/harke
 
+## 0.8.1
+
+### Patch Changes
+
+- 3dd77d4: Fix return value
+
 ## 0.8.0
 
 ### Minor Changes
