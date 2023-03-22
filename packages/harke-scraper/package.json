@@ -1,6 +1,6 @@
 {
   "name": "@algorithmwatch/harke-scraper",
-  "version": "0.6.0",
+  "version": "0.7.0",
   "type": "module",
   "source": "src/index.ts",
   "exports": {
@@ -28,7 +28,7 @@
     "cheerio": "^1.0.0-rc.5",
     "lodash": "^4.17.21",
     "@algorithmwatch/scraper": "^0.3.0",
-    "@algorithmwatch/harke-parser": "^0.6.0",
+    "@algorithmwatch/harke-parser": "^0.7.0",
     "@algorithmwatch/utils": "^0.3.0"
   },
   "devDependencies": {
