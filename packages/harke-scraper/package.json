@@ -27,9 +27,9 @@
   "dependencies": {
     "cheerio": "^1.0.0-rc.5",
     "lodash": "^4.17.21",
-    "@algorithmwatch/scraper": "^0.2.0",
+    "@algorithmwatch/scraper": "^0.3.0",
     "@algorithmwatch/harke-parser": "^0.6.0",
-    "@algorithmwatch/utils": "^0.2.0"
+    "@algorithmwatch/utils": "^0.3.0"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.27",
