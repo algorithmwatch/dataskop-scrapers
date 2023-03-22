@@ -1,7 +1,7 @@
 {
   "name": "@algorithmwatch/schaufel-cli",
   "private": true,
-  "version": "0.22.0",
+  "version": "0.23.0",
   "scripts": {
     "dump-redact": "node dump-redact.js",
     "dump-scrape": "node dump-scrape.js",
@@ -10,9 +10,9 @@
     "merge-lookups": "node merge-lookups.js"
   },
   "dependencies": {
-    "@algorithmwatch/schaufel-core": "0.22.0",
-    "@algorithmwatch/schaufel-worker": "0.22.0",
-    "@algorithmwatch/schaufel-wrangle": "0.22.0",
+    "@algorithmwatch/schaufel-core": "0.23.0",
+    "@algorithmwatch/schaufel-worker": "0.23.0",
+    "@algorithmwatch/schaufel-wrangle": "0.23.0",
     "dotenv": "^16.0.1"
   }
 }
