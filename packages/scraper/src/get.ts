@@ -1,8 +1,8 @@
 /* eslint-disable no-console */
+import { delay } from '@algorithmwatch/utils';
 import got from 'got';
 import _ from 'lodash';
 import UserAgent from 'user-agents';
-import { delay } from './utils';
 
 const get = async (
   url: string,

@@ -1,34 +1,26 @@
 {
-  "name": "@algorithmwatch/schaufel-core",
-  "version": "0.22.0",
+  "name": "@algorithmwatch/scraper",
+  "private": true,
+  "version": "0.1.0",
   "type": "module",
   "source": "src/index.ts",
   "exports": {
-    "require": "./dist/schaufel.cjs",
-    "default": "./dist/schaufel.modern.js"
+    "require": "./dist/scraper.cjs",
+    "default": "./dist/scraper.modern.js"
   },
-  "main": "./dist/schaufel.cjs",
-  "module": "./dist/schaufel.module.js",
-  "unpkg": "./dist/schaufel.umd.js",
+  "main": "./dist/scraper.cjs",
+  "module": "./dist/scraper.module.js",
+  "unpkg": "./dist/scraper.umd.js",
   "types": "./dist/index.d.ts",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
-  },
   "scripts": {
     "build": "microbundle --target node",
-    "dev": "microbundle watch",
-    "test": "jest",
-    "test:dev": "jest --watchAll"
+    "dev": "microbundle watch"
   },
   "dependencies": {
-    "@algorithmwatch/schaufel-wrangle": "0.22.0",
     "@algorithmwatch/utils": "0.1.0",
-    "@algorithmwatch/scraper": "0.1.0",
-    "dayjs": "^1.11.6",
-    "lodash": "^4.17.21"
-  },
-  "peerDependencies": {
-    "@algorithmwatch/schaufel-ab": "*"
+    "got": "^11.0.0",
+    "lodash": "^4.17.21",
+    "user-agents": "^1.0.1130"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

@@ -1,4 +1,4 @@
-import { normalizeObject } from '../src/utils';
+import { normalizeObject } from '../src/index';
 
 describe('Check parsing error', () => {
   test('Check parsing error', async () =>

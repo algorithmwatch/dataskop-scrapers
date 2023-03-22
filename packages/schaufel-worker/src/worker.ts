@@ -1,7 +1,6 @@
 /* eslint-disable no-console */
 import { a } from '@algorithmwatch/schaufel-ab';
 import {
-  b64encode,
   getTiktokVideoMeta,
   idToTiktokUrl,
 } from '@algorithmwatch/schaufel-core';
@@ -9,6 +8,7 @@ import {
   getIdFromUrl,
   prependTiktokSuffix,
 } from '@algorithmwatch/schaufel-wrangle';
+import { b64encode } from '@algorithmwatch/utils';
 import https from 'https';
 import _ from 'lodash';
 import process from 'process';

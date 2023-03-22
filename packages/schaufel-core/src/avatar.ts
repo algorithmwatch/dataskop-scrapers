@@ -1,5 +1,5 @@
-import { get } from './get';
-import { toBase64 } from './utils';
+import { get } from '@algorithmwatch/scraper';
+import { toBase64 } from '@algorithmwatch/utils';
 
 const pattern = /<img loading="lazy" src="([^"]*)"/;
 

@@ -1,2 +1,2 @@
-export * from './avatar';
+export * from './get';
 export * from './scrape';
