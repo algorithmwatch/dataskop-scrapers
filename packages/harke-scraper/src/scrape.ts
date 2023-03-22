@@ -16,7 +16,7 @@ const scrapeYouTubeVideos = async (
   options: any,
   logFun = console.log,
 ): Promise<any> => {
-  return scrapeItems(
+  const items = await scrapeItems(
     videoUrls,
     {},
     options,
@@ -27,5 +27,7 @@ const scrapeYouTubeVideos = async (
     parseFun,
     undefined,
   );
+  // The cache is in items[1]
+  return items[0];
 };
 export { scrapeYouTubeVideos };
