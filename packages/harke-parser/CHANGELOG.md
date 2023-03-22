@@ -1,5 +1,11 @@
 # @algorithmwatch/harke
 
+## 0.7.0
+
+### Minor Changes
+
+- 206861f: Seperate harke into node & web package
+
 ## 0.6.1
 
 ### Patch Changes
