@@ -1,5 +1,13 @@
 # @algorithmwatch/schaufel-cli
 
+## 0.23.1
+
+### Patch Changes
+
+- @algorithmwatch/schaufel-core@0.23.1
+- @algorithmwatch/schaufel-wrangle@0.23.1
+- @algorithmwatch/schaufel-worker@0.23.1
+
 ## 0.23.0
 
 ### Minor Changes
