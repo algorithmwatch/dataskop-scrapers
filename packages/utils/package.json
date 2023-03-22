@@ -16,7 +16,9 @@
     "build": "microbundle --target node",
     "dev": "microbundle watch"
   },
-  "dependencies": {},
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
   "peerDependencies": {},
   "devDependencies": {
     "@types/jest": "^26.0.20",

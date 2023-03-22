@@ -22,7 +22,8 @@
   },
   "dependencies": {
     "dayjs": "^1.11.6",
-    "lodash": "^4.17.21"
+    "lodash": "^4.17.21",
+    "@algorithmwatch/utils": "^0.1.0"
   },
   "devDependencies": {
     "@types/jest": "^26.0.20",

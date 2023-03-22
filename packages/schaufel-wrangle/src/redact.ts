@@ -1,3 +1,4 @@
+import { pickArray } from '@algorithmwatch/utils';
 import _ from 'lodash';
 
 /**
@@ -16,12 +17,6 @@ const textTolength = (messages: any[], field: string) => {
     .filter((x) => !x[field].startsWith('https://www.tiktokv.com/'))
     .forEach((x) => _.update(x, field, (x) => x.length));
   return messages;
-};
-
-const pickArray = (arr: any[], keys: string[]) => {
-  // Catch all `null` or `undefined` values for the array
-  if (arr == null) return [];
-  return arr.map((x) => _.pick(x, keys));
 };
 
 const removeChatText = (obj: any) => {

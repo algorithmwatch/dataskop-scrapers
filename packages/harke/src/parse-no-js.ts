@@ -1,35 +1,56 @@
-import * as cheerio from 'cheerio';
-import { extractNumberFromString } from './utils';
+import cheerio from 'cheerio';
+import { convertISO8601ToMs, extractNumberFromString } from './utils';
 
-const parseVideoNoJs = (html: string) => {
+const makeGetMeta = ($root) => {
+  const getMetaContent = (meta) => {
+    const result =
+      $root(`div#watch7-content meta[itemprop="${meta}"]`)
+        .first()
+        .attr('content') ||
+      $root(`div#watch7-content span[itemprop="${meta}"] link[itemprop="name"]`)
+        .first()
+        .attr('content');
+    return result;
+  };
+  return getMetaContent;
+};
+
+const parseVideoNoJs = (html: string): any => {
   const $root = cheerio.load(html);
+  const getMeta = makeGetMeta($root);
 
-  if (
-    $root('div#watch7-content meta[itemprop="unlisted"]')
-      .first()
-      .attr('content') == null
-  )
-    return null;
+  if (getMeta('unlisted') == null) return null;
 
-  const unlisted =
-    $root('div#watch7-content meta[itemprop="unlisted"]')
-      .first()
-      .attr('content') === 'True';
+  const unlisted = getMeta('unlisted') === 'True';
+  const viewCount = extractNumberFromString(getMeta('interactionCount') || '0');
+  const category = getMeta('genre');
+  const publishedAt = getMeta('datePublished');
+  const duration = convertISO8601ToMs(getMeta('duration'));
+  const author = getMeta('author');
+  const title = getMeta('name');
 
-  const viewCountEl = $root(
-    'div#watch7-content meta[itemprop="interactionCount"]',
-  ).first();
-  const viewCount = extractNumberFromString(viewCountEl.attr('content') || '0');
+  const result = {
+    unlisted,
+    viewCount,
+    category,
+    publishedAt,
+    title,
+    duration,
+    author,
+  };
 
-  const categoryEl = $root('div#watch7-content meta[itemprop="genre"]').first();
-  const category = categoryEl.attr('content');
+  const reKeywords = /<meta name="keywords" content="([^"]*)">/;
+  const matchKeywords = html.match(reKeywords);
+  if (matchKeywords && matchKeywords.length >= 2)
+    result['keywords'] = matchKeywords[1];
 
-  const publishedAtEl = $root(
-    'div#watch7-content meta[itemprop="datePublished"]',
-  ).first();
-  const publishedAt = publishedAtEl.attr('content');
+  // Alternative way to get duration with regex
+  // const reDuration = /"approxDurationMs":"(\d+)"/;
+  // const matchedDuration = html.match(reDuration);
+  // if (matchedDuration && matchedDuration.length >= 2)
+  //   result['duration'] = parseInt(matchedDuration[1]);
 
-  return { unlisted, viewCount, category, publishedAt };
+  return result;
 };
 
 export { parseVideoNoJs };

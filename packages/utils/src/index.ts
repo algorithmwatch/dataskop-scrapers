@@ -1,4 +1,5 @@
 import fs from 'fs';
+import _ from 'lodash';
 
 const delay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -42,4 +43,18 @@ const normalizeObject = (object: any): any => {
   return sortedObj;
 };
 
-export { delay, writeJSON, readJSON, b64encode, toBase64, normalizeObject };
+const pickArray = (arr: any[], keys: string[]): any[] => {
+  // Catch all `null` or `undefined` values for the array
+  if (arr == null) return [];
+  return arr.map((x) => _.pick(x, keys));
+};
+
+export {
+  delay,
+  writeJSON,
+  readJSON,
+  b64encode,
+  toBase64,
+  normalizeObject,
+  pickArray,
+};
