@@ -1,5 +1,11 @@
 # @algorithmwatch/schaufel-worker
 
+## 0.23.1
+
+### Patch Changes
+
+- @algorithmwatch/schaufel-core@0.23.1
+
 ## 0.23.0
 
 ### Minor Changes

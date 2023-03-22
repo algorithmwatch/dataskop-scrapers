@@ -1,5 +1,13 @@
 # @algorithmwatch/harke
 
+## 0.6.1
+
+### Patch Changes
+
+- Updated dependencies [ac2a761]
+  - @algorithmwatch/scraper@0.3.0
+  - @algorithmwatch/utils@0.3.0
+
 ## 0.6.0
 
 ### Minor Changes

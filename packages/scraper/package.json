@@ -1,6 +1,6 @@
 {
   "name": "@algorithmwatch/scraper",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "type": "module",
   "publishConfig": {
     "registry": "https://npm.pkg.github.com"
@@ -23,7 +23,7 @@
     "dev": "microbundle watch"
   },
   "dependencies": {
-    "@algorithmwatch/utils": "0.2.0",
+    "@algorithmwatch/utils": "0.3.0",
     "got": "^11.0.0",
     "lodash": "^4.17.21",
     "user-agents": "^1.0.1130"
