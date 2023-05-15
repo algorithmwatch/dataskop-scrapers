@@ -63,6 +63,15 @@ cd packages/schaufel-cli
 npm run merge-lookups ~/Library/Application\ Support/Electron/databases/lookup.json ~/Library/Application\ Support/dataskop-electron/databases/lookup.json
 ```
 
+#### Scrape TikTok videos
+
+Conntect to any Mullvad server and then do the following:
+
+```bash
+cd packages/schaufel-cli
+npm run scrape-meta https://www.tiktok.com/@newmartina/video/7232019489674562842 https://www.tiktok.com/@victordemartrin/video/7228575676335443226
+```
+
 ## License
 
 MIT
